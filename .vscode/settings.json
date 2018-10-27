@@ -1,5 +1,0 @@
-{
-  "editor.formatOnSave": true,
-  "tslint.jsEnable": true,
-  "tslint.exclude": ["dist/**/*", "node_modules/**/*"]
-}
