@@ -1,5 +1,3 @@
-import "./index.css";
-
 const helloWorld: string = "Hello world.";
 console.log(helloWorld);
 
