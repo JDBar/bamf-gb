@@ -2,6 +2,23 @@ const gulp = require("gulp");
 const dist = "./dist";
 
 /**
+ * Watch
+ */
+function watch() {
+  gulp.watch(["./src/**/*.ts", "./src/**/*.js"], js);
+  gulp.watch(["./src/**/*.css"], css);
+  gulp.watch(["./src/**/*.html"], html);
+}
+
+/**
+ * Clean
+ */
+function clean() {
+  var del = require("del");
+  return del([`${dist}/**`, `!${dist}`]);
+}
+
+/**
  * Compile CSS
  */
 function css() {
@@ -44,7 +61,9 @@ function js() {
   });
 }
 
+exports.watch = watch;
+exports.clean = clean;
 exports.css = css;
 exports.html = html;
 exports.js = js;
-exports.build = gulp.parallel(html, css, js);
+exports.build = gulp.series(clean, gulp.parallel(html, css, js));

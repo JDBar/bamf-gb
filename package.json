@@ -4,8 +4,9 @@
   "description": "TypeScript GameBoy Emulator",
   "main": "index.js",
   "scripts": {
-    "build": "./node_modules/.bin/gulp build",
-    "clean": "rm -rf dist/*"
+    "build": "npx gulp build",
+    "watch": "npx gulp watch",
+    "clean": "npx gulp clean"
   },
   "author": "Joseph JDBar Barron",
   "license": "ISC",
@@ -15,6 +16,7 @@
     "@babel/preset-typescript": "^7.1.0",
     "autoprefixer": "^9.3.1",
     "babel-loader": "^8.0.4",
+    "del": "^3.0.0",
     "gulp": "^4.0.0",
     "gulp-cli": "^2.0.1",
     "gulp-postcss": "^8.0.0",
