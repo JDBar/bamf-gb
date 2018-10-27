@@ -1,14 +1,15 @@
 const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-  mode: "development",
   devtool: "source-map",
   entry: "./src/index.ts",
+  mode: "development",
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
         exclude: /node_modules/,
+        test: /\.tsx?$/,
         use: [
           {
             loader: "babel-loader",
@@ -19,21 +20,45 @@ module.exports = {
         ],
       },
       {
-        test: /\.js$/,
         exclude: /node_modules/,
+        test: /\.js$/,
         use: [
           {
             loader: "babel-loader",
           },
         ],
       },
+      {
+        exclude: /node_modules/,
+        test: /\.css$/,
+        use: [
+          "style-loader",
+          "css-loader",
+          {
+            loader: "postcss-loader",
+            options: {
+              ident: "postcss",
+              plugins: [
+                require("autoprefixer")({
+                  browsers: ["> 0.5% in US", "last 2 versions", "not ie <= 10"],
+                }),
+              ],
+            },
+          },
+        ],
+      },
     ],
-  },
-  resolve: {
-    extensions: [".tsx", ".ts", ".js"],
   },
   output: {
     filename: "bundle.js",
     path: path.resolve(__dirname, "dist"),
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: "src/index.html",
+    }),
+  ],
+  resolve: {
+    extensions: [".tsx", ".ts", ".js"],
   },
 };
