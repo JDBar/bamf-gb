@@ -13,7 +13,6 @@ export default class App {
       if (parent) {
         canvas.style.maxWidth = `${parent.offsetWidth}px`;
         canvas.style.maxHeight = `${parent.offsetWidth * 0.9}px`;
-        console.log(canvas, canvas.style.width);
       }
     }
   }
