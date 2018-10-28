@@ -1,9 +1,6 @@
-import Test from "./test";
+import App from "./classes/class.App";
+const app = new App();
 
-const helloWorld: string = "Hello world.";
-console.log(helloWorld);
-
-const arr: number[] = [1, 2, 3, 4, 5, 6, 7, 8];
-console.log(arr);
-
-console.log(new Test().foo);
+document.addEventListener("DOMContentLoaded", () => {
+  app.resizeCanvas();
+});
