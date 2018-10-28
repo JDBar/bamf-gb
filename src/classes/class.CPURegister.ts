@@ -1,4 +1,4 @@
-export default abstract class Z80Register {
+export default abstract class CPURegister {
   protected abstract value: number;
 
   abstract get Value(): number;

@@ -1,6 +1,6 @@
-import Z80Register from "./class.Z80Register";
+import CPURegister from "./class.CPURegister";
 
-export default class Z80Register8 extends Z80Register {
+export default class CPURegister8 extends CPURegister {
   protected value: number;
 
   constructor() {

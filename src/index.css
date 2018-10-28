@@ -18,6 +18,10 @@ body,
   flex-direction: column;
 }
 
+.bamf-gb h1 {
+  margin: 10px;
+}
+
 #bamf-gb-canvas {
   flex: 1;
   height: 100%;
