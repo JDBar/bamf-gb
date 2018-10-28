@@ -24,33 +24,51 @@ function clean() {
 function css() {
   var postcss = require("gulp-postcss");
   var autoprefixer = require("autoprefixer");
+  var del = require("del");
 
-  return gulp
-    .src("./src/**/*.css")
-    .pipe(
-      postcss([
-        autoprefixer({
-          browsers: ["> 0.5% in US", "last 2 versions", "not ie <= 10"],
-        }),
-      ])
-    )
-    .pipe(gulp.dest(dist));
+  return new Promise(async (resolve, reject) => {
+    await del([`${dist}/**/*.css`, `!${dist}`]);
+    gulp
+      .src("./src/**/*.css")
+      .pipe(
+        postcss([
+          autoprefixer({
+            browsers: ["> 0.5% in US", "last 2 versions", "not ie <= 10"],
+          }),
+        ])
+      )
+      .pipe(gulp.dest(dist))
+      .on("end", resolve)
+      .on("error", reject);
+  });
 }
 
 /**
  * Copy over HTML files.
  */
-function html() {
-  return gulp.src("./src/**/*.html").pipe(gulp.dest(dist));
+async function html() {
+  var del = require("del");
+
+  return new Promise(async (resolve, reject) => {
+    await del([`${dist}/**/*.html`, `!${dist}`]);
+    gulp
+      .src("./src/**/*.html")
+      .pipe(gulp.dest(dist))
+      .on("end", resolve)
+      .on("error", reject);
+  });
 }
 
 /**
  * Transpile TS and bundle dependencies.
  */
-function js() {
+async function js() {
   var webpack = require("webpack");
   var webpackConfig = require("./webpack.config");
-  return new Promise((resolve, reject) => {
+  var del = require("del");
+
+  return new Promise(async (resolve, reject) => {
+    await del([`${dist}/**/*.js`, `!${dist}`]);
     webpack(webpackConfig, function(err) {
       if (err) {
         reject(err);
@@ -66,4 +84,4 @@ exports.clean = clean;
 exports.css = css;
 exports.html = html;
 exports.js = js;
-exports.build = gulp.series(clean, gulp.parallel(html, css, js));
+exports.build = gulp.parallel(html, css, js);
