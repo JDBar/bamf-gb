@@ -37,6 +37,7 @@ body,
 .bamf-gb .main .renderer {
   display: flex;
   flex: 1;
+  max-width: 50%;
   justify-content: center;
   align-items: center;
   border: 1px solid black;

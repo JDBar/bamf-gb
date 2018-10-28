@@ -46,6 +46,18 @@ export default class CPU {
       t: new CPURegister8(), // Clock for last instr.
     };
   }
+
+  private fetch() {
+    throw new Error("fetch() is not implemented.");
+  }
+
+  private decode() {
+    throw new Error("decode() is not implemented.");
+  }
+
+  private execute() {
+    throw new Error("execute() is not implemented.");
+  }
 }
 
 /**

@@ -8,11 +8,18 @@ export default class App {
    */
   public resizeCanvas() {
     const canvas = document.getElementById("bamf-gb-canvas");
+    const ratio = 10 / 9;
     if (canvas) {
       const parent = canvas.parentElement;
       if (parent) {
-        canvas.style.maxWidth = `${parent.offsetWidth}px`;
-        canvas.style.maxHeight = `${parent.offsetWidth * 0.9}px`;
+        canvas.style.maxWidth =
+          parent.offsetWidth <= parent.offsetHeight * ratio
+            ? `${parent.offsetWidth}px`
+            : `${parent.offsetHeight * ratio}px`;
+        canvas.style.maxHeight =
+          parent.offsetHeight <= parent.offsetWidth / ratio
+            ? `${parent.offsetHeight}px`
+            : `${parent.offsetWidth / ratio}px`;
       }
     }
   }
