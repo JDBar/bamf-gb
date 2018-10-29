@@ -63,6 +63,7 @@ export default class CPU {
 /**
  * Interfaces
  */
+
 interface IClock {
   m: CPURegister8;
   t: CPURegister8;

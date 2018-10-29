@@ -1,3 +1,5 @@
+import BIOS from "../data/data.BIOS";
+
 /**
  * The memory management unit.
  */
@@ -50,7 +52,7 @@ export default class MMU {
 
   constructor() {
     this.inBIOS = true;
-    this.BIOS = new Uint8Array(256);
+    this.BIOS = BIOS;
     this.ROM = new Uint8Array(16384);
     this.workingRAM = new Uint8Array(8192);
     this.externalRAM = new Uint8Array(8192);
@@ -230,6 +232,10 @@ export default class MMU {
     }
   }
 }
+
+/**
+ * Interfaces
+ */
 
 interface IAddressHashMap {
   [key: number]: (address: number, writeValue?: number) => number | undefined;
