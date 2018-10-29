@@ -1,3 +1,4 @@
+import CPURegister from "./class.CPURegister";
 import CPURegister16 from "./class.CPURegister16";
 import CPURegister8 from "./class.CPURegister8";
 
@@ -5,7 +6,7 @@ import CPURegister8 from "./class.CPURegister8";
  * The CPU.
  */
 export default class CPU {
-  private clock: IClock;
+  private clock: IRegisterSet;
   private registers: IRegisterSet;
 
   constructor() {
@@ -47,6 +48,18 @@ export default class CPU {
     };
   }
 
+  /**
+   * Resets the CPU.
+   */
+  private reset() {
+    for (const k of Object.keys(this.registers)) {
+      this.registers[k].Value = 0;
+    }
+
+    this.clock.m.Value = 0;
+    this.clock.t.Value = 0;
+  }
+
   private fetch() {
     throw new Error("fetch() is not implemented.");
   }
@@ -64,22 +77,6 @@ export default class CPU {
  * Interfaces
  */
 
-interface IClock {
-  m: CPURegister8;
-  t: CPURegister8;
-}
-
 interface IRegisterSet {
-  a: CPURegister8;
-  b: CPURegister8;
-  c: CPURegister8;
-  d: CPURegister8;
-  e: CPURegister8;
-  f: CPURegister8;
-  h: CPURegister8;
-  l: CPURegister8;
-  m: CPURegister8;
-  pc: CPURegister16;
-  sp: CPURegister16;
-  t: CPURegister8;
+  [index: string]: CPURegister;
 }
