@@ -8,7 +8,7 @@ export default class MMU {
    * Flag indicating BIOS is mapped in.
    * BIOS is unmapped with the first instruction above 0x00FF.
    */
-  private inBIOS: boolean;
+  public inBIOS: boolean;
 
   /**
    * 0x0000 - 0x00FF

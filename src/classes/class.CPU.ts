@@ -1,6 +1,7 @@
 import CPURegister from "./class.CPURegister";
 import CPURegister16 from "./class.CPURegister16";
 import CPURegister8 from "./class.CPURegister8";
+import MMU from "./class.MMU";
 
 /**
  * The CPU.
@@ -8,6 +9,8 @@ import CPURegister8 from "./class.CPURegister8";
 export default class CPU {
   private clock: IRegisterSet;
   private registers: IRegisterSet;
+  private mmu: MMU;
+  private operations: IOperationMap;
 
   constructor() {
     this.clock = {
@@ -46,6 +49,18 @@ export default class CPU {
       sp: new CPURegister16(), // Stack pointer.
       t: new CPURegister8(), // Clock for last instr.
     };
+
+    this.mmu = new MMU();
+
+    this.operations = {
+      0x00: {
+        mnemonic: "NOP",
+        cycles: 1,
+        fn: () => {
+          this.registers.m.Value = 1;
+        },
+      },
+    };
   }
 
   /**
@@ -55,17 +70,26 @@ export default class CPU {
     for (const k of Object.keys(this.registers)) {
       this.registers[k].Value = 0;
     }
-
     this.clock.m.Value = 0;
     this.clock.t.Value = 0;
   }
 
-  private fetch() {
-    throw new Error("fetch() is not implemented.");
+  private fetch(): number {
+    return this.mmu.readByte(this.registers.pc.Value++);
   }
 
-  private decode() {
-    throw new Error("decode() is not implemented.");
+  private decode(byte: number): IOperation {
+    const result: IOperation | IOperationMap = this.operations[byte];
+    // Consider making Operation/OperationMap classes so that
+    // this interface member memery is not necessary.
+    if ((result as IOperation).hasOwnProperty("fn")) {
+      // This is an operation.
+      return result as IOperation;
+    } else {
+      // This is the CB-prefix operation map.
+      const nextByte = this.fetch();
+      return (result as IOperationMap)[nextByte] as IOperation;
+    }
   }
 
   private execute() {
@@ -79,4 +103,14 @@ export default class CPU {
 
 interface IRegisterSet {
   [index: string]: CPURegister;
+}
+
+interface IOperationMap {
+  [index: number]: IOperation | IOperationMap;
+}
+
+interface IOperation {
+  cycles: number;
+  mnemonic: string;
+  fn: () => void;
 }
