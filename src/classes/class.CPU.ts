@@ -15,8 +15,8 @@ export default class CPU {
 
   constructor() {
     this.clock = {
-      m: new CPURegister8(),
-      t: new CPURegister8(),
+      mCycles: new CPURegister8(),
+      tCycles: new CPURegister8(),
     };
 
     this.registers = {};
@@ -28,8 +28,8 @@ export default class CPU {
     this.registers.f = new CPURegister8(); // Flags (ZNHCxxxx)
     this.registers.h = new CPURegister8();
     this.registers.l = new CPURegister8();
-    this.registers.m = new CPURegister8(); // Clock for last instruciton.
-    this.registers.t = new CPURegister8(); // Clock for last instruciton. (Not sure if this will be used?)
+    this.registers.mCycles = new CPURegister8(); // Clock for last instruction.
+    this.registers.cCycles = new CPURegister8(); // Clock for last instruction. (Not sure if this will be used?)
     this.registers.pc = new CPURegister16(); // Program counter.
     this.registers.sp = new CPURegister16(); // Stack pointer.
     this.registers.af = new CPURegisterPair(
@@ -54,9 +54,53 @@ export default class CPU {
     this.operations = {
       0x00: {
         mnemonic: "NOP",
-        cycles: 1,
+        description: "No operation.",
         fn: () => {
           this.registers.m.Value = 1;
+          this.registers.mCycles.Value += 1;
+        },
+      },
+      0x01: {
+        mnemonic: "LD BC,d16",
+        description: "Load 16-bit immediate into BC.",
+        fn: () => {
+          // GameBoy is little endian, so we have to load the low byte first.
+          this.registers.bc.Value =
+            this.mmu.readByte(this.registers.pc.Value++) |
+            (this.mmu.readByte(this.registers.pc.Value++) << 8);
+          this.registers.mCycles.Value += 3;
+        },
+      },
+      0x02: {
+        mnemonic: "LD (BC),A",
+        description: "Save A to address pointed by BC.",
+        fn: () => {
+          this.mmu.writeByte(this.registers.bc.Value, this.registers.a.Value);
+          this.registers.mCycles.Value += 2;
+        },
+      },
+      0x03: {
+        mnemonic: "INC BC",
+        description: "Increment 16-bit BC",
+        fn: () => {
+          this.registers.bc.Value++;
+          this.registers.mCycles.Value += 2;
+        },
+      },
+      0x04: {
+        mnemonic: "INC B",
+        description: "Increment B",
+        fn: () => {
+          this.registers.b.Value++;
+          this.registers.mCycles.Value += 1;
+        },
+      },
+      0x05: {
+        mnemonic: "DEC B",
+        description: "Decrement B",
+        fn: () => {
+          this.registers.b.Value--;
+          this.registers.mCycles.Value += 1;
         },
       },
     };
@@ -109,7 +153,7 @@ interface IOperationMap {
 }
 
 interface IOperation {
-  cycles: number;
+  description: string;
   mnemonic: string;
   fn: () => void;
 }

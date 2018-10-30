@@ -14,11 +14,13 @@ export default class CPURegisterPair extends CPURegister {
   }
 
   get Value(): number {
+    this.value = ((this.high.Value << 8) | this.low.Value) & 0xffff;
     return this.value;
   }
 
   set Value(n: number) {
-    this.value = n & 0xFFFF;
-    this.high.Value = (n & 0xFF00) >> 8;
-    this.low.Value = n & 0xFF;
+    this.value = n & 0xffff;
+    this.high.Value = (n & 0xff00) >> 8;
+    this.low.Value = n & 0xff;
+  }
 }
