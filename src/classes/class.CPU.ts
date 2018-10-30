@@ -103,6 +103,14 @@ export default class CPU {
           this.registers.mCycles.Value += 1;
         },
       },
+      0x06: {
+        mnemonic: "LD B,d8",
+        description: "Load 8-bit immediate into register B.",
+        fn: () => {
+          this.registers.b.Value = this.mmu.readByte(this.registers.pc.Value++);
+          this.registers.mCycles.Value += 2;
+        },
+      },
     };
   }
 
