@@ -1,6 +1,7 @@
 import CPURegister from "./class.CPURegister";
 import CPURegister16 from "./class.CPURegister16";
 import CPURegister8 from "./class.CPURegister8";
+import CPURegisterPair from "./class.CPURegisterPair";
 import MMU from "./class.MMU";
 
 /**
@@ -18,37 +19,35 @@ export default class CPU {
       t: new CPURegister8(),
     };
 
-    this.registers = {
-      a: new CPURegister8(),
-      b: new CPURegister8(),
-      c: new CPURegister8(),
-      d: new CPURegister8(),
-      e: new CPURegister8(),
-      /**
-       * f: The flags register.
-       *
-       * "Zero"
-       * f & 0x80: Set if the last operation produced a result of 0.
-       *
-       * "Operation"
-       * f & 0x40: Set if the last operation was a subtraction.
-       *
-       * "Half-Carry"
-       * f & 0x20: Set if, in the result of the last operation, the lower half
-       *           of the byte overflowed past 15.
-       *
-       * "Carry"
-       * f & 0x10: Set if the last operation produced a result over 255 (for additions)
-       *           or under 0 (for subtractions).
-       */
-      f: new CPURegister8(),
-      h: new CPURegister8(),
-      l: new CPURegister8(),
-      m: new CPURegister8(), // Clock for last instr.
-      pc: new CPURegister16(), // Program counter.
-      sp: new CPURegister16(), // Stack pointer.
-      t: new CPURegister8(), // Clock for last instr.
-    };
+    this.registers = {};
+    this.registers.a = new CPURegister8();
+    this.registers.b = new CPURegister8();
+    this.registers.c = new CPURegister8();
+    this.registers.d = new CPURegister8();
+    this.registers.e = new CPURegister8();
+    this.registers.f = new CPURegister8(); // Flags (ZNHCxxxx)
+    this.registers.h = new CPURegister8();
+    this.registers.l = new CPURegister8();
+    this.registers.m = new CPURegister8(); // Clock for last instruciton.
+    this.registers.t = new CPURegister8(); // Clock for last instruciton. (Not sure if this will be used?)
+    this.registers.pc = new CPURegister16(); // Program counter.
+    this.registers.sp = new CPURegister16(); // Stack pointer.
+    this.registers.af = new CPURegisterPair(
+      this.registers.a as CPURegister8,
+      this.registers.f as CPURegister8
+    );
+    this.registers.bc = new CPURegisterPair(
+      this.registers.b as CPURegister8,
+      this.registers.c as CPURegister8
+    );
+    this.registers.de = new CPURegisterPair(
+      this.registers.d as CPURegister8,
+      this.registers.e as CPURegister8
+    );
+    this.registers.hl = new CPURegisterPair(
+      this.registers.h as CPURegister8,
+      this.registers.l as CPURegister8
+    );
 
     this.mmu = new MMU();
 
