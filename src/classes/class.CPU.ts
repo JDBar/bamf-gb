@@ -56,7 +56,6 @@ export default class CPU {
         mnemonic: "NOP",
         description: "No operation.",
         fn: () => {
-          this.registers.m.Value = 1;
           this.registers.mCycles.Value += 1;
         },
       },
@@ -64,10 +63,9 @@ export default class CPU {
         mnemonic: "LD BC,d16",
         description: "Load 16-bit immediate into BC.",
         fn: () => {
-          // GameBoy is little endian, so we have to load the low byte first.
-          this.registers.bc.Value =
-            this.mmu.readByte(this.registers.pc.Value++) |
-            (this.mmu.readByte(this.registers.pc.Value++) << 8);
+          this.registers.bc.Value = // GameBoy is little endian, so we have to load the low byte first.
+            this.mmu.readByte(this.registers.pc.Value++) | // Read the low byte
+            (this.mmu.readByte(this.registers.pc.Value++) << 8); // Read the high byte
           this.registers.mCycles.Value += 3;
         },
       },
@@ -91,7 +89,12 @@ export default class CPU {
         mnemonic: "INC B",
         description: "Increment B",
         fn: () => {
-          this.registers.b.Value++;
+          // When calculating the HalfCarryFlag, check to see if
+          // bit at index 3 carries to bit 4 (the least significant bit being index 0).
+          // Example: 0b00001111 + 0b00000001 = 0b00010000
+          this.HalfCarryFlag = (this.registers.b.Value++ & 0xf) + 1 > 0xf;
+          this.SubtractFlag = false;
+          this.ZeroFlag = this.registers.b.Value ? false : true;
           this.registers.mCycles.Value += 1;
         },
       },
@@ -99,7 +102,11 @@ export default class CPU {
         mnemonic: "DEC B",
         description: "Decrement B",
         fn: () => {
+          // Similar to INC, except flip the logic to work for subtraction.
+          // This way, we know if bit at index 3 borrowed from bit at index 4.
+          this.HalfCarryFlag = (this.registers.b.Value-- & 0xf) - 1 < 0;
           this.registers.b.Value--;
+          this.SubtractFlag = true;
           this.registers.mCycles.Value += 1;
         },
       },
@@ -109,6 +116,13 @@ export default class CPU {
         fn: () => {
           this.registers.b.Value = this.mmu.readByte(this.registers.pc.Value++);
           this.registers.mCycles.Value += 2;
+        },
+      },
+      0x07: {
+        mnemonic: "RLC A",
+        description: "Rotate A with left carry.",
+        fn: () => {
+          throw new Error("RLC A is not implemented.");
         },
       },
     };
@@ -145,6 +159,59 @@ export default class CPU {
 
   private execute() {
     throw new Error("execute() is not implemented.");
+  }
+
+  /**
+   * Flag Getters and Setters
+   * for convenience
+   */
+
+  private get ZeroFlag(): boolean {
+    return !!(this.registers.f.Value & 0x80);
+  }
+
+  private set ZeroFlag(val: boolean) {
+    if (val) {
+      this.registers.f.Value |= 0x80;
+    } else {
+      this.registers.f.Value &= 0x7f;
+    }
+  }
+
+  private get SubtractFlag(): boolean {
+    return !!(this.registers.f.Value & 0x40);
+  }
+
+  private set SubtractFlag(val: boolean) {
+    if (val) {
+      this.registers.f.Value |= 0x40;
+    } else {
+      this.registers.f.Value &= 0xbf;
+    }
+  }
+
+  private get HalfCarryFlag(): boolean {
+    return !!(this.registers.f.Value & 0x20);
+  }
+
+  private set HalfCarryFlag(val: boolean) {
+    if (val) {
+      this.registers.f.Value |= 0x20;
+    } else {
+      this.registers.f.Value &= 0xdf;
+    }
+  }
+
+  private get CarryFlag(): boolean {
+    return !!(this.registers.f.Value & 0x10);
+  }
+
+  private set CarryFlag(val: boolean) {
+    if (val) {
+      this.registers.f.Value |= 0x10;
+    } else {
+      this.registers.f.Value &= 0xef;
+    }
   }
 }
 
