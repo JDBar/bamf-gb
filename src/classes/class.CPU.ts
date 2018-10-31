@@ -107,6 +107,7 @@ export default class CPU {
           this.HalfCarryFlag = (this.registers.b.Value-- & 0xf) - 1 < 0;
           this.registers.b.Value--;
           this.SubtractFlag = true;
+          this.ZeroFlag = this.registers.b.Value ? false : true;
           this.registers.mCycles.Value += 1;
         },
       },
