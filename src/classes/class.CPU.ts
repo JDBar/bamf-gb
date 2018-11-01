@@ -63,9 +63,8 @@ export default class CPU {
         mnemonic: "LD BC,d16",
         description: "Load 16-bit immediate into BC.",
         fn: () => {
-          this.registers.bc.Value = // GameBoy is little endian, so we have to load the low byte first.
-            this.mmu.readByte(this.registers.pc.Value++) | // Read the low byte
-            (this.mmu.readByte(this.registers.pc.Value++) << 8); // Read the high byte
+          this.registers.bc.Value = this.mmu.readWord(this.registers.pc.Value);
+          this.registers.pc.Value += 2;
           this.registers.mCycles.Value += 3;
         },
       },
@@ -123,7 +122,23 @@ export default class CPU {
         mnemonic: "RLC A",
         description: "Rotate A with left carry.",
         fn: () => {
-          throw new Error("RLC A is not implemented.");
+          this.HalfCarryFlag = false;
+          this.SubtractFlag = false;
+          this.ZeroFlag = false;
+          this.CarryFlag = (this.registers.a.Value & 0x8) > 0;
+          this.registers.a.Value =
+            (this.registers.a.Value << 1) + (this.CarryFlag ? 1 : 0);
+          this.registers.mCycles.Value += 1;
+        },
+      },
+      0x08: {
+        mnemonic: "LD (a16),SP",
+        description:
+          "Stores the lower byte of SP at address nn and the upper byte of SP at address nn + 1",
+        fn: () => {
+          const address = this.mmu.readWord(this.registers.pc.Value);
+          this.registers.pc.Value += 2;
+          this.mmu.writeWord(address, this.registers.sp.Value);
         },
       },
     };
