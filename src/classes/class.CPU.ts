@@ -104,7 +104,6 @@ export default class CPU {
           // Similar to INC, except flip the logic to work for subtraction.
           // This way, we know if bit at index 3 borrowed from bit at index 4.
           this.HalfCarryFlag = (this.registers.b.Value-- & 0xf) - 1 < 0;
-          this.registers.b.Value--;
           this.SubtractFlag = true;
           this.ZeroFlag = this.registers.b.Value ? false : true;
           this.registers.mCycles.Value += 1;
@@ -139,6 +138,71 @@ export default class CPU {
           const address = this.mmu.readWord(this.registers.pc.Value);
           this.registers.pc.Value += 2;
           this.mmu.writeWord(address, this.registers.sp.Value);
+          this.registers.mCycles.Value += 5;
+        },
+      },
+      0x09: {
+        mnemonic: "ADD HL,BC",
+        description:
+          "Adds the contents of BC to the contents of HL and stores results in HL.",
+        fn: () => {
+          this.SubtractFlag = false;
+          // Set if there is a carry from bit 11; otherwise reset.
+          this.HalfCarryFlag =
+            (this.registers.hl.Value & 0xfff) +
+              (this.registers.bc.Value & 0xfff) >
+            0xfff;
+          // Set if there is a carry from bit 15; otherwise reset.
+          this.CarryFlag =
+            (this.registers.hl.Value & 0xffff) +
+              (this.registers.bc.Value & 0xffff) >
+            0xfff;
+          this.registers.hl.Value += this.registers.bc.Value;
+          this.registers.mCycles.Value += 2;
+        },
+      },
+      0x0a: {
+        mnemonic: "LD A,(BC)",
+        description: "Loads the byte at address (BC) into A.",
+        fn: () => {
+          this.registers.a.Value = this.mmu.readByte(this.registers.bc.Value);
+          this.registers.mCycles.Value += 2;
+        },
+      },
+      0x0b: {
+        mnemonic: "DEC BC",
+        description: "",
+        fn: () => {
+          this.registers.bc.Value--;
+          this.registers.mCycles.Value += 2;
+        },
+      },
+      0x0c: {
+        mnemonic: "INC C",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x0d: {
+        mnemonic: "DEC C",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x0e: {
+        mnemonic: "LD C,d8",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x0f: {
+        mnemonic: "RRC A",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
         },
       },
     };
