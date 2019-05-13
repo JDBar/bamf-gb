@@ -113,7 +113,7 @@ export default class CPU {
         },
       },
       0x01: {
-        mnemonic: "LD BC,nn",
+        mnemonic: "LD BC, nn",
         description: "Load 16-bit immediate into BC.",
         fn: () => {
           this.loadImmediateWordToPair(this.registers.bc as CPURegisterPair);
@@ -121,13 +121,10 @@ export default class CPU {
         },
       },
       0x02: {
-        mnemonic: "LD (BC),A",
+        mnemonic: "LD (BC), A",
         description: "Save A to address (BC).",
         fn: () => {
-          this.storeRegisterAtAddressInPair(
-            this.registers.a as CPURegister8,
-            this.registers.bc as CPURegisterPair
-          );
+          this.mmu.writeByte(this.registers.bc.Value, this.registers.a.Value);
           this.clock.mCycles.Value += 2;
         },
       },
@@ -165,7 +162,7 @@ export default class CPU {
         },
       },
       0x06: {
-        mnemonic: "LD B,n",
+        mnemonic: "LD B, n",
         description: "Load 8-bit immediate into register B.",
         fn: () => {
           this.registers.b.Value = this.mmu.readByte(this.registers.pc.Value++);
@@ -186,7 +183,7 @@ export default class CPU {
         },
       },
       0x08: {
-        mnemonic: "LD (nn),SP",
+        mnemonic: "LD (nn), SP",
         description:
           "Stores the lower byte of SP at address (nn) and the upper byte of SP at address (nn + 1)",
         fn: () => {
@@ -197,7 +194,7 @@ export default class CPU {
         },
       },
       0x09: {
-        mnemonic: "ADD HL,BC",
+        mnemonic: "ADD HL, BC",
         description:
           "Adds the contents of BC to the contents of HL and stores results in HL.",
         fn: () => {
@@ -217,7 +214,7 @@ export default class CPU {
         },
       },
       0x0a: {
-        mnemonic: "LD A,(BC)",
+        mnemonic: "LD A, (BC)",
         description: "Loads the byte at address (BC) into A.",
         fn: () => {
           this.registers.a.Value = this.mmu.readByte(this.registers.bc.Value);
@@ -253,7 +250,7 @@ export default class CPU {
         },
       },
       0x0e: {
-        mnemonic: "LD C,n",
+        mnemonic: "LD C, n",
         description: "Loads 8-bit immediate into C.",
         fn: () => {
           this.registers.c.Value = this.mmu.readByte(this.registers.pc.Value++);
@@ -284,7 +281,7 @@ export default class CPU {
         },
       },
       0x11: {
-        mnemonic: "LD DE,nn",
+        mnemonic: "LD DE, nn",
         description: "Load 16-bit immediate into DE",
         fn: () => {
           this.loadImmediateWordToPair(this.registers.de as CPURegisterPair);
@@ -292,13 +289,10 @@ export default class CPU {
         },
       },
       0x12: {
-        mnemonic: "LD (DE),A",
+        mnemonic: "LD (DE), A",
         description: "Save A to address (DE).",
         fn: () => {
-          this.storeRegisterAtAddressInPair(
-            this.registers.a as CPURegister8,
-            this.registers.de as CPURegisterPair
-          );
+          this.mmu.writeByte(this.registers.de.Value, this.registers.a.Value);
           this.clock.mCycles.Value += 2;
         },
       },
@@ -2067,19 +2061,6 @@ export default class CPU {
   private loadImmediateWordToPair(pair: CPURegisterPair) {
     pair.Value = this.mmu.readWord(this.registers.pc.Value);
     this.registers.pc.Value += 2;
-  }
-
-  /**
-   * LD (dd), A
-   * Stores the contents of register A in the memory specified by register pair dd.
-   *
-   * Opcodes: 0x02, 0x12
-   */
-  private storeRegisterAtAddressInPair(
-    register: CPURegister8,
-    pair: CPURegisterPair
-  ) {
-    this.mmu.writeByte(pair.Value, register.Value);
   }
 }
 
