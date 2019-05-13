@@ -117,13 +117,17 @@ export default class CPU {
         description: "Load 16-bit immediate into BC.",
         fn: () => {
           this.loadImmediateWordToPair(this.registers.bc as CPURegisterPair);
+          this.clock.mCycles.Value += 3;
         },
       },
       0x02: {
         mnemonic: "LD (BC),A",
         description: "Save A to address (BC).",
         fn: () => {
-          this.mmu.writeByte(this.registers.bc.Value, this.registers.a.Value);
+          this.storeRegisterAtAddressInPair(
+            this.registers.a as CPURegister8,
+            this.registers.bc as CPURegisterPair
+          );
           this.clock.mCycles.Value += 2;
         },
       },
@@ -284,13 +288,18 @@ export default class CPU {
         description: "Load 16-bit immediate into DE",
         fn: () => {
           this.loadImmediateWordToPair(this.registers.de as CPURegisterPair);
+          this.clock.mCycles.Value += 3;
         },
       },
       0x12: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD (DE),A",
+        description: "Save A to address (DE).",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.storeRegisterAtAddressInPair(
+            this.registers.a as CPURegister8,
+            this.registers.de as CPURegisterPair
+          );
+          this.clock.mCycles.Value += 2;
         },
       },
       0x13: {
@@ -396,6 +405,7 @@ export default class CPU {
         description: "Load 16-bit immediate into HL",
         fn: () => {
           this.loadImmediateWordToPair(this.registers.hl as CPURegisterPair);
+          this.clock.mCycles.Value += 3;
         },
       },
       0x22: {
@@ -508,6 +518,7 @@ export default class CPU {
         description: "Load 16-bit immediate into SP",
         fn: () => {
           this.loadImmediateWordToPair(this.registers.sp as CPURegisterPair);
+          this.clock.mCycles.Value += 3;
         },
       },
       0x32: {
@@ -2055,7 +2066,20 @@ export default class CPU {
    */
   private loadImmediateWordToPair(pair: CPURegisterPair) {
     pair.Value = this.mmu.readWord(this.registers.pc.Value);
-    this.registers.pc.Value += 3;
+    this.registers.pc.Value += 2;
+  }
+
+  /**
+   * LD (dd), A
+   * Stores the contents of register A in the memory specified by register pair dd.
+   *
+   * Opcodes: 0x02, 0x12
+   */
+  private storeRegisterAtAddressInPair(
+    register: CPURegister8,
+    pair: CPURegisterPair
+  ) {
+    this.mmu.writeByte(pair.Value, register.Value);
   }
 }
 
