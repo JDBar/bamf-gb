@@ -171,7 +171,7 @@ export default class CPU {
       },
       0x0b: {
         mnemonic: "DEC BC",
-        description: "",
+        description: "Decrement the contents of BC by 1.",
         fn: () => {
           this.registers.bc.Value--;
           this.registers.mCycles.Value += 2;
@@ -179,16 +179,22 @@ export default class CPU {
       },
       0x0c: {
         mnemonic: "INC C",
-        description: "",
+        description: "Increment the contents of C by 1.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.HalfCarryFlag = (this.registers.c.Value++ & 0xf) + 1 > 0xf;
+          this.SubtractFlag = false;
+          this.ZeroFlag = this.registers.c.Value ? false : true;
+          this.registers.mCycles.Value += 1;
         },
       },
       0x0d: {
         mnemonic: "DEC C",
-        description: "",
+        description: "Decrement the contents of C by 1.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.HalfCarryFlag = (this.registers.c.Value-- & 0xf) - 1 < 0;
+          this.SubtractFlag = true;
+          this.ZeroFlag = this.registers.c.Value ? false : true;
+          this.registers.mCycles.Value += 1;
         },
       },
       0x0e: {
