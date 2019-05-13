@@ -11,7 +11,9 @@
 
 In addition to the Program Counter, other numbers are held inside the CPU for calculation: registers A, B, C, D, E, H, and L. Each is one byte.
 
-- [GameBoy Z80 Opcode Map](http://imrannazar.com/Gameboy-Z80-Opcode-Map)
+- [GameBoy Programming Manual](https://ia601906.us.archive.org/19/items/GameBoyProgManVer1.1/GameBoyProgManVer1.1.pdf)
+- [GameBoy Z80 Opcode Map](http://www.pastraiser.com/cpu/gameboy/gameboy_opcodes.html)
+- [Alternate GameBoy Z80 Opcode Map](http://imrannazar.com/Gameboy-Z80-Opcode-Map)
 
 There are other registers in the Z80, that deal with holding status:
 
@@ -43,7 +45,6 @@ The flags register (F) automatically calculates certain bits, or flags, based on
 - **registers**:
   - **a, b, c, d, e, h, l, f** (8-bit)
   - **pc, sp** (16 bit)
-  - **m, t** (clock for last instruction)
 
 ### Memory Interfacing
 

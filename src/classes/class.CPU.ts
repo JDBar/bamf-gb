@@ -249,10 +249,12 @@ export default class CPU {
         },
       },
       0x10: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "STOP",
+        description:
+          "Stops the system clock. STOP mode is entered, and LCD controller also stops.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          // TODO: We'll have to come back to this one for proper implementation.
+          this.clock.mCycles.Value += 1;
         },
       },
       0x11: {
