@@ -12,6 +12,7 @@ export default class CPU {
   private registers: IRegisterSet;
   private mmu: MMU;
   private operations: IOperationMap;
+  private cbOperations: IOperationMap;
 
   constructor() {
     this.clock = {
@@ -1900,6 +1901,8 @@ export default class CPU {
         },
       },
     };
+
+    this.cbOperations = {};
   }
 
   /**
@@ -1918,16 +1921,10 @@ export default class CPU {
   }
 
   private decode(byte: number): IOperation {
-    const result: IOperation | IOperationMap = this.operations[byte];
-    // Consider making Operation/OperationMap classes so that
-    // this interface member memery is not necessary.
-    if ((result as IOperation).hasOwnProperty("fn")) {
-      // This is an operation.
-      return result as IOperation;
+    if (byte !== 0xcb) {
+      return this.operations[byte];
     } else {
-      // This is the CB-prefix operation map.
-      const nextByte = this.fetch();
-      return (result as IOperationMap)[nextByte] as IOperation;
+      return this.cbOperations[this.fetch()];
     }
   }
 
@@ -1998,7 +1995,7 @@ interface IRegisterSet {
 }
 
 interface IOperationMap {
-  [index: number]: IOperation | IOperationMap;
+  [index: number]: IOperation;
 }
 
 interface IOperation {
