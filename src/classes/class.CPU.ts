@@ -116,9 +116,7 @@ export default class CPU {
         mnemonic: "LD BC,nn",
         description: "Load 16-bit immediate into BC.",
         fn: () => {
-          this.registers.bc.Value = this.mmu.readWord(this.registers.pc.Value);
-          this.registers.pc.Value += 2;
-          this.clock.mCycles.Value += 3;
+          this.loadImmediateWordToPair(this.registers.bc as CPURegisterPair);
         },
       },
       0x02: {
@@ -282,10 +280,10 @@ export default class CPU {
         },
       },
       0x11: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD DE,nn",
+        description: "Load 16-bit immediate into DE",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.loadImmediateWordToPair(this.registers.de as CPURegisterPair);
         },
       },
       0x12: {
@@ -394,10 +392,10 @@ export default class CPU {
         },
       },
       0x21: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD HL,nn",
+        description: "Load 16-bit immediate into HL",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.loadImmediateWordToPair(this.registers.hl as CPURegisterPair);
         },
       },
       0x22: {
@@ -506,10 +504,10 @@ export default class CPU {
         },
       },
       0x31: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD SP,nn",
+        description: "Load 16-bit immediate into SP",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.loadImmediateWordToPair(this.registers.sp as CPURegisterPair);
         },
       },
       0x32: {
@@ -2043,6 +2041,21 @@ export default class CPU {
     } else {
       this.registers.f.Value &= 0xef;
     }
+  }
+
+  /**
+   * CPU operations that can be reused.
+   */
+
+  /**
+   * LD dd, nn
+   * Loads 2 bytes of immediate data to register pair dd.
+   *
+   * Opcodes: 0x01, 0x11, 0x21, 0x31
+   */
+  private loadImmediateWordToPair(pair: CPURegisterPair) {
+    pair.Value = this.mmu.readWord(this.registers.pc.Value);
+    this.registers.pc.Value += 3;
   }
 }
 
