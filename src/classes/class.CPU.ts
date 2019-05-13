@@ -70,7 +70,7 @@ export default class CPU {
     this.registers.d = new CPURegister8();
     this.registers.e = new CPURegister8();
     /**
-     * Flags register (ZNHCxxxx)
+     * Flags register (bits: ZNHCxxxx)
      * Z: Zero Flag
      * N : Subtract Flag
      * H: Half Carry Flag
