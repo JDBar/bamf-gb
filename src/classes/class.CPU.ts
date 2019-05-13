@@ -5,19 +5,49 @@ import CPURegisterPair from "./class.CPURegisterPair";
 import MMU from "./class.MMU";
 
 /**
- * The CPU.
+ * The CPU of the Gameboy.
+ * Most information regarding the CPU has been drawn from the following sources:
+ *
+ * * https://ia601906.us.archive.org/19/items/GameBoyProgManVer1.1/GameBoyProgManVer1.1.pdf
+ * * http://www.pastraiser.com/cpu/gameboy/gameboy_opcodes.html
+ * * http://imrannazar.com/GameBoy-Emulation-in-JavaScript:-The-CPU
  */
 export default class CPU {
+  /**
+   * The CPU clock.
+   */
   private clock: IRegisterSet;
+
+  /**
+   * The set of registers on the CPU.
+   * A register can hold 8 or 16 bits (1-2 bytes).
+   */
   private registers: IRegisterSet;
+
+  /**
+   * The memory mapping unit of the Gameboy.
+   * Check out README.md and class.MMU.ts for more information.
+   * http://imrannazar.com/GameBoy-Emulation-in-JavaScript:-Memory
+   */
   private mmu: MMU;
+
+  /**
+   * The main instruction set of the Gameboy CPU.
+   * Contains operations for opcodes 0x00 - 0xff.
+   */
   private operations: IOperationMap;
+
+  /**
+   * The CB-prefixed instruction set of the Gameboy CPU.
+   * 0xcb is an opcode to fetch an additional byte to use
+   * with an alternate instruction mapping.
+   */
   private cbOperations: IOperationMap;
 
   constructor() {
     this.clock = {
-      mCycles: new CPURegister8(),
-      tCycles: new CPURegister8(),
+      mCycles: new CPURegister8(), // The "CYCL" value in Gameboy Programming Manual.
+      tCycles: new CPURegister8(), // The true number of cycles (unimplemented).
     };
 
     this.registers = {};
@@ -29,8 +59,6 @@ export default class CPU {
     this.registers.f = new CPURegister8(); // Flags (ZNHCxxxx)
     this.registers.h = new CPURegister8();
     this.registers.l = new CPURegister8();
-    this.registers.mCycles = new CPURegister8(); // Clock for last instruction.
-    this.registers.cCycles = new CPURegister8(); // Clock for last instruction. (Not sure if this will be used?)
     this.registers.pc = new CPURegister16(); // Program counter.
     this.registers.sp = new CPURegister16(); // Stack pointer.
     this.registers.af = new CPURegisterPair(
@@ -57,7 +85,7 @@ export default class CPU {
         mnemonic: "NOP",
         description: "No operation.",
         fn: () => {
-          this.registers.mCycles.Value += 1;
+          this.clock.mCycles.Value += 1;
         },
       },
       0x01: {
@@ -66,7 +94,7 @@ export default class CPU {
         fn: () => {
           this.registers.bc.Value = this.mmu.readWord(this.registers.pc.Value);
           this.registers.pc.Value += 2;
-          this.registers.mCycles.Value += 3;
+          this.clock.mCycles.Value += 3;
         },
       },
       0x02: {
@@ -74,7 +102,7 @@ export default class CPU {
         description: "Save A to address (BC).",
         fn: () => {
           this.mmu.writeByte(this.registers.bc.Value, this.registers.a.Value);
-          this.registers.mCycles.Value += 2;
+          this.clock.mCycles.Value += 2;
         },
       },
       0x03: {
@@ -82,7 +110,7 @@ export default class CPU {
         description: "Increment 16-bit BC",
         fn: () => {
           this.registers.bc.Value++;
-          this.registers.mCycles.Value += 2;
+          this.clock.mCycles.Value += 2;
         },
       },
       0x04: {
@@ -95,7 +123,7 @@ export default class CPU {
           this.HalfCarryFlag = (this.registers.b.Value++ & 0xf) + 1 > 0xf;
           this.SubtractFlag = false;
           this.ZeroFlag = this.registers.b.Value ? false : true;
-          this.registers.mCycles.Value += 1;
+          this.clock.mCycles.Value += 1;
         },
       },
       0x05: {
@@ -107,7 +135,7 @@ export default class CPU {
           this.HalfCarryFlag = (this.registers.b.Value-- & 0xf) - 1 < 0;
           this.SubtractFlag = true;
           this.ZeroFlag = this.registers.b.Value ? false : true;
-          this.registers.mCycles.Value += 1;
+          this.clock.mCycles.Value += 1;
         },
       },
       0x06: {
@@ -115,7 +143,7 @@ export default class CPU {
         description: "Load 8-bit immediate into register B.",
         fn: () => {
           this.registers.b.Value = this.mmu.readByte(this.registers.pc.Value++);
-          this.registers.mCycles.Value += 2;
+          this.clock.mCycles.Value += 2;
         },
       },
       0x07: {
@@ -128,7 +156,7 @@ export default class CPU {
           this.CarryFlag = (this.registers.a.Value & 0x8) > 0;
           this.registers.a.Value =
             (this.registers.a.Value << 1) + (this.CarryFlag ? 1 : 0);
-          this.registers.mCycles.Value += 1;
+          this.clock.mCycles.Value += 1;
         },
       },
       0x08: {
@@ -139,7 +167,7 @@ export default class CPU {
           const address = this.mmu.readWord(this.registers.pc.Value);
           this.registers.pc.Value += 2;
           this.mmu.writeWord(address, this.registers.sp.Value);
-          this.registers.mCycles.Value += 5;
+          this.clock.mCycles.Value += 5;
         },
       },
       0x09: {
@@ -159,7 +187,7 @@ export default class CPU {
               (this.registers.bc.Value & 0xffff) >
             0xfff;
           this.registers.hl.Value += this.registers.bc.Value;
-          this.registers.mCycles.Value += 2;
+          this.clock.mCycles.Value += 2;
         },
       },
       0x0a: {
@@ -167,7 +195,7 @@ export default class CPU {
         description: "Loads the byte at address (BC) into A.",
         fn: () => {
           this.registers.a.Value = this.mmu.readByte(this.registers.bc.Value);
-          this.registers.mCycles.Value += 2;
+          this.clock.mCycles.Value += 2;
         },
       },
       0x0b: {
@@ -175,7 +203,7 @@ export default class CPU {
         description: "Decrement the contents of BC by 1.",
         fn: () => {
           this.registers.bc.Value--;
-          this.registers.mCycles.Value += 2;
+          this.clock.mCycles.Value += 2;
         },
       },
       0x0c: {
@@ -185,7 +213,7 @@ export default class CPU {
           this.HalfCarryFlag = (this.registers.c.Value++ & 0xf) + 1 > 0xf;
           this.SubtractFlag = false;
           this.ZeroFlag = this.registers.c.Value ? false : true;
-          this.registers.mCycles.Value += 1;
+          this.clock.mCycles.Value += 1;
         },
       },
       0x0d: {
@@ -195,7 +223,7 @@ export default class CPU {
           this.HalfCarryFlag = (this.registers.c.Value-- & 0xf) - 1 < 0;
           this.SubtractFlag = true;
           this.ZeroFlag = this.registers.c.Value ? false : true;
-          this.registers.mCycles.Value += 1;
+          this.clock.mCycles.Value += 1;
         },
       },
       0x0e: {
@@ -203,7 +231,7 @@ export default class CPU {
         description: "Loads 8-bit immediate into C.",
         fn: () => {
           this.registers.c.Value = this.mmu.readByte(this.registers.pc.Value++);
-          this.registers.mCycles.Value += 2;
+          this.clock.mCycles.Value += 2;
         },
       },
       0x0f: {
@@ -217,7 +245,7 @@ export default class CPU {
           this.CarryFlag = (this.registers.a.Value & 0x1) > 0;
           this.registers.a.Value =
             (this.registers.a.Value >> 1) + (this.CarryFlag ? 1 : 0);
-          this.registers.mCycles.Value += 1;
+          this.clock.mCycles.Value += 1;
         },
       },
       0x10: {
@@ -1912,14 +1940,20 @@ export default class CPU {
     for (const k of Object.keys(this.registers)) {
       this.registers[k].Value = 0;
     }
-    this.clock.m.Value = 0;
-    this.clock.t.Value = 0;
+    this.clock.mCycles.Value = 0;
+    this.clock.tCycles.Value = 0;
   }
 
+  /**
+   * Fetches the next byte and increments the program counter.
+   */
   private fetch(): number {
     return this.mmu.readByte(this.registers.pc.Value++);
   }
 
+  /**
+   * Decodes an opcode and returns an operation.
+   */
   private decode(byte: number): IOperation {
     if (byte !== 0xcb) {
       return this.operations[byte];
@@ -1999,7 +2033,7 @@ interface IOperationMap {
 }
 
 interface IOperation {
-  description: string;
   mnemonic: string;
+  description: string;
   fn: () => void;
 }
