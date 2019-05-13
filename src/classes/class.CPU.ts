@@ -45,22 +45,48 @@ export default class CPU {
   private cbOperations: IOperationMap;
 
   constructor() {
+    this.mmu = new MMU();
+
     this.clock = {
       mCycles: new CPURegister8(), // The "CYCL" value in Gameboy Programming Manual.
       tCycles: new CPURegister8(), // The true number of cycles (unimplemented).
     };
 
     this.registers = {};
+
+    /**
+     * Accumulator register for storing data and results of
+     * arithmetic and logical operations.
+     */
     this.registers.a = new CPURegister8();
+
+    /**
+     * Auxillary registers B, C, D, E, F, H and L.
+     * These serve as auxillary registers to the accumulator. As register
+     * pairs, (BC, DE, HL) they are 16-bit registers that function as data pointers.
+     */
     this.registers.b = new CPURegister8();
     this.registers.c = new CPURegister8();
     this.registers.d = new CPURegister8();
     this.registers.e = new CPURegister8();
-    this.registers.f = new CPURegister8(); // Flags (ZNHCxxxx)
+    /**
+     * Flags register (ZNHCxxxx)
+     * Z: Zero Flag
+     * N : Subtract Flag
+     * H: Half Carry Flag
+     * C: Carry Flag
+     */
+    this.registers.f = new CPURegister8();
     this.registers.h = new CPURegister8();
     this.registers.l = new CPURegister8();
     this.registers.pc = new CPURegister16(); // Program counter.
     this.registers.sp = new CPURegister16(); // Stack pointer.
+
+    /**
+     * Set up register pairs for convenience. These are useful
+     * for instructions which treat two 8-bit registers as a single
+     * 16-bit register. (e.g. opcode 0x01)
+     */
     this.registers.af = new CPURegisterPair(
       this.registers.a as CPURegister8,
       this.registers.f as CPURegister8
@@ -77,8 +103,6 @@ export default class CPU {
       this.registers.h as CPURegister8,
       this.registers.l as CPURegister8
     );
-
-    this.mmu = new MMU();
 
     this.operations = {
       0x00: {
