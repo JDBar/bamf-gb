@@ -60,7 +60,7 @@ export default class CPU {
         },
       },
       0x01: {
-        mnemonic: "LD BC,d16",
+        mnemonic: "LD BC,nn",
         description: "Load 16-bit immediate into BC.",
         fn: () => {
           this.registers.bc.Value = this.mmu.readWord(this.registers.pc.Value);
@@ -198,14 +198,1702 @@ export default class CPU {
         },
       },
       0x0e: {
-        mnemonic: "LD C,d8",
+        mnemonic: "LD C,n",
+        description: "Loads 8-bit immediate into C.",
+        fn: () => {
+          this.registers.c.Value = this.mmu.readByte(this.registers.pc.Value++);
+          this.registers.mCycles.Value += 2;
+        },
+      },
+      0x0f: {
+        mnemonic: "RRC A",
+        description:
+          "Rotates the contents of register A to the right with carry.",
+        fn: () => {
+          this.HalfCarryFlag = false;
+          this.SubtractFlag = false;
+          this.ZeroFlag = false;
+          this.CarryFlag = (this.registers.a.Value & 0x1) > 0;
+          this.registers.a.Value =
+            (this.registers.a.Value >> 1) + (this.CarryFlag ? 1 : 0);
+          this.registers.mCycles.Value += 1;
+        },
+      },
+      0x10: {
+        mnemonic: "",
         description: "",
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
       },
-      0x0f: {
-        mnemonic: "RRC A",
+      0x11: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x12: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x13: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x14: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x15: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x16: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x17: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x18: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x19: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x1a: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x1b: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x1c: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x1d: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x1e: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x1f: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x20: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x21: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x22: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x23: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x24: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x25: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x26: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x27: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x28: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x29: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x2a: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x2b: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x2c: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x2d: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x2e: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x2f: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x30: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x31: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x32: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x33: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x34: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x35: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x36: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x37: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x38: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x39: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x3a: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x3b: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x3c: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x3d: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x3e: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x3f: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x40: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x41: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x42: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x43: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x44: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x45: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x46: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x47: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x48: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x49: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x4a: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x4b: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x4c: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x4d: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x4e: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x4f: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x50: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x51: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x52: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x53: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x54: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x55: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x56: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x57: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x58: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x59: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x5a: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x5b: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x5c: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x5d: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x5e: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x5f: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x60: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x61: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x62: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x63: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x64: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x65: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x66: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x67: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x68: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x69: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x6a: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x6b: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x6c: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x6d: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x6e: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x6f: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x70: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x71: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x72: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x73: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x74: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x75: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x76: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x77: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x78: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x79: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x7a: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x7b: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x7c: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x7d: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x7e: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x7f: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x80: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x81: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x82: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x83: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x84: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x85: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x86: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x87: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x88: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x89: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x8a: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x8b: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x8c: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x8d: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x8e: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x8f: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x90: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x91: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x92: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x93: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x94: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x95: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x96: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x97: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x98: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x99: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x9a: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x9b: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x9c: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x9d: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x9e: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0x9f: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xa0: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xa1: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xa2: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xa3: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xa4: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xa5: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xa6: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xa7: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xa8: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xa9: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xaa: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xab: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xac: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xad: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xae: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xaf: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xb0: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xb1: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xb2: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xb3: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xb4: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xb5: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xb6: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xb7: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xb8: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xb9: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xba: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xbb: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xbc: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xbd: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xbe: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xbf: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xc0: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xc1: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xc2: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xc3: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xc4: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xc5: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xc6: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xc7: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xc8: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xc9: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xca: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xcb: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xcc: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xcd: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xce: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xcf: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xd0: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xd1: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xd2: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xd3: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xd4: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xd5: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xd6: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xd7: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xd8: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xd9: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xda: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xdb: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xdc: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xdd: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xde: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xdf: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xe0: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xe1: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xe2: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xe3: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xe4: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xe5: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xe6: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xe7: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xe8: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xe9: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xea: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xeb: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xec: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xed: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xee: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xef: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xf0: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xf1: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xf2: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xf3: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xf4: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xf5: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xf6: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xf7: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xf8: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xf9: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xfa: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xfb: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xfc: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xfd: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xfe: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
+        },
+      },
+      0xff: {
+        mnemonic: "",
         description: "",
         fn: () => {
           throw new Error("Instruction not implemented.");
