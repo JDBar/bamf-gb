@@ -70,7 +70,7 @@ export default class CPU {
       },
       0x02: {
         mnemonic: "LD (BC),A",
-        description: "Save A to address pointed by BC.",
+        description: "Save A to address (BC).",
         fn: () => {
           this.mmu.writeByte(this.registers.bc.Value, this.registers.a.Value);
           this.registers.mCycles.Value += 2;
@@ -110,7 +110,7 @@ export default class CPU {
         },
       },
       0x06: {
-        mnemonic: "LD B,d8",
+        mnemonic: "LD B,n",
         description: "Load 8-bit immediate into register B.",
         fn: () => {
           this.registers.b.Value = this.mmu.readByte(this.registers.pc.Value++);
@@ -131,9 +131,9 @@ export default class CPU {
         },
       },
       0x08: {
-        mnemonic: "LD (a16),SP",
+        mnemonic: "LD (nn),SP",
         description:
-          "Stores the lower byte of SP at address nn and the upper byte of SP at address nn + 1",
+          "Stores the lower byte of SP at address (nn) and the upper byte of SP at address (nn + 1)",
         fn: () => {
           const address = this.mmu.readWord(this.registers.pc.Value);
           this.registers.pc.Value += 2;
