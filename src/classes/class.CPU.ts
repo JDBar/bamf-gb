@@ -297,10 +297,11 @@ export default class CPU {
         },
       },
       0x13: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "INC DE",
+        description: "Increment 16-bit DE",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.registers.de.Value++;
+          this.clock.mCycles.Value += 2;
         },
       },
       0x14: {
@@ -410,10 +411,11 @@ export default class CPU {
         },
       },
       0x23: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "INC HL",
+        description: "Increment 16-bit HL",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.registers.HL.Value++;
+          this.clock.mCycles.Value += 2;
         },
       },
       0x24: {
@@ -523,10 +525,11 @@ export default class CPU {
         },
       },
       0x33: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "INC SP",
+        description: "Increment 16-bit SP",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.registers.sp.Value++;
+          this.clock.mCycles.Value += 2;
         },
       },
       0x34: {
