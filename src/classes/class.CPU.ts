@@ -198,18 +198,7 @@ export default class CPU {
         description:
           "Adds the contents of BC to the contents of HL and stores results in HL.",
         fn: () => {
-          this.SubtractFlag = false;
-          // Set if there is a carry from bit 11; otherwise reset.
-          this.HalfCarryFlag =
-            (this.registers.hl.Value & 0xfff) +
-              (this.registers.bc.Value & 0xfff) >
-            0xfff;
-          // Set if there is a carry from bit 15; otherwise reset.
-          this.CarryFlag =
-            (this.registers.hl.Value & 0xffff) +
-              (this.registers.bc.Value & 0xffff) >
-            0xfff;
-          this.registers.hl.Value += this.registers.bc.Value;
+          this.addPairIntoHL(this.registers.bc as CPURegisterPair);
           this.clock.mCycles.Value += 2;
         },
         mCycles: 2,
@@ -380,12 +369,14 @@ export default class CPU {
         mCycles: 3,
       },
       0x19: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "ADD HL, DE",
+        description:
+          "Adds the contents of DE to the contents of HL and stores results in HL.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.addPairIntoHL(this.registers.de as CPURegisterPair);
+          this.clock.mCycles.Value += 2;
         },
-        mCycles: NaN,
+        mCycles: 2,
       },
       0x1a: {
         mnemonic: "",
@@ -516,12 +507,14 @@ export default class CPU {
         mCycles: NaN,
       },
       0x29: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "ADD HL, HL",
+        description:
+          "Adds the contents of HL to the contents of HL and stores results in HL.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.addPairIntoHL(this.registers.hl as CPURegisterPair);
+          this.clock.mCycles.Value += 2;
         },
-        mCycles: NaN,
+        mCycles: 2,
       },
       0x2a: {
         mnemonic: "",
@@ -649,12 +642,14 @@ export default class CPU {
         mCycles: NaN,
       },
       0x39: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "ADD HL, SP",
+        description:
+          "Adds the contents of SP to the contents of HL and stores results in HL.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.addPairIntoHL(this.registers.sp as CPURegisterPair);
+          this.clock.mCycles.Value += 2;
         },
-        mCycles: NaN,
+        mCycles: 2,
       },
       0x3a: {
         mnemonic: "",
@@ -2376,6 +2371,24 @@ export default class CPU {
     this.HalfCarryFlag = (register.Value-- & 0xf) - 1 < 0;
     this.SubtractFlag = true;
     this.ZeroFlag = register.Value ? false : true;
+  }
+
+  /**
+   * ADD HL, ss
+   * Adds the contents of register pair ss to the contents of register pair HL
+   * and stores the results in HL.
+   *
+   * Opcodes: 0x09, 0x19, 0x29, 0x39
+   */
+  private addPairIntoHL(pair: CPURegisterPair) {
+    this.SubtractFlag = false;
+    // Set if there is a carry from bit 11; otherwise reset.
+    this.HalfCarryFlag =
+      (this.registers.hl.Value & 0xfff) + (pair.Value & 0xfff) > 0xfff;
+    // Set if there is a carry from bit 15; otherwise reset.
+    this.CarryFlag =
+      (this.registers.hl.Value & 0xffff) + (pair.Value & 0xffff) > 0xfff;
+    this.registers.hl.Value += pair.Value;
   }
 }
 
