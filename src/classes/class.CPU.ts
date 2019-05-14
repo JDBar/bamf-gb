@@ -408,7 +408,7 @@ export default class CPU {
         description:
           "Jumps n steps from the current address, where n is a signed byte, if the Zero Flag is not set.",
         fn: () => {
-          if (this.ZeroFlag === false) {
+          if (!this.ZeroFlag) {
             const steps = this.byteToSigned(
               this.mmu.readByte(this.registers.pc.Value++)
             );
