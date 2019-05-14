@@ -140,12 +140,7 @@ export default class CPU {
         mnemonic: "INC B",
         description: "Increment B",
         fn: () => {
-          // When calculating the HalfCarryFlag, check to see if
-          // bit at index 3 carries to bit 4 (the least significant bit being index 0).
-          // Example: 0b00001111 + 0b00000001 = 0b00010000
-          this.HalfCarryFlag = (this.registers.b.Value++ & 0xf) + 1 > 0xf;
-          this.SubtractFlag = false;
-          this.ZeroFlag = this.registers.b.Value ? false : true;
+          this.incrementRegister8(this.registers.b as CPURegister8);
           this.clock.mCycles.Value += 1;
         },
       },
@@ -231,11 +226,9 @@ export default class CPU {
       },
       0x0c: {
         mnemonic: "INC C",
-        description: "Increment the contents of C by 1.",
+        description: "Increment C",
         fn: () => {
-          this.HalfCarryFlag = (this.registers.c.Value++ & 0xf) + 1 > 0xf;
-          this.SubtractFlag = false;
-          this.ZeroFlag = this.registers.c.Value ? false : true;
+          this.incrementRegister8(this.registers.c as CPURegister8);
           this.clock.mCycles.Value += 1;
         },
       },
@@ -305,10 +298,11 @@ export default class CPU {
         },
       },
       0x14: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "INC D",
+        description: "Increment D",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.incrementRegister8(this.registers.d as CPURegister8);
+          this.clock.mCycles.Value += 1;
         },
       },
       0x15: {
@@ -361,10 +355,11 @@ export default class CPU {
         },
       },
       0x1c: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "INC E",
+        description: "Increment E",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.incrementRegister8(this.registers.e as CPURegister8);
+          this.clock.mCycles.Value += 1;
         },
       },
       0x1d: {
@@ -419,10 +414,11 @@ export default class CPU {
         },
       },
       0x24: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "INC H",
+        description: "Increment H",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.incrementRegister8(this.registers.h as CPURegister8);
+          this.clock.mCycles.Value += 1;
         },
       },
       0x25: {
@@ -475,10 +471,11 @@ export default class CPU {
         },
       },
       0x2c: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "INC L",
+        description: "Increment L",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.incrementRegister8(this.registers.l as CPURegister8);
+          this.clock.mCycles.Value += 1;
         },
       },
       0x2d: {
@@ -589,10 +586,11 @@ export default class CPU {
         },
       },
       0x3c: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "INC A",
+        description: "Increment A",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.incrementRegister8(this.registers.a as CPURegister8);
+          this.clock.mCycles.Value += 1;
         },
       },
       0x3d: {
@@ -2064,6 +2062,21 @@ export default class CPU {
   private loadImmediateWordToPair(pair: CPURegisterPair) {
     pair.Value = this.mmu.readWord(this.registers.pc.Value);
     this.registers.pc.Value += 2;
+  }
+
+  /**
+   * INC r
+   * Increments the contents of register r by 1.
+   *
+   * Opcodes: 0x04, 0x14, 0x24, 0x0C, 0x1C, 0x2C, 0x3C
+   */
+  private incrementRegister8(register: CPURegister8) {
+    // When calculating the HalfCarryFlag, check to see if
+    // bit at index 3 carries to bit 4 (the least significant bit being index 0).
+    // Example: 0b00001111 + 0b00000001 = 0b00010000
+    this.HalfCarryFlag = (register.Value++ & 0xf) + 1 > 0xf;
+    this.SubtractFlag = false;
+    this.ZeroFlag = register.Value ? false : true;
   }
 }
 
