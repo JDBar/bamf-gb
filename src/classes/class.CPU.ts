@@ -358,12 +358,26 @@ export default class CPU {
         mCycles: 1,
       },
       0x18: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "JR n",
+        description:
+          "Jumps n steps from the current address, where n is a signed byte.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          /**
+           * I think this is a funny trick to interpret a byte as a signed number.
+           * In JavaScript, the operands of all bitwise operaters are converted to
+           * signed 32-bit integers in two's complement format, so in order to
+           * interpret a byte as a signed number we just shift it 24 bits left,
+           * and then 24 bits right with the sign-propagating bitwise shift.
+           *
+           * Source:https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Bitwise_Operators#Signed_32-bit_integers
+           * Example: 0x80 -> 0x80000000 -> 0xFFFFFF80 == -128 in 32 bit two's complement.
+           */
+          const steps =
+            (this.mmu.readByte(this.registers.pc.Value++) << 24) >> 24;
+          this.registers.pc.Value += steps;
+          this.clock.mCycles.Value += 3;
         },
-        mCycles: NaN,
+        mCycles: 3,
       },
       0x19: {
         mnemonic: "",
