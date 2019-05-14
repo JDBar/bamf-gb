@@ -421,7 +421,7 @@ export default class CPU {
         },
       },
       0x21: {
-        mnemonic: "LD HL,nn",
+        mnemonic: "LD HL, nn",
         description: "Load 16-bit immediate into HL",
         fn: () => {
           this.loadImmediateWordToPair(this.registers.hl as CPURegisterPair);
@@ -429,10 +429,11 @@ export default class CPU {
         },
       },
       0x22: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD (HLI), A",
+        description: "Save A to address (HL) then increment HL.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.mmu.writeByte(this.registers.hl.Value++, this.registers.a.Value);
+          return 2;
         },
       },
       0x23: {
@@ -546,7 +547,7 @@ export default class CPU {
         },
       },
       0x31: {
-        mnemonic: "LD SP,nn",
+        mnemonic: "LD SP, nn",
         description: "Load 16-bit immediate into SP",
         fn: () => {
           this.loadImmediateWordToPair(this.registers.sp as CPURegisterPair);
@@ -554,10 +555,11 @@ export default class CPU {
         },
       },
       0x32: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD (HLD), A",
+        description: "Save A to address (HL) then decrement HL.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.mmu.writeByte(this.registers.hl.Value--, this.registers.a.Value);
+          return 2;
         },
       },
       0x33: {
