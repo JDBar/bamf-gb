@@ -379,12 +379,13 @@ export default class CPU {
         mCycles: 2,
       },
       0x1a: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD A, (DE)",
+        description: "Loads the byte at address (DE) into A.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.registers.a.Value = this.mmu.readByte(this.registers.de.Value);
+          this.clock.mCycles.Value += 2;
         },
-        mCycles: NaN,
+        mCycles: 2,
       },
       0x1b: {
         mnemonic: "",
@@ -517,12 +518,14 @@ export default class CPU {
         mCycles: 2,
       },
       0x2a: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD A, (HLI)",
+        description:
+          "Loads the byte at address (HL) into A then increments HL.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.registers.a.Value = this.mmu.readByte(this.registers.hl.Value++);
+          this.clock.mCycles.Value += 2;
         },
-        mCycles: NaN,
+        mCycles: 2,
       },
       0x2b: {
         mnemonic: "",
@@ -652,12 +655,14 @@ export default class CPU {
         mCycles: 2,
       },
       0x3a: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD A, (HLD)",
+        description:
+          "Loads the byte at address (HL) into A then decrements HL.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.registers.a.Value = this.mmu.readByte(this.registers.hl.Value--);
+          this.clock.mCycles.Value += 2;
         },
-        mCycles: NaN,
+        mCycles: 2,
       },
       0x3b: {
         mnemonic: "",
