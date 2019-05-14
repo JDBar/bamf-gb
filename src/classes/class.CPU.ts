@@ -148,11 +148,7 @@ export default class CPU {
         mnemonic: "DEC B",
         description: "Decrement B",
         fn: () => {
-          // Similar to INC, except flip the logic to work for subtraction.
-          // This way, we know if bit at index 3 borrowed from bit at index 4.
-          this.HalfCarryFlag = (this.registers.b.Value-- & 0xf) - 1 < 0;
-          this.SubtractFlag = true;
-          this.ZeroFlag = this.registers.b.Value ? false : true;
+          this.decrementRegister8(this.registers.b as CPURegister8);
           this.clock.mCycles.Value += 1;
         },
       },
@@ -234,11 +230,9 @@ export default class CPU {
       },
       0x0d: {
         mnemonic: "DEC C",
-        description: "Decrement the contents of C by 1.",
+        description: "Decrement C",
         fn: () => {
-          this.HalfCarryFlag = (this.registers.c.Value-- & 0xf) - 1 < 0;
-          this.SubtractFlag = true;
-          this.ZeroFlag = this.registers.c.Value ? false : true;
+          this.decrementRegister8(this.registers.c as CPURegister8);
           this.clock.mCycles.Value += 1;
         },
       },
@@ -306,10 +300,11 @@ export default class CPU {
         },
       },
       0x15: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "DEC D",
+        description: "Decrement D",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.decrementRegister8(this.registers.d as CPURegister8);
+          this.clock.mCycles.Value += 1;
         },
       },
       0x16: {
@@ -363,10 +358,11 @@ export default class CPU {
         },
       },
       0x1d: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "DEC E",
+        description: "Decrement E",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.decrementRegister8(this.registers.e as CPURegister8);
+          this.clock.mCycles.Value += 1;
         },
       },
       0x1e: {
@@ -422,10 +418,11 @@ export default class CPU {
         },
       },
       0x25: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "DEC H",
+        description: "Decrement H",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.decrementRegister8(this.registers.h as CPURegister8);
+          this.clock.mCycles.Value += 1;
         },
       },
       0x26: {
@@ -479,10 +476,11 @@ export default class CPU {
         },
       },
       0x2d: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "DEC L",
+        description: "Decrement L",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.decrementRegister8(this.registers.l as CPURegister8);
+          this.clock.mCycles.Value += 1;
         },
       },
       0x2e: {
@@ -594,10 +592,11 @@ export default class CPU {
         },
       },
       0x3d: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "DEC A",
+        description: "Decrement A",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.decrementRegister8(this.registers.a as CPURegister8);
+          this.clock.mCycles.Value += 1;
         },
       },
       0x3e: {
@@ -2076,6 +2075,20 @@ export default class CPU {
     // Example: 0b00001111 + 0b00000001 = 0b00010000
     this.HalfCarryFlag = (register.Value++ & 0xf) + 1 > 0xf;
     this.SubtractFlag = false;
+    this.ZeroFlag = register.Value ? false : true;
+  }
+
+  /**
+   * DEC r
+   * Decrements the contents of register r by 1.
+   *
+   * Opcodes: 0x05, 0x15, 0x25, 0x0D, 0x1D, 0x2D, 0x3D
+   */
+  private decrementRegister8(register: CPURegister8) {
+    // Similar to INC, except flip the logic to work for subtraction.
+    // This way, we know if bit at index 3 borrowed from bit at index 4.
+    this.HalfCarryFlag = (register.Value-- & 0xf) - 1 < 0;
+    this.SubtractFlag = true;
     this.ZeroFlag = register.Value ? false : true;
   }
 }
