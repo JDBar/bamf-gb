@@ -388,12 +388,13 @@ export default class CPU {
         mCycles: 2,
       },
       0x1b: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "DEC DE",
+        description: "Decrement the contents of DE by 1.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.registers.de.Value--;
+          this.clock.mCycles.Value += 2;
         },
-        mCycles: NaN,
+        mCycles: 2,
       },
       0x1c: {
         mnemonic: "INC E",
@@ -528,12 +529,13 @@ export default class CPU {
         mCycles: 2,
       },
       0x2b: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "DEC HL",
+        description: "Decrement the contents of HL by 1.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.registers.hl.Value--;
+          this.clock.mCycles.Value += 2;
         },
-        mCycles: NaN,
+        mCycles: 2,
       },
       0x2c: {
         mnemonic: "INC L",
@@ -665,12 +667,13 @@ export default class CPU {
         mCycles: 2,
       },
       0x3b: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "DEC SP",
+        description: "Decrement the contents of SP by 1.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.registers.sp.Value--;
+          this.clock.mCycles.Value += 2;
         },
-        mCycles: NaN,
+        mCycles: 2,
       },
       0x3c: {
         mnemonic: "INC A",
