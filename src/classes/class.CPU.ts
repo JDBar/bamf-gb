@@ -424,12 +424,23 @@ export default class CPU {
         mCycles: 2,
       },
       0x1f: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "RRA",
+        description:
+          "Rotate A right through Carry Flag. Store old bit0 in Carry Flag. Old Carry Flag value becomes bit7.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.HalfCarryFlag = false;
+          this.SubtractFlag = false;
+          this.ZeroFlag = false;
+
+          const oldCarryFlag = this.CarryFlag;
+          this.CarryFlag = (this.registers.a.Value & 0x1) > 0;
+
+          this.registers.a.Value =
+            (this.registers.a.Value >> 1) | (oldCarryFlag ? 0x80 : 0);
+
+          this.clock.mCycles.Value += 1;
         },
-        mCycles: NaN,
+        mCycles: 1,
       },
       0x20: {
         mnemonic: "",
