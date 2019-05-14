@@ -168,15 +168,15 @@ export default class CPU {
         mCycles: 2,
       },
       0x07: {
-        mnemonic: "RLC A",
-        description: "Rotate A with left carry.",
+        mnemonic: "RLCA",
+        description: "Rotate A left, store old bit7 in Carry Flag.",
         fn: () => {
           this.HalfCarryFlag = false;
           this.SubtractFlag = false;
           this.ZeroFlag = false;
-          this.CarryFlag = (this.registers.a.Value & 0x8) > 0;
+          this.CarryFlag = (this.registers.a.Value & 0x80) > 0;
           this.registers.a.Value =
-            (this.registers.a.Value << 1) + (this.CarryFlag ? 1 : 0);
+            (this.registers.a.Value << 1) | (this.CarryFlag ? 1 : 0);
           this.clock.mCycles.Value += 1;
         },
         mCycles: 1,
@@ -260,16 +260,16 @@ export default class CPU {
         mCycles: 2,
       },
       0x0f: {
-        mnemonic: "RRC A",
+        mnemonic: "RRCA",
         description:
-          "Rotates the contents of register A to the right with carry.",
+          "Rotates the contents of register A to the right. Store old bit0 in Carry Flag.",
         fn: () => {
           this.HalfCarryFlag = false;
           this.SubtractFlag = false;
           this.ZeroFlag = false;
           this.CarryFlag = (this.registers.a.Value & 0x1) > 0;
           this.registers.a.Value =
-            (this.registers.a.Value >> 1) + (this.CarryFlag ? 1 : 0);
+            (this.registers.a.Value >> 1) | (this.CarryFlag ? 0x80 : 0);
           this.clock.mCycles.Value += 1;
         },
         mCycles: 1,
@@ -339,12 +339,23 @@ export default class CPU {
         mCycles: 2,
       },
       0x17: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "RLA",
+        description:
+          "Rotate A left through Carry Flag. Store old bit7 in Carry Flag. Old Carry Flag value becomes bit0.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.HalfCarryFlag = false;
+          this.SubtractFlag = false;
+          this.ZeroFlag = false;
+
+          const oldCarryFlag = this.CarryFlag;
+          this.CarryFlag = (this.registers.a.Value & 0x80) > 0;
+
+          this.registers.a.Value =
+            (this.registers.a.Value << 1) | (oldCarryFlag ? 1 : 0);
+
+          this.clock.mCycles.Value += 1;
         },
-        mCycles: NaN,
+        mCycles: 1,
       },
       0x18: {
         mnemonic: "",
