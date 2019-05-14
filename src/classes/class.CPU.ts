@@ -330,12 +330,13 @@ export default class CPU {
         mCycles: 1,
       },
       0x16: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD D, n",
+        description: "Load 8-bit immediate into register D.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.registers.d.Value = this.mmu.readByte(this.registers.pc.Value++);
+          this.clock.mCycles.Value += 2;
         },
-        mCycles: NaN,
+        mCycles: 2,
       },
       0x17: {
         mnemonic: "",
@@ -396,12 +397,13 @@ export default class CPU {
         mCycles: 1,
       },
       0x1e: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD E, n",
+        description: "Load 8-bit immediate into register E.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.registers.e.Value = this.mmu.readByte(this.registers.pc.Value++);
+          this.clock.mCycles.Value += 2;
         },
-        mCycles: NaN,
+        mCycles: 2,
       },
       0x1f: {
         mnemonic: "",
@@ -464,12 +466,13 @@ export default class CPU {
         mCycles: 1,
       },
       0x26: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD H, n",
+        description: "Load 8-bit immediate into register H.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.registers.h.Value = this.mmu.readByte(this.registers.pc.Value++);
+          this.clock.mCycles.Value += 2;
         },
-        mCycles: NaN,
+        mCycles: 2,
       },
       0x27: {
         mnemonic: "",
@@ -530,12 +533,13 @@ export default class CPU {
         mCycles: 1,
       },
       0x2e: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD L, n",
+        description: "Load 8-bit immediate into register L.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.registers.l.Value = this.mmu.readByte(this.registers.pc.Value++);
+          this.clock.mCycles.Value += 2;
         },
-        mCycles: NaN,
+        mCycles: 2,
       },
       0x2f: {
         mnemonic: "",
@@ -662,12 +666,13 @@ export default class CPU {
         mCycles: 1,
       },
       0x3e: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD A, n",
+        description: "Load 8-bit immediate into register A.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.registers.a.Value = this.mmu.readByte(this.registers.pc.Value++);
+          this.clock.mCycles.Value += 2;
         },
-        mCycles: NaN,
+        mCycles: 2,
       },
       0x3f: {
         mnemonic: "",
