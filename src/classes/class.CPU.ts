@@ -111,6 +111,7 @@ export default class CPU {
         fn: () => {
           this.clock.mCycles.Value += 1;
         },
+        mCycles: 1,
       },
       0x01: {
         mnemonic: "LD BC, nn",
@@ -119,6 +120,7 @@ export default class CPU {
           this.loadImmediateWordToPair(this.registers.bc as CPURegisterPair);
           this.clock.mCycles.Value += 3;
         },
+        mCycles: 3,
       },
       0x02: {
         mnemonic: "LD (BC), A",
@@ -127,6 +129,7 @@ export default class CPU {
           this.mmu.writeByte(this.registers.bc.Value, this.registers.a.Value);
           this.clock.mCycles.Value += 2;
         },
+        mCycles: 2,
       },
       0x03: {
         mnemonic: "INC BC",
@@ -135,6 +138,7 @@ export default class CPU {
           this.registers.bc.Value++;
           this.clock.mCycles.Value += 2;
         },
+        mCycles: 2,
       },
       0x04: {
         mnemonic: "INC B",
@@ -143,6 +147,7 @@ export default class CPU {
           this.incrementRegister8(this.registers.b as CPURegister8);
           this.clock.mCycles.Value += 1;
         },
+        mCycles: 1,
       },
       0x05: {
         mnemonic: "DEC B",
@@ -151,6 +156,7 @@ export default class CPU {
           this.decrementRegister8(this.registers.b as CPURegister8);
           this.clock.mCycles.Value += 1;
         },
+        mCycles: 1,
       },
       0x06: {
         mnemonic: "LD B, n",
@@ -159,6 +165,7 @@ export default class CPU {
           this.registers.b.Value = this.mmu.readByte(this.registers.pc.Value++);
           this.clock.mCycles.Value += 2;
         },
+        mCycles: 2,
       },
       0x07: {
         mnemonic: "RLC A",
@@ -172,6 +179,7 @@ export default class CPU {
             (this.registers.a.Value << 1) + (this.CarryFlag ? 1 : 0);
           this.clock.mCycles.Value += 1;
         },
+        mCycles: 1,
       },
       0x08: {
         mnemonic: "LD (nn), SP",
@@ -183,6 +191,7 @@ export default class CPU {
           this.mmu.writeWord(address, this.registers.sp.Value);
           this.clock.mCycles.Value += 5;
         },
+        mCycles: 5,
       },
       0x09: {
         mnemonic: "ADD HL, BC",
@@ -203,6 +212,7 @@ export default class CPU {
           this.registers.hl.Value += this.registers.bc.Value;
           this.clock.mCycles.Value += 2;
         },
+        mCycles: 2,
       },
       0x0a: {
         mnemonic: "LD A, (BC)",
@@ -211,6 +221,7 @@ export default class CPU {
           this.registers.a.Value = this.mmu.readByte(this.registers.bc.Value);
           this.clock.mCycles.Value += 2;
         },
+        mCycles: 2,
       },
       0x0b: {
         mnemonic: "DEC BC",
@@ -219,6 +230,7 @@ export default class CPU {
           this.registers.bc.Value--;
           this.clock.mCycles.Value += 2;
         },
+        mCycles: 2,
       },
       0x0c: {
         mnemonic: "INC C",
@@ -227,6 +239,7 @@ export default class CPU {
           this.incrementRegister8(this.registers.c as CPURegister8);
           this.clock.mCycles.Value += 1;
         },
+        mCycles: 1,
       },
       0x0d: {
         mnemonic: "DEC C",
@@ -235,6 +248,7 @@ export default class CPU {
           this.decrementRegister8(this.registers.c as CPURegister8);
           this.clock.mCycles.Value += 1;
         },
+        mCycles: 1,
       },
       0x0e: {
         mnemonic: "LD C, n",
@@ -243,6 +257,7 @@ export default class CPU {
           this.registers.c.Value = this.mmu.readByte(this.registers.pc.Value++);
           this.clock.mCycles.Value += 2;
         },
+        mCycles: 2,
       },
       0x0f: {
         mnemonic: "RRC A",
@@ -257,6 +272,7 @@ export default class CPU {
             (this.registers.a.Value >> 1) + (this.CarryFlag ? 1 : 0);
           this.clock.mCycles.Value += 1;
         },
+        mCycles: 1,
       },
       0x10: {
         mnemonic: "STOP",
@@ -266,6 +282,7 @@ export default class CPU {
           // TODO: We'll have to come back to this one for proper implementation.
           this.clock.mCycles.Value += 1;
         },
+        mCycles: 1,
       },
       0x11: {
         mnemonic: "LD DE, nn",
@@ -274,6 +291,7 @@ export default class CPU {
           this.loadImmediateWordToPair(this.registers.de as CPURegisterPair);
           this.clock.mCycles.Value += 3;
         },
+        mCycles: 3,
       },
       0x12: {
         mnemonic: "LD (DE), A",
@@ -282,6 +300,7 @@ export default class CPU {
           this.mmu.writeByte(this.registers.de.Value, this.registers.a.Value);
           this.clock.mCycles.Value += 2;
         },
+        mCycles: 2,
       },
       0x13: {
         mnemonic: "INC DE",
@@ -290,6 +309,7 @@ export default class CPU {
           this.registers.de.Value++;
           this.clock.mCycles.Value += 2;
         },
+        mCycles: 2,
       },
       0x14: {
         mnemonic: "INC D",
@@ -298,6 +318,7 @@ export default class CPU {
           this.incrementRegister8(this.registers.d as CPURegister8);
           this.clock.mCycles.Value += 1;
         },
+        mCycles: 1,
       },
       0x15: {
         mnemonic: "DEC D",
@@ -306,6 +327,7 @@ export default class CPU {
           this.decrementRegister8(this.registers.d as CPURegister8);
           this.clock.mCycles.Value += 1;
         },
+        mCycles: 1,
       },
       0x16: {
         mnemonic: "",
@@ -313,6 +335,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x17: {
         mnemonic: "",
@@ -320,6 +343,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x18: {
         mnemonic: "",
@@ -327,6 +351,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x19: {
         mnemonic: "",
@@ -334,6 +359,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x1a: {
         mnemonic: "",
@@ -341,6 +367,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x1b: {
         mnemonic: "",
@@ -348,6 +375,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x1c: {
         mnemonic: "INC E",
@@ -356,6 +384,7 @@ export default class CPU {
           this.incrementRegister8(this.registers.e as CPURegister8);
           this.clock.mCycles.Value += 1;
         },
+        mCycles: 1,
       },
       0x1d: {
         mnemonic: "DEC E",
@@ -364,6 +393,7 @@ export default class CPU {
           this.decrementRegister8(this.registers.e as CPURegister8);
           this.clock.mCycles.Value += 1;
         },
+        mCycles: 1,
       },
       0x1e: {
         mnemonic: "",
@@ -371,6 +401,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x1f: {
         mnemonic: "",
@@ -378,6 +409,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x20: {
         mnemonic: "",
@@ -385,6 +417,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x21: {
         mnemonic: "LD HL,nn",
@@ -393,6 +426,7 @@ export default class CPU {
           this.loadImmediateWordToPair(this.registers.hl as CPURegisterPair);
           this.clock.mCycles.Value += 3;
         },
+        mCycles: 3,
       },
       0x22: {
         mnemonic: "",
@@ -400,6 +434,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x23: {
         mnemonic: "INC HL",
@@ -408,6 +443,7 @@ export default class CPU {
           this.registers.HL.Value++;
           this.clock.mCycles.Value += 2;
         },
+        mCycles: 2,
       },
       0x24: {
         mnemonic: "INC H",
@@ -416,6 +452,7 @@ export default class CPU {
           this.incrementRegister8(this.registers.h as CPURegister8);
           this.clock.mCycles.Value += 1;
         },
+        mCycles: 1,
       },
       0x25: {
         mnemonic: "DEC H",
@@ -424,6 +461,7 @@ export default class CPU {
           this.decrementRegister8(this.registers.h as CPURegister8);
           this.clock.mCycles.Value += 1;
         },
+        mCycles: 1,
       },
       0x26: {
         mnemonic: "",
@@ -431,6 +469,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x27: {
         mnemonic: "",
@@ -438,6 +477,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x28: {
         mnemonic: "",
@@ -445,6 +485,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x29: {
         mnemonic: "",
@@ -452,6 +493,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x2a: {
         mnemonic: "",
@@ -459,6 +501,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x2b: {
         mnemonic: "",
@@ -466,6 +509,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x2c: {
         mnemonic: "INC L",
@@ -474,6 +518,7 @@ export default class CPU {
           this.incrementRegister8(this.registers.l as CPURegister8);
           this.clock.mCycles.Value += 1;
         },
+        mCycles: 1,
       },
       0x2d: {
         mnemonic: "DEC L",
@@ -482,6 +527,7 @@ export default class CPU {
           this.decrementRegister8(this.registers.l as CPURegister8);
           this.clock.mCycles.Value += 1;
         },
+        mCycles: 1,
       },
       0x2e: {
         mnemonic: "",
@@ -489,6 +535,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x2f: {
         mnemonic: "",
@@ -496,6 +543,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x30: {
         mnemonic: "",
@@ -503,6 +551,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x31: {
         mnemonic: "LD SP,nn",
@@ -511,6 +560,7 @@ export default class CPU {
           this.loadImmediateWordToPair(this.registers.sp as CPURegisterPair);
           this.clock.mCycles.Value += 3;
         },
+        mCycles: 3,
       },
       0x32: {
         mnemonic: "",
@@ -518,6 +568,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x33: {
         mnemonic: "INC SP",
@@ -526,6 +577,7 @@ export default class CPU {
           this.registers.sp.Value++;
           this.clock.mCycles.Value += 2;
         },
+        mCycles: 2,
       },
       0x34: {
         mnemonic: "",
@@ -533,6 +585,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x35: {
         mnemonic: "",
@@ -540,6 +593,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x36: {
         mnemonic: "",
@@ -547,6 +601,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x37: {
         mnemonic: "",
@@ -554,6 +609,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x38: {
         mnemonic: "",
@@ -561,6 +617,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x39: {
         mnemonic: "",
@@ -568,6 +625,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x3a: {
         mnemonic: "",
@@ -575,6 +633,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x3b: {
         mnemonic: "",
@@ -582,6 +641,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x3c: {
         mnemonic: "INC A",
@@ -590,6 +650,7 @@ export default class CPU {
           this.incrementRegister8(this.registers.a as CPURegister8);
           this.clock.mCycles.Value += 1;
         },
+        mCycles: 1,
       },
       0x3d: {
         mnemonic: "DEC A",
@@ -598,6 +659,7 @@ export default class CPU {
           this.decrementRegister8(this.registers.a as CPURegister8);
           this.clock.mCycles.Value += 1;
         },
+        mCycles: 1,
       },
       0x3e: {
         mnemonic: "",
@@ -605,6 +667,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x3f: {
         mnemonic: "",
@@ -612,6 +675,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x40: {
         mnemonic: "",
@@ -619,6 +683,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x41: {
         mnemonic: "",
@@ -626,6 +691,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x42: {
         mnemonic: "",
@@ -633,6 +699,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x43: {
         mnemonic: "",
@@ -640,6 +707,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x44: {
         mnemonic: "",
@@ -647,6 +715,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x45: {
         mnemonic: "",
@@ -654,6 +723,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x46: {
         mnemonic: "",
@@ -661,6 +731,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x47: {
         mnemonic: "",
@@ -668,6 +739,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x48: {
         mnemonic: "",
@@ -675,6 +747,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x49: {
         mnemonic: "",
@@ -682,6 +755,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x4a: {
         mnemonic: "",
@@ -689,6 +763,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x4b: {
         mnemonic: "",
@@ -696,6 +771,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x4c: {
         mnemonic: "",
@@ -703,6 +779,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x4d: {
         mnemonic: "",
@@ -710,6 +787,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x4e: {
         mnemonic: "",
@@ -717,6 +795,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x4f: {
         mnemonic: "",
@@ -724,6 +803,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x50: {
         mnemonic: "",
@@ -731,6 +811,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x51: {
         mnemonic: "",
@@ -738,6 +819,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x52: {
         mnemonic: "",
@@ -745,6 +827,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x53: {
         mnemonic: "",
@@ -752,6 +835,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x54: {
         mnemonic: "",
@@ -759,6 +843,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x55: {
         mnemonic: "",
@@ -766,6 +851,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x56: {
         mnemonic: "",
@@ -773,6 +859,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x57: {
         mnemonic: "",
@@ -780,6 +867,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x58: {
         mnemonic: "",
@@ -787,6 +875,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x59: {
         mnemonic: "",
@@ -794,6 +883,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x5a: {
         mnemonic: "",
@@ -801,6 +891,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x5b: {
         mnemonic: "",
@@ -808,6 +899,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x5c: {
         mnemonic: "",
@@ -815,6 +907,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x5d: {
         mnemonic: "",
@@ -822,6 +915,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x5e: {
         mnemonic: "",
@@ -829,6 +923,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x5f: {
         mnemonic: "",
@@ -836,6 +931,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x60: {
         mnemonic: "",
@@ -843,6 +939,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x61: {
         mnemonic: "",
@@ -850,6 +947,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x62: {
         mnemonic: "",
@@ -857,6 +955,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x63: {
         mnemonic: "",
@@ -864,6 +963,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x64: {
         mnemonic: "",
@@ -871,6 +971,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x65: {
         mnemonic: "",
@@ -878,6 +979,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x66: {
         mnemonic: "",
@@ -885,6 +987,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x67: {
         mnemonic: "",
@@ -892,6 +995,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x68: {
         mnemonic: "",
@@ -899,6 +1003,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x69: {
         mnemonic: "",
@@ -906,6 +1011,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x6a: {
         mnemonic: "",
@@ -913,6 +1019,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x6b: {
         mnemonic: "",
@@ -920,6 +1027,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x6c: {
         mnemonic: "",
@@ -927,6 +1035,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x6d: {
         mnemonic: "",
@@ -934,6 +1043,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x6e: {
         mnemonic: "",
@@ -941,6 +1051,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x6f: {
         mnemonic: "",
@@ -948,6 +1059,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x70: {
         mnemonic: "",
@@ -955,6 +1067,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x71: {
         mnemonic: "",
@@ -962,6 +1075,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x72: {
         mnemonic: "",
@@ -969,6 +1083,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x73: {
         mnemonic: "",
@@ -976,6 +1091,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x74: {
         mnemonic: "",
@@ -983,6 +1099,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x75: {
         mnemonic: "",
@@ -990,6 +1107,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x76: {
         mnemonic: "",
@@ -997,6 +1115,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x77: {
         mnemonic: "",
@@ -1004,6 +1123,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x78: {
         mnemonic: "",
@@ -1011,6 +1131,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x79: {
         mnemonic: "",
@@ -1018,6 +1139,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x7a: {
         mnemonic: "",
@@ -1025,6 +1147,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x7b: {
         mnemonic: "",
@@ -1032,6 +1155,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x7c: {
         mnemonic: "",
@@ -1039,6 +1163,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x7d: {
         mnemonic: "",
@@ -1046,6 +1171,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x7e: {
         mnemonic: "",
@@ -1053,6 +1179,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x7f: {
         mnemonic: "",
@@ -1060,6 +1187,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x80: {
         mnemonic: "",
@@ -1067,6 +1195,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x81: {
         mnemonic: "",
@@ -1074,6 +1203,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x82: {
         mnemonic: "",
@@ -1081,6 +1211,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x83: {
         mnemonic: "",
@@ -1088,6 +1219,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x84: {
         mnemonic: "",
@@ -1095,6 +1227,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x85: {
         mnemonic: "",
@@ -1102,6 +1235,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x86: {
         mnemonic: "",
@@ -1109,6 +1243,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x87: {
         mnemonic: "",
@@ -1116,6 +1251,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x88: {
         mnemonic: "",
@@ -1123,6 +1259,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x89: {
         mnemonic: "",
@@ -1130,6 +1267,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x8a: {
         mnemonic: "",
@@ -1137,6 +1275,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x8b: {
         mnemonic: "",
@@ -1144,6 +1283,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x8c: {
         mnemonic: "",
@@ -1151,6 +1291,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x8d: {
         mnemonic: "",
@@ -1158,6 +1299,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x8e: {
         mnemonic: "",
@@ -1165,6 +1307,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x8f: {
         mnemonic: "",
@@ -1172,6 +1315,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x90: {
         mnemonic: "",
@@ -1179,6 +1323,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x91: {
         mnemonic: "",
@@ -1186,6 +1331,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x92: {
         mnemonic: "",
@@ -1193,6 +1339,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x93: {
         mnemonic: "",
@@ -1200,6 +1347,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x94: {
         mnemonic: "",
@@ -1207,6 +1355,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x95: {
         mnemonic: "",
@@ -1214,6 +1363,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x96: {
         mnemonic: "",
@@ -1221,6 +1371,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x97: {
         mnemonic: "",
@@ -1228,6 +1379,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x98: {
         mnemonic: "",
@@ -1235,6 +1387,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x99: {
         mnemonic: "",
@@ -1242,6 +1395,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x9a: {
         mnemonic: "",
@@ -1249,6 +1403,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x9b: {
         mnemonic: "",
@@ -1256,6 +1411,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x9c: {
         mnemonic: "",
@@ -1263,6 +1419,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x9d: {
         mnemonic: "",
@@ -1270,6 +1427,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x9e: {
         mnemonic: "",
@@ -1277,6 +1435,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0x9f: {
         mnemonic: "",
@@ -1284,6 +1443,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xa0: {
         mnemonic: "",
@@ -1291,6 +1451,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xa1: {
         mnemonic: "",
@@ -1298,6 +1459,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xa2: {
         mnemonic: "",
@@ -1305,6 +1467,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xa3: {
         mnemonic: "",
@@ -1312,6 +1475,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xa4: {
         mnemonic: "",
@@ -1319,6 +1483,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xa5: {
         mnemonic: "",
@@ -1326,6 +1491,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xa6: {
         mnemonic: "",
@@ -1333,6 +1499,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xa7: {
         mnemonic: "",
@@ -1340,6 +1507,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xa8: {
         mnemonic: "",
@@ -1347,6 +1515,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xa9: {
         mnemonic: "",
@@ -1354,6 +1523,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xaa: {
         mnemonic: "",
@@ -1361,6 +1531,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xab: {
         mnemonic: "",
@@ -1368,6 +1539,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xac: {
         mnemonic: "",
@@ -1375,6 +1547,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xad: {
         mnemonic: "",
@@ -1382,6 +1555,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xae: {
         mnemonic: "",
@@ -1389,6 +1563,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xaf: {
         mnemonic: "",
@@ -1396,6 +1571,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xb0: {
         mnemonic: "",
@@ -1403,6 +1579,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xb1: {
         mnemonic: "",
@@ -1410,6 +1587,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xb2: {
         mnemonic: "",
@@ -1417,6 +1595,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xb3: {
         mnemonic: "",
@@ -1424,6 +1603,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xb4: {
         mnemonic: "",
@@ -1431,6 +1611,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xb5: {
         mnemonic: "",
@@ -1438,6 +1619,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xb6: {
         mnemonic: "",
@@ -1445,6 +1627,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xb7: {
         mnemonic: "",
@@ -1452,6 +1635,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xb8: {
         mnemonic: "",
@@ -1459,6 +1643,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xb9: {
         mnemonic: "",
@@ -1466,6 +1651,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xba: {
         mnemonic: "",
@@ -1473,6 +1659,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xbb: {
         mnemonic: "",
@@ -1480,6 +1667,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xbc: {
         mnemonic: "",
@@ -1487,6 +1675,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xbd: {
         mnemonic: "",
@@ -1494,6 +1683,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xbe: {
         mnemonic: "",
@@ -1501,6 +1691,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xbf: {
         mnemonic: "",
@@ -1508,6 +1699,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xc0: {
         mnemonic: "",
@@ -1515,6 +1707,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xc1: {
         mnemonic: "",
@@ -1522,6 +1715,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xc2: {
         mnemonic: "",
@@ -1529,6 +1723,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xc3: {
         mnemonic: "",
@@ -1536,6 +1731,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xc4: {
         mnemonic: "",
@@ -1543,6 +1739,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xc5: {
         mnemonic: "",
@@ -1550,6 +1747,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xc6: {
         mnemonic: "",
@@ -1557,6 +1755,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xc7: {
         mnemonic: "",
@@ -1564,6 +1763,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xc8: {
         mnemonic: "",
@@ -1571,6 +1771,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xc9: {
         mnemonic: "",
@@ -1578,6 +1779,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xca: {
         mnemonic: "",
@@ -1585,6 +1787,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xcb: {
         mnemonic: "",
@@ -1592,6 +1795,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xcc: {
         mnemonic: "",
@@ -1599,6 +1803,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xcd: {
         mnemonic: "",
@@ -1606,6 +1811,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xce: {
         mnemonic: "",
@@ -1613,6 +1819,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xcf: {
         mnemonic: "",
@@ -1620,6 +1827,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xd0: {
         mnemonic: "",
@@ -1627,6 +1835,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xd1: {
         mnemonic: "",
@@ -1634,6 +1843,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xd2: {
         mnemonic: "",
@@ -1641,6 +1851,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xd3: {
         mnemonic: "",
@@ -1648,6 +1859,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xd4: {
         mnemonic: "",
@@ -1655,6 +1867,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xd5: {
         mnemonic: "",
@@ -1662,6 +1875,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xd6: {
         mnemonic: "",
@@ -1669,6 +1883,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xd7: {
         mnemonic: "",
@@ -1676,6 +1891,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xd8: {
         mnemonic: "",
@@ -1683,6 +1899,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xd9: {
         mnemonic: "",
@@ -1690,6 +1907,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xda: {
         mnemonic: "",
@@ -1697,6 +1915,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xdb: {
         mnemonic: "",
@@ -1704,6 +1923,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xdc: {
         mnemonic: "",
@@ -1711,6 +1931,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xdd: {
         mnemonic: "",
@@ -1718,6 +1939,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xde: {
         mnemonic: "",
@@ -1725,6 +1947,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xdf: {
         mnemonic: "",
@@ -1732,6 +1955,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xe0: {
         mnemonic: "",
@@ -1739,6 +1963,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xe1: {
         mnemonic: "",
@@ -1746,6 +1971,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xe2: {
         mnemonic: "",
@@ -1753,6 +1979,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xe3: {
         mnemonic: "",
@@ -1760,6 +1987,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xe4: {
         mnemonic: "",
@@ -1767,6 +1995,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xe5: {
         mnemonic: "",
@@ -1774,6 +2003,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xe6: {
         mnemonic: "",
@@ -1781,6 +2011,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xe7: {
         mnemonic: "",
@@ -1788,6 +2019,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xe8: {
         mnemonic: "",
@@ -1795,6 +2027,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xe9: {
         mnemonic: "",
@@ -1802,6 +2035,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xea: {
         mnemonic: "",
@@ -1809,6 +2043,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xeb: {
         mnemonic: "",
@@ -1816,6 +2051,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xec: {
         mnemonic: "",
@@ -1823,6 +2059,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xed: {
         mnemonic: "",
@@ -1830,6 +2067,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xee: {
         mnemonic: "",
@@ -1837,6 +2075,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xef: {
         mnemonic: "",
@@ -1844,6 +2083,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xf0: {
         mnemonic: "",
@@ -1851,6 +2091,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xf1: {
         mnemonic: "",
@@ -1858,6 +2099,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xf2: {
         mnemonic: "",
@@ -1865,6 +2107,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xf3: {
         mnemonic: "",
@@ -1872,6 +2115,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xf4: {
         mnemonic: "",
@@ -1879,6 +2123,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xf5: {
         mnemonic: "",
@@ -1886,6 +2131,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xf6: {
         mnemonic: "",
@@ -1893,6 +2139,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xf7: {
         mnemonic: "",
@@ -1900,6 +2147,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xf8: {
         mnemonic: "",
@@ -1907,6 +2155,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xf9: {
         mnemonic: "",
@@ -1914,6 +2163,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xfa: {
         mnemonic: "",
@@ -1921,6 +2171,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xfb: {
         mnemonic: "",
@@ -1928,6 +2179,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xfc: {
         mnemonic: "",
@@ -1935,6 +2187,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xfd: {
         mnemonic: "",
@@ -1942,6 +2195,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xfe: {
         mnemonic: "",
@@ -1949,6 +2203,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
       0xff: {
         mnemonic: "",
@@ -1956,6 +2211,7 @@ export default class CPU {
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
+        mCycles: NaN,
       },
     };
 
@@ -2109,4 +2365,5 @@ interface IOperation {
   mnemonic: string;
   description: string;
   fn: () => void;
+  mCycles: number;
 }
