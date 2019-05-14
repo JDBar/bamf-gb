@@ -2160,7 +2160,7 @@ export default class CPU {
   }
 
   /**
-   * Convert a byte as a signed number.
+   * Convert a byte to a signed number.
    * In JavaScript, the operands of all bitwise operaters are converted to
    * signed 32-bit integers in two's complement format, so in order to
    * interpret a byte as a signed number we just shift it 24 bits left,
