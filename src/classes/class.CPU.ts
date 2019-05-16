@@ -511,7 +511,6 @@ export default class CPU {
           }
 
           this.registers.a.Value += correction * sign;
-
           this.HalfCarryFlag = false;
           this.ZeroFlag = this.registers.a.Value === 0;
 
