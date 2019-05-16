@@ -469,10 +469,53 @@ export default class CPU {
         },
       },
       0x27: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "DAA",
+        description:
+          "Adjust register A to correctly represent a Binary Coded Decimal.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          /**
+           * Interprets the upper and lower nybbles (a nybble is 4 bits or 1 hex digit)
+           * of a byte as two individual decimal digits, rather than the whole byte as one
+           * binary number.
+           *
+           * The DAA instruction adjusts the results of a binary addition or subtraction
+           * by adding or subtracting 6 from the result's upper nybble, lower nybble, or both.
+           *
+           * In order to work it has to know whether the last operation was an addition or a
+           * subtraction (the Subtract flag), and whether a carry and/or a half-carry occurred
+           * (the Carry and HalfCarry flags).
+           *
+           * The Carry flag indicates that a result does need to be adjusted even if it looks
+           * like a valid BCD number.
+           *
+           * The same logic applies to the ones digit and the half-carry flag, except that the
+           * CPU doesn't bother setting the HalfCarry flag after a DAA, because only DAA uses
+           * the HalfCarry flag and doing two DAAs in a row makes no sense.
+           *
+           * Source: https://forums.nesdev.com/viewtopic.php?p=196282#p196282
+           */
+          const sign = this.SubtractFlag ? -1 : 1;
+          let correction = 0;
+
+          if (
+            this.CarryFlag ||
+            (!this.SubtractFlag && this.registers.a.Value > 0x99)
+          ) {
+            correction |= 0x60;
+          }
+          if (
+            this.HalfCarryFlag ||
+            (!this.SubtractFlag && (this.registers.a.Value & 0x0f) > 0x09)
+          ) {
+            correction |= 0x06;
+          }
+
+          this.registers.a.Value += correction * sign;
+
+          this.HalfCarryFlag = false;
+          this.ZeroFlag = this.registers.a.Value === 0;
+
+          return 1;
         },
       },
       0x28: {
