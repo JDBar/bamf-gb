@@ -445,6 +445,7 @@ export default class CPU {
             (!this.SubtractFlag && this.registers.a.Value > 0x99)
           ) {
             correction |= 0x60;
+            this.CarryFlag = true;
           }
           if (
             this.HalfCarryFlag ||
@@ -454,6 +455,7 @@ export default class CPU {
           }
 
           this.registers.a.Value += correction * sign;
+
           this.HalfCarryFlag = false;
           this.ZeroFlag = this.registers.a.Value === 0;
 
