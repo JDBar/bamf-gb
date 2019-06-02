@@ -461,10 +461,20 @@ export default class CPU {
         },
       },
       0x28: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "JR Z, n",
+        description:
+          "Jumps n steps from the current address, where n is a signed byte, if the Zero Flag is set.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          if (this.ZeroFlag) {
+            const steps = this.byteToSigned(
+              this.mmu.readByte(this.registers.pc.Value++)
+            );
+            this.registers.pc.Value += steps;
+            return 3;
+          } else {
+            this.registers.pc.Value++;
+            return 2;
+          }
         },
       },
       0x29: {
@@ -684,7 +694,7 @@ export default class CPU {
       },
       0x3f: {
         mnemonic: "CCF",
-        description: "Flips the carry flag.",
+        description: "Flips the Carry Flag.",
         fn: () => {
           this.HalfCarryFlag = false;
           this.SubtractFlag = false;
