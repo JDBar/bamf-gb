@@ -609,10 +609,11 @@ export default class CPU {
         },
       },
       0x37: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "SCF",
+        description: "Sets the carry flag.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.CarryFlag = true;
+          return 1;
         },
       },
       0x38: {
