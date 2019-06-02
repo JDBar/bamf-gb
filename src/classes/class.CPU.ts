@@ -1281,7 +1281,14 @@ export default class CPU {
         description:
           "Adds the contents of memory specified by the contents of register pair HL to the contents of register A.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          const a = this.registers.a.Value;
+          const hl = this.mmu.readByte(this.registers.hl.Value);
+          this.registers.a.Value = a + hl;
+          this.CarryFlag = a + hl > 0xff;
+          this.HalfCarryFlag = (a & 0xf) + (hl & 0xf) > 0xf;
+          this.ZeroFlag = this.registers.a.Value === 0;
+          this.SubtractFlag = false;
+          return 2;
         },
       },
       0x87: {
