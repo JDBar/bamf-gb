@@ -439,14 +439,13 @@ export default class CPU {
            */
           const sign = this.SubtractFlag ? -1 : 1;
           let correction = 0;
-          let setCarryFlag = false;
 
           if (
             this.CarryFlag ||
             (!this.SubtractFlag && this.registers.a.Value > 0x99)
           ) {
             correction |= 0x60;
-            setCarryFlag = true;
+            this.CarryFlag = true;
           }
           if (
             this.HalfCarryFlag ||
@@ -456,7 +455,7 @@ export default class CPU {
           }
 
           this.registers.a.Value += correction * sign;
-          this.CarryFlag = setCarryFlag;
+
           this.HalfCarryFlag = false;
           this.ZeroFlag = this.registers.a.Value === 0;
 
