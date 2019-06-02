@@ -572,10 +572,16 @@ export default class CPU {
         },
       },
       0x34: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "INC (HL)",
+        description:
+          "Increments by 1 the contents of memory specified by register pair HL.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          let value = this.mmu.readByte(this.registers.hl.Value);
+          this.HalfCarryFlag = (value++ & 0xf) + 1 > 0xf;
+          this.SubtractFlag = false;
+          this.ZeroFlag = value ? false : true;
+          this.mmu.writeByte(this.registers.hl.Value, value);
+          return 3;
         },
       },
       0x35: {
