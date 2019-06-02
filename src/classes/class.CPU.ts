@@ -684,10 +684,13 @@ export default class CPU {
         },
       },
       0x3f: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "CCF",
+        description: "Flips the carry flag.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.HalfCarryFlag = false;
+          this.SubtractFlag = false;
+          this.CarryFlag = !this.CarryFlag;
+          return 1;
         },
       },
       0x40: {
