@@ -585,10 +585,16 @@ export default class CPU {
         },
       },
       0x35: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "DEC (HL)",
+        description:
+          "Decrements by 1 the contents of memory specified by register pair HL.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          let value = this.mmu.readByte(this.registers.hl.Value);
+          this.HalfCarryFlag = (value-- & 0xf) - 1 < 0;
+          this.SubtractFlag = true;
+          this.ZeroFlag = value ? false : true;
+          this.mmu.writeByte(this.registers.hl.Value, value);
+          return 3;
         },
       },
       0x36: {
