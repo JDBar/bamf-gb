@@ -1234,7 +1234,7 @@ export default class CPU {
         mnemonic: "ADD A, B",
         description: "Adds the contents of register B to those of register A.",
         fn: () => {
-          this.add8BitIntoA(this.registers.b);
+          this.add8BitIntoA(this.registers.b.Value);
           return 1;
         },
       },
@@ -1242,7 +1242,7 @@ export default class CPU {
         mnemonic: "ADD A, C",
         description: "Adds the contents of register C to those of register A.",
         fn: () => {
-          this.add8BitIntoA(this.registers.c);
+          this.add8BitIntoA(this.registers.c.Value);
           return 1;
         },
       },
@@ -1250,7 +1250,7 @@ export default class CPU {
         mnemonic: "ADD A, D",
         description: "Adds the contents of register D to those of register A.",
         fn: () => {
-          this.add8BitIntoA(this.registers.d);
+          this.add8BitIntoA(this.registers.d.Value);
           return 1;
         },
       },
@@ -1258,7 +1258,7 @@ export default class CPU {
         mnemonic: "ADD A, E",
         description: "Adds the contents of register E to those of register A.",
         fn: () => {
-          this.add8BitIntoA(this.registers.e);
+          this.add8BitIntoA(this.registers.e.Value);
           return 1;
         },
       },
@@ -1266,7 +1266,7 @@ export default class CPU {
         mnemonic: "ADD A, H",
         description: "Adds the contents of register H to those of register A.",
         fn: () => {
-          this.add8BitIntoA(this.registers.h);
+          this.add8BitIntoA(this.registers.h.Value);
           return 1;
         },
       },
@@ -1274,7 +1274,7 @@ export default class CPU {
         mnemonic: "ADD A, L",
         description: "Adds the contents of register L to those of register A.",
         fn: () => {
-          this.add8BitIntoA(this.registers.l);
+          this.add8BitIntoA(this.registers.l.Value);
           return 1;
         },
       },
@@ -1283,13 +1283,7 @@ export default class CPU {
         description:
           "Adds the contents of memory specified by the contents of register pair HL to the contents of register A.",
         fn: () => {
-          const a = this.registers.a.Value;
-          const hl = this.mmu.readByte(this.registers.hl.Value);
-          this.registers.a.Value = a + hl;
-          this.CarryFlag = a + hl > 0xff;
-          this.HalfCarryFlag = (a & 0xf) + (hl & 0xf) > 0xf;
-          this.ZeroFlag = this.registers.a.Value === 0;
-          this.SubtractFlag = false;
+          this.add8BitIntoA(this.mmu.readByte(this.registers.hl.Value));
           return 2;
         },
       },
@@ -1297,64 +1291,80 @@ export default class CPU {
         mnemonic: "ADD A, A",
         description: "Adds the contents of register A to those of register A.",
         fn: () => {
-          this.add8BitIntoA(this.registers.a);
+          this.add8BitIntoA(this.registers.a.Value);
           return 1;
         },
       },
       0x88: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "ADC A, B",
+        description:
+          "Adds the contents of register B and Carry Flag to the contents of register A.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.add8BitAndCarryIntoA(this.registers.b.Value);
+          return 1;
         },
       },
       0x89: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "ADC A, C",
+        description:
+          "Adds the contents of register C and Carry Flag to the contents of register A.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.add8BitAndCarryIntoA(this.registers.c.Value);
+          return 1;
         },
       },
       0x8a: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "ADC A, D",
+        description:
+          "Adds the contents of register D and Carry Flag to the contents of register A.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.add8BitAndCarryIntoA(this.registers.d.Value);
+          return 1;
         },
       },
       0x8b: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "ADC A, E",
+        description:
+          "Adds the contents of register E and Carry Flag to the contents of register A.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.add8BitAndCarryIntoA(this.registers.e.Value);
+          return 1;
         },
       },
       0x8c: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "ADC A, H",
+        description:
+          "Adds the contents of register H and Carry Flag to the contents of register A.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.add8BitAndCarryIntoA(this.registers.h.Value);
+          return 1;
         },
       },
       0x8d: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "ADC A, L",
+        description:
+          "Adds the contents of register L and Carry Flag to the contents of register A.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.add8BitAndCarryIntoA(this.registers.l.Value);
+          return 1;
         },
       },
       0x8e: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "ADC A, (HL)",
+        description:
+          "Adds the contents of memory specified by the contents of register pair HL and Carry Flag to register A and stores the results in register A.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.add8BitAndCarryIntoA(this.mmu.readByte(this.registers.hl.Value));
+          return 2;
         },
       },
       0x8f: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "ADC A, A",
+        description:
+          "Adds the contents of register A and Carry Flag to the contents of register A.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.add8BitAndCarryIntoA(this.registers.a.Value);
+          return 1;
         },
       },
       0x90: {
@@ -2307,13 +2317,47 @@ export default class CPU {
    * Adds the contents of register r to those of register A and stores the results in register A.
    *
    * Opcodes: 0x80 - 0x85, 0x87
+   *
+   * ADD A, (HL)
+   * Adds the contents of memory specified by the contents of register pair HL to
+   * the contents of Register A and stores the results in register A.
+   *
+   * Opcodes: 0x86
    */
-  protected add8BitIntoA(register: CPURegister8) {
+  protected add8BitIntoA(value: number) {
     const a = this.registers.a.Value;
-    const r = register.Value;
-    this.registers.a.Value = a + r;
-    this.CarryFlag = a + r > 0xff;
-    this.HalfCarryFlag = (a & 0xf) + (r & 0xf) > 0xf;
+    value &= 0xff;
+
+    this.registers.a.Value = a + value;
+
+    this.CarryFlag = a + value > 0xff;
+    this.HalfCarryFlag = (a & 0xf) + (value & 0xf) > 0xf;
+    this.ZeroFlag = this.registers.a.Value === 0;
+    this.SubtractFlag = false;
+  }
+
+  /**
+   * ADC A, r
+   * Adds the contents of register r and Carry Flag to register A and stores
+   * the results in register A.
+   *
+   * Opcodes: 0x88 - 0x8D, 0x8F
+   *
+   * ADC A, (HL)
+   * Adds the contents of memory specified by the contents of register pair HL
+   * and Carry Flag to register A and stores the results in register A.
+   *
+   * Opcodes: 0x8E
+   */
+  protected add8BitAndCarryIntoA(value: number) {
+    const a = this.registers.a.Value;
+    const cf = this.CarryFlag ? 1 : 0;
+    value &= 0xff;
+
+    this.registers.a.Value = a + value + cf;
+
+    this.CarryFlag = a + value + cf > 0xff;
+    this.HalfCarryFlag = (a & 0xf) + (value & 0xf) + cf > 0xf;
     this.ZeroFlag = this.registers.a.Value === 0;
     this.SubtractFlag = false;
   }
