@@ -531,10 +531,20 @@ export default class CPU {
         },
       },
       0x30: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "JR NC, n",
+        description:
+          "Jumps n steps from the current address, where n is a signed byte, if the Carry Flag is not set.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          if (!this.CarryFlag) {
+            const steps = this.byteToSigned(
+              this.mmu.readByte(this.registers.pc.Value++)
+            );
+            this.registers.pc.Value += steps;
+            return 3;
+          } else {
+            this.registers.pc.Value++;
+            return 2;
+          }
         },
       },
       0x31: {
