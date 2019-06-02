@@ -1277,8 +1277,9 @@ export default class CPU {
         },
       },
       0x86: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "ADD A, (HL)",
+        description:
+          "Adds the contents of memory specified by the contents of register pair HL to the contents of register A.",
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
@@ -2305,6 +2306,7 @@ export default class CPU {
     this.CarryFlag = a + r > 0xff;
     this.HalfCarryFlag = (a & 0xf) + (r & 0xf) > 0xf;
     this.ZeroFlag = this.registers.a.Value === 0;
+    this.SubtractFlag = false;
   }
 
   /**
