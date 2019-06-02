@@ -198,8 +198,7 @@ export default class CPU {
         description:
           "Stops the system clock. STOP mode is entered, and LCD controller also stops.",
         fn: () => {
-          // TODO: We'll have to come back to this one for proper implementation.
-          return 1;
+          throw new Error("Instruction not implemented.");
         },
       },
       0x11: {
