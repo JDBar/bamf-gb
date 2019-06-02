@@ -2186,10 +2186,6 @@ export default class CPU {
   }
 
   /**
-   * CPU operations that can be reused.
-   */
-
-  /**
    * LD r, r'
    * Loads the contents of register r' into register r.
    *
@@ -2279,6 +2275,7 @@ export default class CPU {
 /**
  * Interfaces
  */
+
 export interface IOperationMap {
   [index: number]: IOperation;
 }
