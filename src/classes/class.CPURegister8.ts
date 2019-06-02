@@ -1,5 +1,8 @@
 import CPURegister from "./class.CPURegister";
 
+/**
+ * An 8-bit CPU register.
+ */
 export default class CPURegister8 extends CPURegister {
   protected value: number;
 

@@ -1,9 +1,22 @@
 import CPURegister16 from "./class.CPURegister16";
 import CPURegister8 from "./class.CPURegister8";
 
+/**
+ * A pair of two 8-bit CPU registers which acts as a 16-bit CPU register.
+ * The high register acts as the 8 high bits and the
+ * low register acts as the 8 low bits.
+ */
 export default class CPURegisterPair extends CPURegister16 {
   protected value: number;
+
+  /**
+   * The register to store the 8 high bits.
+   */
   private high: CPURegister8;
+
+  /**
+   * The register to store the 8 low bits.
+   */
   private low: CPURegister8;
 
   constructor(high: CPURegister8, low: CPURegister8) {

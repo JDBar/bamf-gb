@@ -3,7 +3,7 @@ import CPURegister8 from "./class.CPURegister8";
 import CPURegisterPair from "./class.CPURegisterPair";
 
 /**
- * The set of registers on the CPU.
+ * The full set of registers on the Gameboy CPU.
  * A register can hold 8 or 16 bits (1-2 bytes).
  */
 export default class CPURegisterSet implements ICPURegisterSet {
