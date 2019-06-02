@@ -598,10 +598,14 @@ export default class CPU {
         },
       },
       0x36: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD (HL), n",
+        description:
+          "Load 8-bit immediate into memory specified by register pair HL.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          const address = this.registers.hl.Value;
+          const value = this.mmu.readByte(this.registers.pc.Value++);
+          this.mmu.writeByte(address, value);
+          return 3;
         },
       },
       0x37: {
