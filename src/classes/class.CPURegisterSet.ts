@@ -7,20 +7,20 @@ import CPURegisterPair from "./class.CPURegisterPair";
  * A register can hold 8 or 16 bits (1-2 bytes).
  */
 export default class CPURegisterSet implements ICPURegisterSet {
-  public a: CPURegister8;
-  public b: CPURegister8;
-  public c: CPURegister8;
-  public d: CPURegister8;
-  public e: CPURegister8;
-  public f: CPURegister8;
-  public h: CPURegister8;
-  public l: CPURegister8;
-  public pc: CPURegister16;
-  public sp: CPURegister16;
-  public af: CPURegisterPair;
-  public bc: CPURegisterPair;
-  public de: CPURegisterPair;
-  public hl: CPURegisterPair;
+  public readonly a: CPURegister8;
+  public readonly b: CPURegister8;
+  public readonly c: CPURegister8;
+  public readonly d: CPURegister8;
+  public readonly e: CPURegister8;
+  public readonly f: CPURegister8;
+  public readonly h: CPURegister8;
+  public readonly l: CPURegister8;
+  public readonly pc: CPURegister16;
+  public readonly sp: CPURegister16;
+  public readonly af: CPURegisterPair;
+  public readonly bc: CPURegisterPair;
+  public readonly de: CPURegisterPair;
+  public readonly hl: CPURegisterPair;
 
   constructor() {
     /**

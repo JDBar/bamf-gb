@@ -17,33 +17,33 @@ export default class CPU {
    * The CPU clock.
    * Uses the "CYCL" value in Gameboy Programming Manual.
    */
-  private clock: CPURegister8;
+  protected readonly clock: CPURegister8;
 
   /**
    * The set of registers on the CPU.
    * A register can hold 8 or 16 bits (1-2 bytes).
    */
-  private registers: CPURegisterSet;
+  protected readonly registers: CPURegisterSet;
 
   /**
    * The memory mapping unit of the Gameboy.
    * Check out README.md and class.MMU.ts for more information.
    * http://imrannazar.com/GameBoy-Emulation-in-JavaScript:-Memory
    */
-  private mmu: MMU;
+  protected readonly mmu: MMU;
 
   /**
    * The main instruction set of the Gameboy CPU.
    * Contains operations for opcodes 0x00 - 0xff.
    */
-  private operations: IOperationMap;
+  protected readonly operations: IOperationMap;
 
   /**
    * The CB-prefixed instruction set of the Gameboy CPU.
    * 0xcb is an opcode to fetch an additional byte to use
    * with an alternate instruction mapping.
    */
-  private cbOperations: IOperationMap;
+  protected readonly cbOperations: IOperationMap;
 
   constructor() {
     this.mmu = new MMU();
@@ -2005,7 +2005,7 @@ export default class CPU {
   /**
    * Resets the CPU.
    */
-  private reset() {
+  protected reset() {
     for (const k of Object.keys(this.registers)) {
       this.registers[k as keyof ICPURegisterSet].Value = 0;
     }
@@ -2015,14 +2015,14 @@ export default class CPU {
   /**
    * Fetches the next byte and increments the program counter.
    */
-  private fetch(): number {
+  protected fetch(): number {
     return this.mmu.readByte(this.registers.pc.Value++);
   }
 
   /**
    * Decodes an opcode and returns an operation.
    */
-  private decode(byte: number): IOperation {
+  protected decode(byte: number): IOperation {
     if (byte !== 0xcb) {
       return this.operations[byte];
     } else {
@@ -2030,7 +2030,7 @@ export default class CPU {
     }
   }
 
-  private execute() {
+  protected execute() {
     throw new Error("execute() is not implemented.");
   }
 
@@ -2039,11 +2039,11 @@ export default class CPU {
    * for convenience
    */
 
-  private get ZeroFlag(): boolean {
+  protected get ZeroFlag(): boolean {
     return !!(this.registers.f.Value & 0x80);
   }
 
-  private set ZeroFlag(val: boolean) {
+  protected set ZeroFlag(val: boolean) {
     if (val) {
       this.registers.f.Value |= 0x80;
     } else {
@@ -2051,11 +2051,11 @@ export default class CPU {
     }
   }
 
-  private get SubtractFlag(): boolean {
+  protected get SubtractFlag(): boolean {
     return !!(this.registers.f.Value & 0x40);
   }
 
-  private set SubtractFlag(val: boolean) {
+  protected set SubtractFlag(val: boolean) {
     if (val) {
       this.registers.f.Value |= 0x40;
     } else {
@@ -2063,11 +2063,11 @@ export default class CPU {
     }
   }
 
-  private get HalfCarryFlag(): boolean {
+  protected get HalfCarryFlag(): boolean {
     return !!(this.registers.f.Value & 0x20);
   }
 
-  private set HalfCarryFlag(val: boolean) {
+  protected set HalfCarryFlag(val: boolean) {
     if (val) {
       this.registers.f.Value |= 0x20;
     } else {
@@ -2075,11 +2075,11 @@ export default class CPU {
     }
   }
 
-  private get CarryFlag(): boolean {
+  protected get CarryFlag(): boolean {
     return !!(this.registers.f.Value & 0x10);
   }
 
-  private set CarryFlag(val: boolean) {
+  protected set CarryFlag(val: boolean) {
     if (val) {
       this.registers.f.Value |= 0x10;
     } else {
@@ -2097,7 +2097,7 @@ export default class CPU {
    *
    * Opcodes: 0x01, 0x11, 0x21, 0x31
    */
-  private loadImmediateWordTo16Bit(register: CPURegister16) {
+  protected loadImmediateWordTo16Bit(register: CPURegister16) {
     register.Value = this.mmu.readWord(this.registers.pc.Value);
     this.registers.pc.Value += 2;
   }
@@ -2108,7 +2108,7 @@ export default class CPU {
    *
    * Opcodes: 0x04, 0x14, 0x24, 0x0C, 0x1C, 0x2C, 0x3C
    */
-  private incrementRegister8(register: CPURegister8) {
+  protected incrementRegister8(register: CPURegister8) {
     // When calculating the HalfCarryFlag, check to see if
     // bit at index 3 carries to bit 4 (the least significant bit being index 0).
     // Example: 0b00001111 + 0b00000001 = 0b00010000
@@ -2123,7 +2123,7 @@ export default class CPU {
    *
    * Opcodes: 0x05, 0x15, 0x25, 0x0D, 0x1D, 0x2D, 0x3D
    */
-  private decrementRegister8(register: CPURegister8) {
+  protected decrementRegister8(register: CPURegister8) {
     // Similar to INC, except flip the logic to work for subtraction.
     // This way, we know if bit at index 3 borrowed from bit at index 4.
     this.HalfCarryFlag = (register.Value-- & 0xf) - 1 < 0;
@@ -2138,7 +2138,7 @@ export default class CPU {
    *
    * Opcodes: 0x09, 0x19, 0x29, 0x39
    */
-  private add16BitIntoHL(register: CPURegister16) {
+  protected add16BitIntoHL(register: CPURegister16) {
     this.SubtractFlag = false;
     // Set if there is a carry from bit 11; otherwise reset.
     this.HalfCarryFlag =
@@ -2159,7 +2159,7 @@ export default class CPU {
    * Source:https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Bitwise_Operators#Signed_32-bit_integers
    * Example: 0x80 -> 0x80000000 -> 0xFFFFFF80 == -128 in 32 bit two's complement.
    */
-  private byteToSigned(byte: number) {
+  protected byteToSigned(byte: number) {
     return ((byte & 0xff) << 24) >> 24;
   }
 }
@@ -2167,11 +2167,11 @@ export default class CPU {
 /**
  * Interfaces
  */
-interface IOperationMap {
+export interface IOperationMap {
   [index: number]: IOperation;
 }
 
-interface IOperation {
+export interface IOperation {
   /**
    * The mnemonic for the operation, such as ADD or LD.
    */

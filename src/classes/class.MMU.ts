@@ -17,7 +17,7 @@ export default class MMU {
    * Once the BIOS has run, it is removed from the memory map,
    * and this area of the cartridge becomes addressable.
    */
-  private BIOS: Uint8Array;
+  protected BIOS: Uint8Array;
 
   /**
    * 0x0000 - 0x3FFF
@@ -26,13 +26,13 @@ export default class MMU {
    * 0x0100 - 0x014F
    * Cartridge header.
    */
-  private ROM: Uint8Array; // 16 KiB
+  protected ROM: Uint8Array; // 16 KiB
 
   /**
    * 0xC000 - 0xDFFF
    * The GameBoy's internal 8k of RAM.
    */
-  private workingRAM: Uint8Array; // 8 KiB
+  protected workingRAM: Uint8Array; // 8 KiB
 
   /**
    * 0xA000 - 0xBFFF
@@ -40,15 +40,15 @@ export default class MMU {
    * If a game requires more RAM than is available in the hardware,
    * additional 8k chunks of RAM can be made addressable here.
    */
-  private externalRAM: Uint8Array; // 8 KiB
+  protected externalRAM: Uint8Array; // 8 KiB
 
   /**
    * 0xFF80 - 0xFFFF
    * A high speed area of 128 bytes of RAM is available at the top of memory.
    */
-  private zeroPageRAM: Uint8Array; // 128 B
+  protected zeroPageRAM: Uint8Array; // 128 B
 
-  private map: IAddressHashMap;
+  protected map: IAddressHashMap;
 
   constructor() {
     this.inBIOS = true;
@@ -132,7 +132,10 @@ export default class MMU {
   /**
    * BIOS (256 B) || ROM0
    */
-  private handle0000(address: number, writeValue?: number): number | undefined {
+  protected handle0000(
+    address: number,
+    writeValue?: number
+  ): number | undefined {
     const toBIOS = this.inBIOS && address < 0x0100;
     if (writeValue == null) {
       return toBIOS ? this.BIOS[address] : this.ROM[address];
@@ -146,7 +149,10 @@ export default class MMU {
   /**
    * ROM0
    */
-  private handle1000(address: number, writeValue?: number): number | undefined {
+  protected handle1000(
+    address: number,
+    writeValue?: number
+  ): number | undefined {
     if (writeValue == null) {
       return this.ROM[address];
     } else {
@@ -157,7 +163,10 @@ export default class MMU {
   /**
    * ROM1 (unbanked) 16 KiB
    */
-  private handle4000(address: number, writeValue?: number): number | undefined {
+  protected handle4000(
+    address: number,
+    writeValue?: number
+  ): number | undefined {
     if (writeValue == null) {
       return this.ROM[address];
     } else {
@@ -168,14 +177,20 @@ export default class MMU {
   /**
    * Graphics: VRAM (8 KiB)
    */
-  private handle8000(address: number, writeValue?: number): number | undefined {
+  protected handle8000(
+    address: number,
+    writeValue?: number
+  ): number | undefined {
     throw new Error("VRAM not implemented.");
   }
 
   /**
    * External RAM (8 KiB)
    */
-  private handleA000(address: number, writeValue?: number): number | undefined {
+  protected handleA000(
+    address: number,
+    writeValue?: number
+  ): number | undefined {
     if (writeValue == null) {
       return this.externalRAM[address & 0x1fff];
     } else {
@@ -187,7 +202,10 @@ export default class MMU {
    * Working RAM (8 KiB)
    * Working RAM Shadow
    */
-  private handleC000(address: number, writeValue?: number): number | undefined {
+  protected handleC000(
+    address: number,
+    writeValue?: number
+  ): number | undefined {
     if (writeValue == null) {
       return this.workingRAM[address & 0x1fff];
     } else {
@@ -198,7 +216,10 @@ export default class MMU {
   /**
    * Working RAM shadow, OAM, Zero-page RAM, I/O
    */
-  private handleF000(address: number, writeValue?: number): number | undefined {
+  protected handleF000(
+    address: number,
+    writeValue?: number
+  ): number | undefined {
     const address2 = address & 0x0f00;
     if (address2 <= 0xd00) {
       // Working RAM Shadow
