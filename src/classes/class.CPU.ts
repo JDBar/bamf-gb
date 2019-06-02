@@ -2218,8 +2218,8 @@ export interface IOperation {
    */
   description: string;
   /**
-   * A function which emulated the operation and returns the number
-   * of mCycles the operation took.
+   * A function which emulates the operation and returns the number
+   * of clock cycles the operation took.
    */
   fn: () => number;
 }
