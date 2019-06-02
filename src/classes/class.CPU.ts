@@ -1147,8 +1147,9 @@ export default class CPU {
         },
       },
       0x76: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "HALT",
+        description:
+          "After a HALT instruction is executed, the system clock is stopped and HALT mode is entered.  Althoughthe system clock is stopped in this status, the oscillator circuit and LCD controller continue to operate.",
         fn: () => {
           throw new Error("Instruction not implemented.");
         },
