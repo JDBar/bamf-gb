@@ -15,6 +15,7 @@ import MMU from "./class.MMU";
 export default class CPU {
   /**
    * The CPU clock.
+   * Uses the "CYCL" value in Gameboy Programming Manual.
    */
   private clock: CPURegister8;
 
@@ -46,10 +47,6 @@ export default class CPU {
 
   constructor() {
     this.mmu = new MMU();
-
-    /**
-     * The "CYCL" value in Gameboy Programming Manual.
-     */
     this.clock = new CPURegister8();
     this.registers = new CPURegisterSet();
 
