@@ -1,7 +1,7 @@
-import CPURegister from "./class.CPURegister";
 import CPURegister16 from "./class.CPURegister16";
 import CPURegister8 from "./class.CPURegister8";
 import CPURegisterPair from "./class.CPURegisterPair";
+import CPURegisterSet, {ICPURegisterSet} from "./class.CPURegisterSet";
 import MMU from "./class.MMU";
 
 /**
@@ -16,13 +16,13 @@ export default class CPU {
   /**
    * The CPU clock.
    */
-  private clock: IRegisterSet;
+  private clock: CPURegister8;
 
   /**
    * The set of registers on the CPU.
    * A register can hold 8 or 16 bits (1-2 bytes).
    */
-  private registers: IRegisterSet;
+  private registers: CPURegisterSet;
 
   /**
    * The memory mapping unit of the Gameboy.
@@ -47,64 +47,11 @@ export default class CPU {
   constructor() {
     this.mmu = new MMU();
 
-    this.clock = {
-      /**
-       * The "CYCL" value in Gameboy Programming Manual.
-       */
-      mCycles: new CPURegister8(),
-    };
-
-    this.registers = {};
-
     /**
-     * Accumulator register for storing data and results of
-     * arithmetic and logical operations.
+     * The "CYCL" value in Gameboy Programming Manual.
      */
-    this.registers.a = new CPURegister8();
-
-    /**
-     * Auxillary registers B, C, D, E, F, H and L.
-     * These serve as auxillary registers to the accumulator. As register
-     * pairs, (BC, DE, HL) they are 16-bit registers that function as data pointers.
-     */
-    this.registers.b = new CPURegister8();
-    this.registers.c = new CPURegister8();
-    this.registers.d = new CPURegister8();
-    this.registers.e = new CPURegister8();
-    /**
-     * Flags register (bits: ZNHCxxxx)
-     * Z: Zero Flag
-     * N : Subtract Flag
-     * H: Half Carry Flag
-     * C: Carry Flag
-     */
-    this.registers.f = new CPURegister8();
-    this.registers.h = new CPURegister8();
-    this.registers.l = new CPURegister8();
-    this.registers.pc = new CPURegister16(); // Program counter.
-    this.registers.sp = new CPURegister16(); // Stack pointer.
-
-    /**
-     * Set up register pairs for convenience. These are useful
-     * for instructions which treat two 8-bit registers as a single
-     * 16-bit register. (e.g. opcode 0x01)
-     */
-    this.registers.af = new CPURegisterPair(
-      this.registers.a as CPURegister8,
-      this.registers.f as CPURegister8
-    );
-    this.registers.bc = new CPURegisterPair(
-      this.registers.b as CPURegister8,
-      this.registers.c as CPURegister8
-    );
-    this.registers.de = new CPURegisterPair(
-      this.registers.d as CPURegister8,
-      this.registers.e as CPURegister8
-    );
-    this.registers.hl = new CPURegisterPair(
-      this.registers.h as CPURegister8,
-      this.registers.l as CPURegister8
-    );
+    this.clock = new CPURegister8();
+    this.registers = new CPURegisterSet();
 
     this.operations = {
       0x00: {
@@ -118,7 +65,7 @@ export default class CPU {
         mnemonic: "LD BC, nn",
         description: "Load 16-bit immediate into BC.",
         fn: () => {
-          this.loadImmediateWordToPair(this.registers.bc as CPURegisterPair);
+          this.loadImmediateWordTo16Bit(this.registers.bc as CPURegisterPair);
           return 3;
         },
       },
@@ -191,7 +138,7 @@ export default class CPU {
         description:
           "Adds the contents of BC to the contents of HL and stores results in HL.",
         fn: () => {
-          this.addPairIntoHL(this.registers.bc as CPURegisterPair);
+          this.add16BitIntoHL(this.registers.bc as CPURegisterPair);
           return 2;
         },
       },
@@ -262,7 +209,7 @@ export default class CPU {
         mnemonic: "LD DE, nn",
         description: "Load 16-bit immediate into DE",
         fn: () => {
-          this.loadImmediateWordToPair(this.registers.de as CPURegisterPair);
+          this.loadImmediateWordTo16Bit(this.registers.de as CPURegisterPair);
           return 3;
         },
       },
@@ -341,7 +288,7 @@ export default class CPU {
         description:
           "Adds the contents of DE to the contents of HL and stores results in HL.",
         fn: () => {
-          this.addPairIntoHL(this.registers.de as CPURegisterPair);
+          this.add16BitIntoHL(this.registers.de as CPURegisterPair);
           return 2;
         },
       },
@@ -424,7 +371,7 @@ export default class CPU {
         mnemonic: "LD HL, nn",
         description: "Load 16-bit immediate into HL",
         fn: () => {
-          this.loadImmediateWordToPair(this.registers.hl as CPURegisterPair);
+          this.loadImmediateWordTo16Bit(this.registers.hl as CPURegisterPair);
           return 3;
         },
       },
@@ -440,7 +387,7 @@ export default class CPU {
         mnemonic: "INC HL",
         description: "Increment 16-bit HL",
         fn: () => {
-          this.registers.HL.Value++;
+          this.registers.hl.Value++;
           return 2;
         },
       },
@@ -529,7 +476,7 @@ export default class CPU {
         description:
           "Adds the contents of HL to the contents of HL and stores results in HL.",
         fn: () => {
-          this.addPairIntoHL(this.registers.hl as CPURegisterPair);
+          this.add16BitIntoHL(this.registers.hl as CPURegisterPair);
           return 2;
         },
       },
@@ -575,10 +522,15 @@ export default class CPU {
         },
       },
       0x2f: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "CPL",
+        description: "Take the one's complement of the contents of register A.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          // To find the one's complement of a number, flip all the bits.
+          // e.g. 0b1011 ^ 0b1111 = 0b0100
+          this.HalfCarryFlag = false;
+          this.SubtractFlag = false;
+          this.registers.a.Value ^= 0xff;
+          return 1;
         },
       },
       0x30: {
@@ -592,7 +544,7 @@ export default class CPU {
         mnemonic: "LD SP, nn",
         description: "Load 16-bit immediate into SP",
         fn: () => {
-          this.loadImmediateWordToPair(this.registers.sp as CPURegisterPair);
+          this.loadImmediateWordTo16Bit(this.registers.sp);
           return 3;
         },
       },
@@ -652,7 +604,7 @@ export default class CPU {
         description:
           "Adds the contents of SP to the contents of HL and stores results in HL.",
         fn: () => {
-          this.addPairIntoHL(this.registers.sp as CPURegisterPair);
+          this.add16BitIntoHL(this.registers.sp);
           return 2;
         },
       },
@@ -2058,10 +2010,9 @@ export default class CPU {
    */
   private reset() {
     for (const k of Object.keys(this.registers)) {
-      this.registers[k].Value = 0;
+      this.registers[k as keyof ICPURegisterSet].Value = 0;
     }
-    this.clock.mCycles.Value = 0;
-    this.clock.tCycles.Value = 0;
+    this.clock.Value = 0;
   }
 
   /**
@@ -2149,8 +2100,8 @@ export default class CPU {
    *
    * Opcodes: 0x01, 0x11, 0x21, 0x31
    */
-  private loadImmediateWordToPair(pair: CPURegisterPair) {
-    pair.Value = this.mmu.readWord(this.registers.pc.Value);
+  private loadImmediateWordTo16Bit(register: CPURegister16) {
+    register.Value = this.mmu.readWord(this.registers.pc.Value);
     this.registers.pc.Value += 2;
   }
 
@@ -2190,15 +2141,15 @@ export default class CPU {
    *
    * Opcodes: 0x09, 0x19, 0x29, 0x39
    */
-  private addPairIntoHL(pair: CPURegisterPair) {
+  private add16BitIntoHL(register: CPURegister16) {
     this.SubtractFlag = false;
     // Set if there is a carry from bit 11; otherwise reset.
     this.HalfCarryFlag =
-      (this.registers.hl.Value & 0xfff) + (pair.Value & 0xfff) > 0xfff;
+      (this.registers.hl.Value & 0xfff) + (register.Value & 0xfff) > 0xfff;
     // Set if there is a carry from bit 15; otherwise reset.
     this.CarryFlag =
-      (this.registers.hl.Value & 0xffff) + (pair.Value & 0xffff) > 0xfff;
-    this.registers.hl.Value += pair.Value;
+      (this.registers.hl.Value & 0xffff) + (register.Value & 0xffff) > 0xfff;
+    this.registers.hl.Value += register.Value;
   }
 
   /**
@@ -2219,11 +2170,6 @@ export default class CPU {
 /**
  * Interfaces
  */
-
-interface IRegisterSet {
-  [index: string]: CPURegister;
-}
-
 interface IOperationMap {
   [index: number]: IOperation;
 }

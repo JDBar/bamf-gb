@@ -1,7 +1,7 @@
-import CPURegister from "./class.CPURegister";
+import CPURegister16 from "./class.CPURegister16";
 import CPURegister8 from "./class.CPURegister8";
 
-export default class CPURegisterPair extends CPURegister {
+export default class CPURegisterPair extends CPURegister16 {
   protected value: number;
   private high: CPURegister8;
   private low: CPURegister8;
