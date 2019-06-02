@@ -703,45 +703,51 @@ export default class CPU {
         },
       },
       0x40: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD B, B",
+        description: "Loads the contents of register B into register B.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.load8BitTo8Bit(this.registers.b, this.registers.b);
+          return 1;
         },
       },
       0x41: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD B, C",
+        description: "Loads the contents of register C into register B.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.load8BitTo8Bit(this.registers.c, this.registers.b);
+          return 1;
         },
       },
       0x42: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD B, D",
+        description: "Loads the contents of register D into register B.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.load8BitTo8Bit(this.registers.d, this.registers.b);
+          return 1;
         },
       },
       0x43: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD B, E",
+        description: "Loads the contents of register E into register B.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.load8BitTo8Bit(this.registers.e, this.registers.b);
+          return 1;
         },
       },
       0x44: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD B, H",
+        description: "Loads the contents of register H into register B.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.load8BitTo8Bit(this.registers.h, this.registers.b);
+          return 1;
         },
       },
       0x45: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD B, L",
+        description: "Loads the contents of register L into register B.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.load8BitTo8Bit(this.registers.l, this.registers.b);
+          return 1;
         },
       },
       0x46: {
@@ -752,52 +758,59 @@ export default class CPU {
         },
       },
       0x47: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD B, A",
+        description: "Loads the contents of register A into register B.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.load8BitTo8Bit(this.registers.a, this.registers.b);
+          return 1;
         },
       },
       0x48: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD C, B",
+        description: "Loads the contents of register B into register C.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.load8BitTo8Bit(this.registers.b, this.registers.c);
+          return 1;
         },
       },
       0x49: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD C, C",
+        description: "Loads the contents of register C into register C.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.load8BitTo8Bit(this.registers.c, this.registers.c);
+          return 1;
         },
       },
       0x4a: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD C, D",
+        description: "Loads the contents of register D into register C.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.load8BitTo8Bit(this.registers.d, this.registers.c);
+          return 1;
         },
       },
       0x4b: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD C, E",
+        description: "Loads the contents of register E into register C.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.load8BitTo8Bit(this.registers.e, this.registers.c);
+          return 1;
         },
       },
       0x4c: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD C, H",
+        description: "Loads the contents of register H into register C.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.load8BitTo8Bit(this.registers.h, this.registers.c);
+          return 1;
         },
       },
       0x4d: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD C, L",
+        description: "Loads the contents of register L into register C.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.load8BitTo8Bit(this.registers.l, this.registers.c);
+          return 1;
         },
       },
       0x4e: {
@@ -808,52 +821,59 @@ export default class CPU {
         },
       },
       0x4f: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD C, A",
+        description: "Loads the contents of register A into register C.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.load8BitTo8Bit(this.registers.a, this.registers.c);
+          return 1;
         },
       },
       0x50: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD D, B",
+        description: "Loads the contents of register B into register D.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.load8BitTo8Bit(this.registers.b, this.registers.d);
+          return 1;
         },
       },
       0x51: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD D, C",
+        description: "Loads the contents of register C into register D.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.load8BitTo8Bit(this.registers.c, this.registers.d);
+          return 1;
         },
       },
       0x52: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD D, D",
+        description: "Loads the contents of register D into register D.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.load8BitTo8Bit(this.registers.d, this.registers.d);
+          return 1;
         },
       },
       0x53: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD D, E",
+        description: "Loads the contents of register E into register D.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.load8BitTo8Bit(this.registers.e, this.registers.d);
+          return 1;
         },
       },
       0x54: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD D, H",
+        description: "Loads the contents of register H into register D.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.load8BitTo8Bit(this.registers.h, this.registers.d);
+          return 1;
         },
       },
       0x55: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD D, L",
+        description: "Loads the contents of register L into register D.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.load8BitTo8Bit(this.registers.l, this.registers.d);
+          return 1;
         },
       },
       0x56: {
@@ -864,52 +884,59 @@ export default class CPU {
         },
       },
       0x57: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD D, A",
+        description: "Loads the contents of register A into register D.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.load8BitTo8Bit(this.registers.a, this.registers.d);
+          return 1;
         },
       },
       0x58: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD E, B",
+        description: "Loads the contents of register B into register E.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.load8BitTo8Bit(this.registers.b, this.registers.e);
+          return 1;
         },
       },
       0x59: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD E, C",
+        description: "Loads the contents of register C into register E.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.load8BitTo8Bit(this.registers.c, this.registers.e);
+          return 1;
         },
       },
       0x5a: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD E, D",
+        description: "Loads the contents of register D into register E.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.load8BitTo8Bit(this.registers.d, this.registers.e);
+          return 1;
         },
       },
       0x5b: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD E, E",
+        description: "Loads the contents of register E into register E.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.load8BitTo8Bit(this.registers.e, this.registers.e);
+          return 1;
         },
       },
       0x5c: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD E, H",
+        description: "Loads the contents of register H into register E.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.load8BitTo8Bit(this.registers.h, this.registers.e);
+          return 1;
         },
       },
       0x5d: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD E, L",
+        description: "Loads the contents of register L into register E.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.load8BitTo8Bit(this.registers.l, this.registers.e);
+          return 1;
         },
       },
       0x5e: {
@@ -920,52 +947,59 @@ export default class CPU {
         },
       },
       0x5f: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD E, A",
+        description: "Loads the contents of register A into register E.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.load8BitTo8Bit(this.registers.a, this.registers.e);
+          return 1;
         },
       },
       0x60: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD H, B",
+        description: "Loads the contents of register B into register H.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.load8BitTo8Bit(this.registers.b, this.registers.h);
+          return 1;
         },
       },
       0x61: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD H, C",
+        description: "Loads the contents of register C into register H.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.load8BitTo8Bit(this.registers.c, this.registers.h);
+          return 1;
         },
       },
       0x62: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD H, D",
+        description: "Loads the contents of register D into register H.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.load8BitTo8Bit(this.registers.d, this.registers.h);
+          return 1;
         },
       },
       0x63: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD H, E",
+        description: "Loads the contents of register E into register H.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.load8BitTo8Bit(this.registers.e, this.registers.h);
+          return 1;
         },
       },
       0x64: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD H, H",
+        description: "Loads the contents of register H into register H.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.load8BitTo8Bit(this.registers.h, this.registers.h);
+          return 1;
         },
       },
       0x65: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD H, L",
+        description: "Loads the contents of register L into register H.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.load8BitTo8Bit(this.registers.l, this.registers.h);
+          return 1;
         },
       },
       0x66: {
@@ -976,52 +1010,59 @@ export default class CPU {
         },
       },
       0x67: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD H, A",
+        description: "Loads the contents of register A into register H.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.load8BitTo8Bit(this.registers.a, this.registers.h);
+          return 1;
         },
       },
       0x68: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD L, B",
+        description: "Loads the contents of register B into register L.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.load8BitTo8Bit(this.registers.b, this.registers.l);
+          return 1;
         },
       },
       0x69: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD L, C",
+        description: "Loads the contents of register C into register L.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.load8BitTo8Bit(this.registers.c, this.registers.l);
+          return 1;
         },
       },
       0x6a: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD L, D",
+        description: "Loads the contents of register D into register L.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.load8BitTo8Bit(this.registers.d, this.registers.l);
+          return 1;
         },
       },
       0x6b: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD L, E",
+        description: "Loads the contents of register E into register L.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.load8BitTo8Bit(this.registers.e, this.registers.l);
+          return 1;
         },
       },
       0x6c: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD L, H",
+        description: "Loads the contents of register H into register L.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.load8BitTo8Bit(this.registers.h, this.registers.l);
+          return 1;
         },
       },
       0x6d: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD L, L",
+        description: "Loads the contents of register L into register L.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.load8BitTo8Bit(this.registers.l, this.registers.l);
+          return 1;
         },
       },
       0x6e: {
@@ -1032,10 +1073,11 @@ export default class CPU {
         },
       },
       0x6f: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD L, A",
+        description: "Loads the contents of register A into register L.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.load8BitTo8Bit(this.registers.a, this.registers.l);
+          return 1;
         },
       },
       0x70: {
@@ -2139,6 +2181,20 @@ export default class CPU {
   /**
    * CPU operations that can be reused.
    */
+
+  /**
+   * LD r, r'
+   * Loads the contents of register r' into register r.
+   *
+   * Opcodes:
+   *   0x40 - 0x45, 0x47 - 0x4D, 0x4F
+   *   0x50 - 0x55, 0x57 - 0x5D, 0x5F
+   *   0x60 - 0x65, 0x67 - 0x6D, 0x6F
+   *                0x78 - 0x7D
+   */
+  protected load8BitTo8Bit(source: CPURegister8, destination: CPURegister8) {
+    destination.Value = source.Value;
+  }
 
   /**
    * LD dd, nn
