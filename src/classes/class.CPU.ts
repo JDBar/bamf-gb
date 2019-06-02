@@ -1093,45 +1093,57 @@ export default class CPU {
         },
       },
       0x70: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD (HL), B",
+        description:
+          "Stores the contents of register B in memory specified by register pair HL.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.mmu.writeByte(this.registers.hl.Value, this.registers.b.Value);
+          return 2;
         },
       },
       0x71: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD (HL), C",
+        description:
+          "Stores the contents of register C in memory specified by register pair HL.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.mmu.writeByte(this.registers.hl.Value, this.registers.c.Value);
+          return 2;
         },
       },
       0x72: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD (HL), D",
+        description:
+          "Stores the contents of register D in memory specified by register pair HL.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.mmu.writeByte(this.registers.hl.Value, this.registers.d.Value);
+          return 2;
         },
       },
       0x73: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD (HL), E",
+        description:
+          "Stores the contents of register E in memory specified by register pair HL.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.mmu.writeByte(this.registers.hl.Value, this.registers.e.Value);
+          return 2;
         },
       },
       0x74: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD (HL), H",
+        description:
+          "Stores the contents of register H in memory specified by register pair HL.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.mmu.writeByte(this.registers.hl.Value, this.registers.h.Value);
+          return 2;
         },
       },
       0x75: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD (HL), L",
+        description:
+          "Stores the contents of register L in memory specified by register pair HL.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.mmu.writeByte(this.registers.hl.Value, this.registers.l.Value);
+          return 2;
         },
       },
       0x76: {
@@ -1142,10 +1154,12 @@ export default class CPU {
         },
       },
       0x77: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD (HL), A",
+        description:
+          "Stores the contents of register A in memory specified by register pair HL.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.mmu.writeByte(this.registers.hl.Value, this.registers.a.Value);
+          return 2;
         },
       },
       0x78: {
