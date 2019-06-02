@@ -1368,59 +1368,75 @@ export default class CPU {
         },
       },
       0x90: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "SUB B",
+        description:
+          "Subtracts the contents of register B from those of register A and stores the results in register A.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.subtract8BitFromA(this.registers.b.Value);
+          return 1;
         },
       },
       0x91: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "SUB C",
+        description:
+          "Subtracts the contents of register C from those of register A and stores the results in register A.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.subtract8BitFromA(this.registers.c.Value);
+          return 1;
         },
       },
       0x92: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "SUB D",
+        description:
+          "Subtracts the contents of register D from those of register A and stores the results in register A.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.subtract8BitFromA(this.registers.d.Value);
+          return 1;
         },
       },
       0x93: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "SUB E",
+        description:
+          "Subtracts the contents of register E from those of register A and stores the results in register A.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.subtract8BitFromA(this.registers.e.Value);
+          return 1;
         },
       },
       0x94: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "SUB H",
+        description:
+          "Subtracts the contents of register H from those of register A and stores the results in register A.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.subtract8BitFromA(this.registers.h.Value);
+          return 1;
         },
       },
       0x95: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "SUB L",
+        description:
+          "Subtracts the contents of register L from those of register A and stores the results in register A.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.subtract8BitFromA(this.registers.l.Value);
+          return 1;
         },
       },
       0x96: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "SUB (HL)",
+        description:
+          "Subtracts the contents of memory specified by the contents of register pair HL from the contents of Register A and stores the results in register A.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.subtract8BitFromA(this.mmu.readByte(this.registers.hl.Value));
+          return 2;
         },
       },
       0x97: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "SUB A",
+        description:
+          "Subtracts the contents of register A from those of register A and stores the results in register A.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.subtract8BitFromA(this.registers.a.Value);
+          return 1;
         },
       },
       0x98: {
@@ -2314,7 +2330,8 @@ export default class CPU {
 
   /**
    * ADD A, r
-   * Adds the contents of register r to those of register A and stores the results in register A.
+   * Adds the contents of register r to those of register A and stores
+   * the results in register A.
    *
    * Opcodes: 0x80 - 0x85, 0x87
    *
@@ -2360,6 +2377,31 @@ export default class CPU {
     this.HalfCarryFlag = (a & 0xf) + (value & 0xf) + cf > 0xf;
     this.ZeroFlag = this.registers.a.Value === 0;
     this.SubtractFlag = false;
+  }
+
+  /**
+   * SUB A, r
+   * Subtracts the contents of register r from those of register A and stores
+   * the results in register A.
+   *
+   * Opcodes: 0x90 - 0x95, 0x97
+   *
+   * SUB A, (HL)
+   * Subtracts the contents of memory specified by the contents of register pair HL from
+   * the contents of Register A and stores the results in register A.
+   *
+   * Opcodes: 0x96
+   */
+  protected subtract8BitFromA(value: number) {
+    const a = this.registers.a.Value;
+    value &= 0xff;
+
+    this.registers.a.Value = a - value;
+
+    this.CarryFlag = a - value < 0;
+    this.HalfCarryFlag = (a & 0xf) - (value & 0xf) < 0;
+    this.ZeroFlag = this.registers.a.Value === 0;
+    this.SubtractFlag = true;
   }
 
   /**
