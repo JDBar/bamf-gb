@@ -1440,59 +1440,77 @@ export default class CPU {
         },
       },
       0x98: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "SBC A, B",
+        description:
+          "Subtracts the contents of B and CarryFlag from the contents of register A and stores the results in A.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.subtract8BitAndCarryFromA(this.registers.b.Value);
+          return 1;
         },
       },
       0x99: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "SBC A, C",
+        description:
+          "Subtracts the contents of C and CarryFlag from the contents of register A and stores the results in A.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.subtract8BitAndCarryFromA(this.registers.c.Value);
+          return 1;
         },
       },
       0x9a: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "SBC A, D",
+        description:
+          "Subtracts the contents of D and CarryFlag from the contents of register A and stores the results in A.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.subtract8BitAndCarryFromA(this.registers.d.Value);
+          return 1;
         },
       },
       0x9b: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "SBC A, E",
+        description:
+          "Subtracts the contents of E and CarryFlag from the contents of register A and stores the results in A.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.subtract8BitAndCarryFromA(this.registers.e.Value);
+          return 1;
         },
       },
       0x9c: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "SBC A, H",
+        description:
+          "Subtracts the contents of H and CarryFlag from the contents of register A and stores the results in A.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.subtract8BitAndCarryFromA(this.registers.h.Value);
+          return 1;
         },
       },
       0x9d: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "SBC A, L",
+        description:
+          "Subtracts the contents of L and CarryFlag from the contents of register A and stores the results in A.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.subtract8BitAndCarryFromA(this.registers.l.Value);
+          return 1;
         },
       },
       0x9e: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "SBC A, (HL)",
+        description:
+          "Subtracts the contents of memory specified by HL and CarryFlag from the contents of register A and stores the results in A.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.subtract8BitAndCarryFromA(
+            this.mmu.readByte(this.registers.hl.Value)
+          );
+          return 2;
         },
       },
       0x9f: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "SBC A, A",
+        description:
+          "Subtracts the contents of A and CarryFlag from the contents of register A and stores the results in A.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.subtract8BitAndCarryFromA(this.registers.a.Value);
+          return 1;
         },
       },
       0xa0: {
@@ -2377,6 +2395,33 @@ export default class CPU {
     this.HalfCarryFlag = (a & 0xf) + (value & 0xf) + cf > 0xf;
     this.ZeroFlag = this.registers.a.Value === 0;
     this.SubtractFlag = false;
+  }
+
+  /**
+   * SBC A, r
+   * Subtracts the contents of register r and Carry Flag from register A and
+   * stores the results in register A.
+   *
+   * Opcodes: 0x98 - 0x9D, 0x9F
+   *
+   * SBC A, (HL)
+   * Subtracts the contents of memory specified by the contents of register
+   * pair HL and Carry Flag from register A and stores the results in
+   * register A.
+   *
+   * Opcodes: 0x9E
+   */
+  protected subtract8BitAndCarryFromA(value: number) {
+    const a = this.registers.a.Value;
+    const cf = this.CarryFlag ? 1 : 0;
+    value &= 0xff;
+
+    this.registers.a.Value = a - value - cf;
+
+    this.CarryFlag = a - value - cf < 0;
+    this.HalfCarryFlag = (a & 0xf) - (value & 0xf) - cf < 0;
+    this.ZeroFlag = this.registers.a.Value === 0;
+    this.SubtractFlag = true;
   }
 
   /**
