@@ -1514,59 +1514,75 @@ export default class CPU {
         },
       },
       0xa0: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "AND B",
+        description:
+          "Takes the logical-AND for each bit of the contents of B and A, and stores the results in A.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.logicalAnd8BitWithA(this.registers.b.Value);
+          return 1;
         },
       },
       0xa1: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "AND C",
+        description:
+          "Takes the logical-AND for each bit of the contents of C and A, and stores the results in A.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.logicalAnd8BitWithA(this.registers.c.Value);
+          return 1;
         },
       },
       0xa2: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "AND D",
+        description:
+          "Takes the logical-AND for each bit of the contents of D and A, and stores the results in A.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.logicalAnd8BitWithA(this.registers.d.Value);
+          return 1;
         },
       },
       0xa3: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "AND E",
+        description:
+          "Takes the logical-AND for each bit of the contents of E and A, and stores the results in A.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.logicalAnd8BitWithA(this.registers.e.Value);
+          return 1;
         },
       },
       0xa4: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "AND H",
+        description:
+          "Takes the logical-AND for each bit of the contents of H and A, and stores the results in A.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.logicalAnd8BitWithA(this.registers.h.Value);
+          return 1;
         },
       },
       0xa5: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "AND L",
+        description:
+          "Takes the logical-AND for each bit of the contents of L and A, and stores the results in A.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.logicalAnd8BitWithA(this.registers.l.Value);
+          return 1;
         },
       },
       0xa6: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "AND (HL)",
+        description:
+          "Takes the logical-AND for each bit of the contents of memory specified by the contents of HL and A, and stores the results in A.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.logicalAnd8BitWithA(this.mmu.readByte(this.registers.hl.Value));
+          return 2;
         },
       },
       0xa7: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "AND A",
+        description:
+          "Takes the logical-AND for each bit of the contents of A and A, and stores the results in A.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.logicalAnd8BitWithA(this.registers.a.Value);
+          return 1;
         },
       },
       0xa8: {
@@ -2447,6 +2463,28 @@ export default class CPU {
     this.HalfCarryFlag = (a & 0xf) - (value & 0xf) < 0;
     this.ZeroFlag = this.registers.a.Value === 0;
     this.SubtractFlag = true;
+  }
+
+  /**
+   * AND r
+   * Takes the logical AND for each bit of the contents of register r
+   * and register A, and stores the results in register A.
+   *
+   * Opcodes: 0xA0 - 0xA5, 0xA7
+   *
+   * AND (HL)
+   * Takes the logical AND for each bit of the contents of memory specified
+   * by the contents of register pair HL and register A, and stores the results
+   * in register A.
+   *
+   * Opcodes: 0xA6
+   */
+  protected logicalAnd8BitWithA(value: number) {
+    this.registers.a.Value &= value;
+    this.CarryFlag = false;
+    this.HalfCarryFlag = true;
+    this.SubtractFlag = false;
+    this.ZeroFlag = this.registers.a.Value === 0;
   }
 
   /**
