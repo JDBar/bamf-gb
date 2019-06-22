@@ -1730,59 +1730,75 @@ export default class CPU {
         },
       },
       0xb8: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "CP B",
+        description:
+          "Subtracts the contents of B from those of A and does not store the results",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.compare8BitWithA(this.registers.b.Value);
+          return 1;
         },
       },
       0xb9: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "CP C",
+        description:
+          "Subtracts the contents of C from those of A and does not store the results",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.compare8BitWithA(this.registers.c.Value);
+          return 1;
         },
       },
       0xba: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "CP D",
+        description:
+          "Subtracts the contents of D from those of A and does not store the results",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.compare8BitWithA(this.registers.d.Value);
+          return 1;
         },
       },
       0xbb: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "CP E",
+        description:
+          "Subtracts the contents of E from those of A and does not store the results",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.compare8BitWithA(this.registers.e.Value);
+          return 1;
         },
       },
       0xbc: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "CP H",
+        description:
+          "Subtracts the contents of H from those of A and does not store the results",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.compare8BitWithA(this.registers.h.Value);
+          return 1;
         },
       },
       0xbd: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "CP L",
+        description:
+          "Subtracts the contents of L from those of A and does not store the results",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.compare8BitWithA(this.registers.l.Value);
+          return 1;
         },
       },
       0xbe: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "CP (HL)",
+        description:
+          "Subtracts the contents of memory specified by HL from those of A and does not store the results",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.compare8BitWithA(this.mmu.readByte(this.registers.hl.Value));
+          return 2;
         },
       },
       0xbf: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "CP A",
+        description:
+          "Subtracts the contents of A from those of A and does not store the results",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.compare8BitWithA(this.registers.a.Value);
+          return 1;
         },
       },
       0xc0: {
@@ -2446,6 +2462,54 @@ export default class CPU {
   }
 
   /**
+   * SUB A, r
+   * Subtracts the contents of register r from those of register A and stores
+   * the results in register A.
+   *
+   * Opcodes: 0x90 - 0x95, 0x97
+   *
+   * SUB A, (HL)
+   * Subtracts the contents of memory specified by the contents of register pair HL from
+   * the contents of Register A and stores the results in register A.
+   *
+   * Opcodes: 0x96
+   */
+  protected subtract8BitFromA(value: number) {
+    const a = this.registers.a.Value;
+    value &= 0xff;
+
+    this.registers.a.Value = a - value;
+
+    this.CarryFlag = a - value < 0;
+    this.HalfCarryFlag = (a & 0xf) - (value & 0xf) < 0;
+    this.ZeroFlag = this.registers.a.Value === 0;
+    this.SubtractFlag = true;
+  }
+
+  /**
+   * CP r
+   * Subtracts the contents of register r from those of register A and
+   * does not store the results.
+   *
+   * Opcodes: 0xB8 - 0xBD, 0xBF
+   *
+   * CP (HL)
+   * Subtracts the contents of memory specified by register pair HL from
+   * those of register A and does not store the results.
+   *
+   * Opcodes: 0x8E
+   */
+  protected compare8BitWithA(value: number) {
+    const a = this.registers.a.Value;
+    value &= 0xff;
+
+    this.CarryFlag = a - value < 0;
+    this.HalfCarryFlag = (a & 0xf) - (value & 0xf) < 0;
+    this.ZeroFlag = a - value === 0;
+    this.SubtractFlag = true;
+  }
+
+  /**
    * SBC A, r
    * Subtracts the contents of register r and Carry Flag from register A and
    * stores the results in register A.
@@ -2468,31 +2532,6 @@ export default class CPU {
 
     this.CarryFlag = a - value - cf < 0;
     this.HalfCarryFlag = (a & 0xf) - (value & 0xf) - cf < 0;
-    this.ZeroFlag = this.registers.a.Value === 0;
-    this.SubtractFlag = true;
-  }
-
-  /**
-   * SUB A, r
-   * Subtracts the contents of register r from those of register A and stores
-   * the results in register A.
-   *
-   * Opcodes: 0x90 - 0x95, 0x97
-   *
-   * SUB A, (HL)
-   * Subtracts the contents of memory specified by the contents of register pair HL from
-   * the contents of Register A and stores the results in register A.
-   *
-   * Opcodes: 0x96
-   */
-  protected subtract8BitFromA(value: number) {
-    const a = this.registers.a.Value;
-    value &= 0xff;
-
-    this.registers.a.Value = a - value;
-
-    this.CarryFlag = a - value < 0;
-    this.HalfCarryFlag = (a & 0xf) - (value & 0xf) < 0;
     this.ZeroFlag = this.registers.a.Value === 0;
     this.SubtractFlag = true;
   }
