@@ -1586,59 +1586,75 @@ export default class CPU {
         },
       },
       0xa8: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "XOR B",
+        description:
+          "Takes the logical exclusive-OR for each bit of the contents of B and A, and stroes the results in A.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.logicalXor8BitWithA(this.registers.b.Value);
+          return 1;
         },
       },
       0xa9: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "XOR C",
+        description:
+          "Takes the logical exclusive-OR for each bit of the contents of C and A, and stroes the results in A.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.logicalXor8BitWithA(this.registers.c.Value);
+          return 1;
         },
       },
       0xaa: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "XOR D",
+        description:
+          "Takes the logical exclusive-OR for each bit of the contents of D and A, and stroes the results in A.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.logicalXor8BitWithA(this.registers.d.Value);
+          return 1;
         },
       },
       0xab: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "XOR E",
+        description:
+          "Takes the logical exclusive-OR for each bit of the contents of E and A, and stroes the results in A.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.logicalXor8BitWithA(this.registers.e.Value);
+          return 1;
         },
       },
       0xac: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "XOR H",
+        description:
+          "Takes the logical exclusive-OR for each bit of the contents of H and A, and stroes the results in A.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.logicalXor8BitWithA(this.registers.h.Value);
+          return 1;
         },
       },
       0xad: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "XOR L",
+        description:
+          "Takes the logical exclusive-OR for each bit of the contents of L and A, and stroes the results in A.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.logicalXor8BitWithA(this.registers.l.Value);
+          return 1;
         },
       },
       0xae: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "XOR (HL)",
+        description:
+          "Takes the logical exclusive-OR for each bit of the contents of memory specified by HL and A, and stroes the results in A.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.logicalXor8BitWithA(this.mmu.readByte(this.registers.hl.Value));
+          return 2;
         },
       },
       0xaf: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "XOR A",
+        description:
+          "Takes the logical exclusive-OR for each bit of the contents of A and A, and stroes the results in A.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.logicalXor8BitWithA(this.registers.a.Value);
+          return 1;
         },
       },
       0xb0: {
@@ -2483,6 +2499,28 @@ export default class CPU {
     this.registers.a.Value &= value;
     this.CarryFlag = false;
     this.HalfCarryFlag = true;
+    this.SubtractFlag = false;
+    this.ZeroFlag = this.registers.a.Value === 0;
+  }
+
+  /**
+   * XOR r
+   * Takes the logical exclusive-OR for each bit of the contents of
+   * register r and register A, and stores the results in register A.
+   *
+   * Opcodes: 0xA8 - 0xAD, 0xAF
+   *
+   * XOR (HL)
+   * Takes the logical exclusive-OR for each bit of the contents of
+   * memory specified by the contents of register pair HL and register A,
+   * and stores the results in register A.
+   *
+   * Opcodes: 0xAE
+   */
+  protected logicalXor8BitWithA(value: number) {
+    this.registers.a.Value ^= value;
+    this.CarryFlag = false;
+    this.HalfCarryFlag = false;
     this.SubtractFlag = false;
     this.ZeroFlag = this.registers.a.Value === 0;
   }
