@@ -135,7 +135,7 @@ export default class CPU {
         description:
           "Adds the contents of BC to the contents of HL and stores results in HL.",
         fn: () => {
-          this.add16BitIntoHL(this.registers.bc as CPURegisterPair);
+          this.add16BitIntoHL(this.registers.bc.Value);
           return 2;
         },
       },
@@ -284,7 +284,7 @@ export default class CPU {
         description:
           "Adds the contents of DE to the contents of HL and stores results in HL.",
         fn: () => {
-          this.add16BitIntoHL(this.registers.de as CPURegisterPair);
+          this.add16BitIntoHL(this.registers.de.Value);
           return 2;
         },
       },
@@ -484,7 +484,7 @@ export default class CPU {
         description:
           "Adds the contents of HL to the contents of HL and stores results in HL.",
         fn: () => {
-          this.add16BitIntoHL(this.registers.hl as CPURegisterPair);
+          this.add16BitIntoHL(this.registers.hl.Value);
           return 2;
         },
       },
@@ -649,7 +649,7 @@ export default class CPU {
         description:
           "Adds the contents of SP to the contents of HL and stores results in HL.",
         fn: () => {
-          this.add16BitIntoHL(this.registers.sp);
+          this.add16BitIntoHL(this.registers.sp.Value);
           return 2;
         },
       },
@@ -2426,14 +2426,17 @@ export default class CPU {
    *
    * Opcodes: 0x09, 0x19, 0x29, 0x39
    */
-  protected add16BitIntoHL(register: CPURegister16) {
+  protected add16BitIntoHL(value: number) {
+    const hl = this.registers.hl.Value;
+    value &= 0xffff;
+
     this.SubtractFlag = false;
     // Set if there is a carry from bit 11; otherwise reset.
-    this.HalfCarryFlag =
-      (this.registers.hl.Value & 0xfff) + (register.Value & 0xfff) > 0xfff;
+    this.HalfCarryFlag = (hl & 0xfff) + (value & 0xfff) > 0xfff;
     // Set if there is a carry from bit 15; otherwise reset.
-    this.CarryFlag = this.registers.hl.Value + register.Value > 0xffff;
-    this.registers.hl.Value += register.Value;
+    this.CarryFlag = hl + value > 0xffff;
+
+    this.registers.hl.Value += value;
   }
 
   /**
