@@ -1802,10 +1802,15 @@ export default class CPU {
         },
       },
       0xc0: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "RET NZ",
+        description:
+          "If the Zero Flag is not set, control is returned to the source program by popping from memory the PC value pushed to the stack when the subroutine was called.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          if (!this.ZeroFlag) {
+            this.returnAndUpdateStack();
+            return 5;
+          }
+          return 2;
         },
       },
       0xc1: {
@@ -1858,17 +1863,24 @@ export default class CPU {
         },
       },
       0xc8: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "RET Z",
+        description:
+          "If the Zero Flag is set, control is returned to the source program by popping from memory the PC value pushed to the stack when the subroutine was called.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          if (this.ZeroFlag) {
+            this.returnAndUpdateStack();
+            return 5;
+          }
+          return 2;
         },
       },
       0xc9: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "RET",
+        description:
+          "Pops from the memory stack the PC value pushed when the subroutine was called, returning control to the source program.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.returnAndUpdateStack();
+          return 4;
         },
       },
       0xca: {
@@ -1914,10 +1926,15 @@ export default class CPU {
         },
       },
       0xd0: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "RET NC",
+        description:
+          "If the Carry Flag is not set, control is returned to the source program by popping from memory the PC value pushed to the stack when the subroutine was called.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          if (!this.CarryFlag) {
+            this.returnAndUpdateStack();
+            return 5;
+          }
+          return 2;
         },
       },
       0xd1: {
@@ -1970,10 +1987,15 @@ export default class CPU {
         },
       },
       0xd8: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "RET C",
+        description:
+          "If the Carry Flag is set, control is returned to the source program by popping from memory the PC value pushed to the stack when the subroutine was called.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          if (this.CarryFlag) {
+            this.returnAndUpdateStack();
+            return 5;
+          }
+          return 2;
         },
       },
       0xd9: {
@@ -2600,6 +2622,21 @@ export default class CPU {
     this.HalfCarryFlag = false;
     this.SubtractFlag = false;
     this.ZeroFlag = this.registers.a.Value === 0;
+  }
+
+  /**
+   * RET
+   * Pops from the memory stack the PC value pushed when the subroutine was
+   * called, returning control to the source program.
+   *
+   * In this case, the 16-bit of address specified by SP are loaded into
+   * the PC, and the contents of SP are incremented by 2.
+   *
+   * Opcodes: 0xC9
+   */
+  protected returnAndUpdateStack() {
+    this.registers.pc.Value = this.mmu.readWord(this.registers.sp.Value);
+    this.registers.sp.Value += 2;
   }
 
   /**
