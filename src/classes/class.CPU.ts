@@ -1807,17 +1807,18 @@ export default class CPU {
           "If the Zero Flag is not set, control is returned to the source program by popping from memory the PC value pushed to the stack when the subroutine was called.",
         fn: () => {
           if (!this.ZeroFlag) {
-            this.returnAndUpdateStack();
+            this.popFromStackIntoRegister16(this.registers.pc);
             return 5;
           }
           return 2;
         },
       },
       0xc1: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "POP BC",
+        description: "Pops contents from the memory stack and into BC.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.popFromStackIntoRegister16(this.registers.bc);
+          return 3;
         },
       },
       0xc2: {
@@ -1868,7 +1869,7 @@ export default class CPU {
           "If the Zero Flag is set, control is returned to the source program by popping from memory the PC value pushed to the stack when the subroutine was called.",
         fn: () => {
           if (this.ZeroFlag) {
-            this.returnAndUpdateStack();
+            this.popFromStackIntoRegister16(this.registers.pc);
             return 5;
           }
           return 2;
@@ -1879,7 +1880,7 @@ export default class CPU {
         description:
           "Pops from the memory stack the PC value pushed when the subroutine was called, returning control to the source program.",
         fn: () => {
-          this.returnAndUpdateStack();
+          this.popFromStackIntoRegister16(this.registers.pc);
           return 4;
         },
       },
@@ -1931,17 +1932,18 @@ export default class CPU {
           "If the Carry Flag is not set, control is returned to the source program by popping from memory the PC value pushed to the stack when the subroutine was called.",
         fn: () => {
           if (!this.CarryFlag) {
-            this.returnAndUpdateStack();
+            this.popFromStackIntoRegister16(this.registers.pc);
             return 5;
           }
           return 2;
         },
       },
       0xd1: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "POP DE",
+        description: "Pops contents from the memory stack and into DE.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.popFromStackIntoRegister16(this.registers.de);
+          return 3;
         },
       },
       0xd2: {
@@ -1992,7 +1994,7 @@ export default class CPU {
           "If the Carry Flag is set, control is returned to the source program by popping from memory the PC value pushed to the stack when the subroutine was called.",
         fn: () => {
           if (this.CarryFlag) {
-            this.returnAndUpdateStack();
+            this.popFromStackIntoRegister16(this.registers.pc);
             return 5;
           }
           return 2;
@@ -2055,10 +2057,11 @@ export default class CPU {
         },
       },
       0xe1: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "POP HL",
+        description: "Pops contents from the memory stack and into HL.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.popFromStackIntoRegister16(this.registers.hl);
+          return 3;
         },
       },
       0xe2: {
@@ -2167,10 +2170,11 @@ export default class CPU {
         },
       },
       0xf1: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "POP AF",
+        description: "Pops contents from the memory stack and into AF.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.popFromStackIntoRegister16(this.registers.af);
+          return 3;
         },
       },
       0xf2: {
@@ -2625,6 +2629,11 @@ export default class CPU {
   }
 
   /**
+   * POP qq
+   * Pops contents from the memory stack and into register pair qq.
+   *
+   * Opcodes: 0xC1, 0xD1, 0xE1, 0xF1
+   *
    * RET
    * Pops from the memory stack the PC value pushed when the subroutine was
    * called, returning control to the source program.
@@ -2634,8 +2643,8 @@ export default class CPU {
    *
    * Opcodes: 0xC9
    */
-  protected returnAndUpdateStack() {
-    this.registers.pc.Value = this.mmu.readWord(this.registers.sp.Value);
+  protected popFromStackIntoRegister16(register: CPURegister16) {
+    register.Value = this.mmu.readWord(this.registers.sp.Value);
     this.registers.sp.Value += 2;
   }
 
