@@ -2109,10 +2109,12 @@ export default class CPU {
         },
       },
       0xe0: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD (n), A",
+        description: "Loads the contents of A to memory address 0xFF00 + n.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          const n = this.mmu.readByte(this.registers.pc.Value++);
+          this.mmu.writeByte(0xff00 + n, this.registers.a.Value);
+          return 3;
         },
       },
       0xe1: {
@@ -2198,10 +2200,13 @@ export default class CPU {
         },
       },
       0xf0: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD A, (n)",
+        description:
+          "Loads into A the contents of memory specified by (0xFF00 + n)",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          const n = this.mmu.readByte(this.registers.pc.Value++);
+          this.registers.a.Value = this.mmu.readByte(0xff00 + n);
+          return 3;
         },
       },
       0xf1: {
