@@ -1837,19 +1837,19 @@ export default class CPU {
         },
       },
       0xc3: {
-        mnemonic: "",
-        description: "",
-        fn: () => {
-          throw new Error("Instruction not implemented.");
-        },
-      },
-      0xc4: {
         mnemonic: "JP nn",
         description:
           "Loads the operand nn to the program counter PC, where nn specifies the address of the subsequently executed instruction.",
         fn: () => {
           this.registers.pc.Value = this.mmu.readWord(this.registers.pc.Value);
           return 4;
+        },
+      },
+      0xc4: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
         },
       },
       0xc5: {
