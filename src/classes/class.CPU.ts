@@ -2759,8 +2759,8 @@ export default class CPU {
    * Opcodes: 0xC5, 0xD5, 0xE5, 0xF5
    */
   protected pushWordToStack(value: number) {
-    this.mmu.writeWord(this.registers.sp.Value, value);
     this.registers.sp.Value -= 2;
+    this.mmu.writeWord(this.registers.sp.Value, value);
   }
 
   /**
@@ -2781,14 +2781,14 @@ export default class CPU {
     const subroutineAddress = this.mmu.readWord(this.registers.pc.Value);
     this.registers.pc.Value += 2;
 
+    // Decrement the stack pointer for the 2 bytes we will write to the stack.
+    this.registers.sp.Value -= 2;
+
     // Push the current program counter onto the stack.
     this.mmu.writeWord(this.registers.sp.Value, this.registers.pc.Value);
 
     // Update the program counter to the address of the subroutine..
     this.registers.pc.Value = subroutineAddress;
-
-    // Decrement the stack pointer for the 2 bytes we wrote to the stack.
-    this.registers.sp.Value -= 2;
   }
 
   /**
