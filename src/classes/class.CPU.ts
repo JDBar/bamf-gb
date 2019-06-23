@@ -1859,10 +1859,11 @@ export default class CPU {
         },
       },
       0xc5: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "PUSH BC",
+        description: "Pushes the contents of BC onto the memory stack.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.pushWordToStack(this.registers.bc.Value);
+          return 4;
         },
       },
       0xc6: {
@@ -2014,10 +2015,11 @@ export default class CPU {
         },
       },
       0xd5: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "PUSH DE",
+        description: "Pushes the contents of DE onto the memory stack.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.pushWordToStack(this.registers.de.Value);
+          return 4;
         },
       },
       0xd6: {
@@ -2146,10 +2148,11 @@ export default class CPU {
         },
       },
       0xe5: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "PUSH HL",
+        description: "Pushes the contents of HL onto the memory stack.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.pushWordToStack(this.registers.hl.Value);
+          return 4;
         },
       },
       0xe6: {
@@ -2259,10 +2262,11 @@ export default class CPU {
         },
       },
       0xf5: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "PUSH AF",
+        description: "Pushes the contents of AF onto the memory stack.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.pushWordToStack(this.registers.af.Value);
+          return 4;
         },
       },
       0xf6: {
