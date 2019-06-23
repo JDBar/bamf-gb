@@ -1867,10 +1867,12 @@ export default class CPU {
         },
       },
       0xc6: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "ADD A, n",
+        description:
+          "Adds 8-bit immediate n to the contents of A and stores the results in A.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.addByteToA(this.mmu.readByte(this.registers.pc.Value++));
+          return 2;
         },
       },
       0xc7: {
@@ -2023,10 +2025,12 @@ export default class CPU {
         },
       },
       0xd6: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "SUB n",
+        description:
+          "Subtracts 8-bit immediate n from the contents of A and stores the result in A.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.subtractByteFromA(this.mmu.readByte(this.registers.pc.Value++));
+          return 2;
         },
       },
       0xd7: {
@@ -2156,10 +2160,14 @@ export default class CPU {
         },
       },
       0xe6: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "AND n",
+        description:
+          "Takes the logical AND for each bit of 8-bit immediate n and A, and stores the results in A.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.logicalAndByteWithA(
+            this.mmu.readByte(this.registers.pc.Value++)
+          );
+          return 2;
         },
       },
       0xe7: {
@@ -2270,10 +2278,12 @@ export default class CPU {
         },
       },
       0xf6: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "OR n",
+        description:
+          "Takes the logical-OR for each bit of 8-bit immediate n and A and stores the results in A.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.logicalOrByteWithA(this.mmu.readByte(this.registers.pc.Value++));
+          return 2;
         },
       },
       0xf7: {
@@ -2518,6 +2528,12 @@ export default class CPU {
    * the contents of Register A and stores the results in register A.
    *
    * Opcodes: 0x86
+   *
+   * ADD A, n
+   * Adds the contents of 8-bit immediate n to those of register A and
+   * stores the results in register A.
+   *
+   * Opcodes: 0xC6
    */
   protected addByteToA(value: number) {
     const a = this.registers.a.Value;
@@ -2569,6 +2585,12 @@ export default class CPU {
    * the contents of Register A and stores the results in register A.
    *
    * Opcodes: 0x96
+   *
+   * SUB n
+   * Subtracts 8-bit immediate n from contents of register A and stores
+   * the results in register A.
+   *
+   * Opcodes: 0xD6
    */
   protected subtractByteFromA(value: number) {
     const a = this.registers.a.Value;
@@ -2645,6 +2667,12 @@ export default class CPU {
    * in register A.
    *
    * Opcodes: 0xA6
+   *
+   * AND n
+   * Takes the logical AND for each bit of 8-bit immediate n
+   * and register A, and stores the results in register A.
+   *
+   * Opcodes: 0xE6
    */
   protected logicalAndByteWithA(value: number) {
     this.registers.a.Value &= value;
@@ -2689,6 +2717,12 @@ export default class CPU {
    * and stores the results in register A.
    *
    * Opcodes: 0xB6
+   *
+   * OR n
+   * Takes the logical-OR for each bit of 8-bit immediate n
+   * and the contents of register A, and stores the results in register A.
+   *
+   * Opcodes: 0xF6
    */
   protected logicalOrByteWithA(value: number) {
     this.registers.a.Value |= value;
