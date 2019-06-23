@@ -1,6 +1,5 @@
 import CPURegister16 from "./class.CPURegister16";
 import CPURegister8 from "./class.CPURegister8";
-import CPURegisterPair from "./class.CPURegisterPair";
 import CPURegisterSet, {ICPURegisterSet} from "./class.CPURegisterSet";
 import MMU from "./class.MMU";
 
@@ -1920,10 +1919,11 @@ export default class CPU {
         },
       },
       0xcb: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "PREFIX CB",
+        description:
+          "Tells the CPU to fetch an additional byte to be decoded with an alternate instruction mapping.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          throw new Error("0xCB is not an executable instruction.");
         },
       },
       0xcc: {
