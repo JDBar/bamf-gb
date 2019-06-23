@@ -1822,13 +1822,6 @@ export default class CPU {
         },
       },
       0xc2: {
-        mnemonic: "",
-        description: "",
-        fn: () => {
-          throw new Error("Instruction not implemented.");
-        },
-      },
-      0xc3: {
         mnemonic: "JP NZ, nn",
         description:
           "If the Zero Flag is not set, loads the operand nn to the program counter PC, where nn specifies the address of the subsequently executed instruction.",
@@ -1841,6 +1834,13 @@ export default class CPU {
           }
           this.registers.pc.Value += 2;
           return 3;
+        },
+      },
+      0xc3: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
         },
       },
       0xc4: {
@@ -1965,13 +1965,6 @@ export default class CPU {
         },
       },
       0xd2: {
-        mnemonic: "",
-        description: "",
-        fn: () => {
-          throw new Error("Instruction not implemented.");
-        },
-      },
-      0xd3: {
         mnemonic: "JP NC, nn",
         description:
           "If the Carry Flag is not set, loads the operand nn to the program counter PC, where nn specifies the address of the subsequently executed instruction.",
@@ -1984,6 +1977,13 @@ export default class CPU {
           }
           this.registers.pc.Value += 2;
           return 3;
+        },
+      },
+      0xd3: {
+        mnemonic: "",
+        description: "",
+        fn: () => {
+          throw new Error("Instruction not implemented.");
         },
       },
       0xd4: {
