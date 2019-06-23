@@ -62,7 +62,7 @@ export default class CPU {
         mnemonic: "LD BC, nn",
         description: "Load 16-bit immediate into BC.",
         fn: () => {
-          this.loadImmediateWordTo16Bit(this.registers.bc as CPURegisterPair);
+          this.loadImmediateWordToRegister(this.registers.bc);
           return 3;
         },
       },
@@ -86,7 +86,7 @@ export default class CPU {
         mnemonic: "INC B",
         description: "Increment B",
         fn: () => {
-          this.incrementRegister8(this.registers.b as CPURegister8);
+          this.incrementRegister(this.registers.b);
           return 1;
         },
       },
@@ -94,7 +94,7 @@ export default class CPU {
         mnemonic: "DEC B",
         description: "Decrement B",
         fn: () => {
-          this.decrementRegister8(this.registers.b as CPURegister8);
+          this.decrementRegister(this.registers.b);
           return 1;
         },
       },
@@ -135,7 +135,7 @@ export default class CPU {
         description:
           "Adds the contents of BC to the contents of HL and stores results in HL.",
         fn: () => {
-          this.add16BitIntoHL(this.registers.bc.Value);
+          this.addWordToHL(this.registers.bc.Value);
           return 2;
         },
       },
@@ -159,7 +159,7 @@ export default class CPU {
         mnemonic: "INC C",
         description: "Increment C",
         fn: () => {
-          this.incrementRegister8(this.registers.c as CPURegister8);
+          this.incrementRegister(this.registers.c);
           return 1;
         },
       },
@@ -167,7 +167,7 @@ export default class CPU {
         mnemonic: "DEC C",
         description: "Decrement C",
         fn: () => {
-          this.decrementRegister8(this.registers.c as CPURegister8);
+          this.decrementRegister(this.registers.c);
           return 1;
         },
       },
@@ -205,7 +205,7 @@ export default class CPU {
         mnemonic: "LD DE, nn",
         description: "Load 16-bit immediate into DE",
         fn: () => {
-          this.loadImmediateWordTo16Bit(this.registers.de as CPURegisterPair);
+          this.loadImmediateWordToRegister(this.registers.de);
           return 3;
         },
       },
@@ -229,7 +229,7 @@ export default class CPU {
         mnemonic: "INC D",
         description: "Increment D",
         fn: () => {
-          this.incrementRegister8(this.registers.d as CPURegister8);
+          this.incrementRegister(this.registers.d);
           return 1;
         },
       },
@@ -237,7 +237,7 @@ export default class CPU {
         mnemonic: "DEC D",
         description: "Decrement D",
         fn: () => {
-          this.decrementRegister8(this.registers.d as CPURegister8);
+          this.decrementRegister(this.registers.d);
           return 1;
         },
       },
@@ -284,7 +284,7 @@ export default class CPU {
         description:
           "Adds the contents of DE to the contents of HL and stores results in HL.",
         fn: () => {
-          this.add16BitIntoHL(this.registers.de.Value);
+          this.addWordToHL(this.registers.de.Value);
           return 2;
         },
       },
@@ -308,7 +308,7 @@ export default class CPU {
         mnemonic: "INC E",
         description: "Increment E",
         fn: () => {
-          this.incrementRegister8(this.registers.e as CPURegister8);
+          this.incrementRegister(this.registers.e);
           return 1;
         },
       },
@@ -316,7 +316,7 @@ export default class CPU {
         mnemonic: "DEC E",
         description: "Decrement E",
         fn: () => {
-          this.decrementRegister8(this.registers.e as CPURegister8);
+          this.decrementRegister(this.registers.e);
           return 1;
         },
       },
@@ -367,7 +367,7 @@ export default class CPU {
         mnemonic: "LD HL, nn",
         description: "Load 16-bit immediate into HL",
         fn: () => {
-          this.loadImmediateWordTo16Bit(this.registers.hl as CPURegisterPair);
+          this.loadImmediateWordToRegister(this.registers.hl);
           return 3;
         },
       },
@@ -391,7 +391,7 @@ export default class CPU {
         mnemonic: "INC H",
         description: "Increment H",
         fn: () => {
-          this.incrementRegister8(this.registers.h as CPURegister8);
+          this.incrementRegister(this.registers.h);
           return 1;
         },
       },
@@ -399,7 +399,7 @@ export default class CPU {
         mnemonic: "DEC H",
         description: "Decrement H",
         fn: () => {
-          this.decrementRegister8(this.registers.h as CPURegister8);
+          this.decrementRegister(this.registers.h);
           return 1;
         },
       },
@@ -484,7 +484,7 @@ export default class CPU {
         description:
           "Adds the contents of HL to the contents of HL and stores results in HL.",
         fn: () => {
-          this.add16BitIntoHL(this.registers.hl.Value);
+          this.addWordToHL(this.registers.hl.Value);
           return 2;
         },
       },
@@ -509,7 +509,7 @@ export default class CPU {
         mnemonic: "INC L",
         description: "Increment L",
         fn: () => {
-          this.incrementRegister8(this.registers.l as CPURegister8);
+          this.incrementRegister(this.registers.l);
           return 1;
         },
       },
@@ -517,7 +517,7 @@ export default class CPU {
         mnemonic: "DEC L",
         description: "Decrement L",
         fn: () => {
-          this.decrementRegister8(this.registers.l as CPURegister8);
+          this.decrementRegister(this.registers.l);
           return 1;
         },
       },
@@ -562,7 +562,7 @@ export default class CPU {
         mnemonic: "LD SP, nn",
         description: "Load 16-bit immediate into SP",
         fn: () => {
-          this.loadImmediateWordTo16Bit(this.registers.sp);
+          this.loadImmediateWordToRegister(this.registers.sp);
           return 3;
         },
       },
@@ -649,7 +649,7 @@ export default class CPU {
         description:
           "Adds the contents of SP to the contents of HL and stores results in HL.",
         fn: () => {
-          this.add16BitIntoHL(this.registers.sp.Value);
+          this.addWordToHL(this.registers.sp.Value);
           return 2;
         },
       },
@@ -674,7 +674,7 @@ export default class CPU {
         mnemonic: "INC A",
         description: "Increment A",
         fn: () => {
-          this.incrementRegister8(this.registers.a as CPURegister8);
+          this.incrementRegister(this.registers.a);
           return 1;
         },
       },
@@ -682,7 +682,7 @@ export default class CPU {
         mnemonic: "DEC A",
         description: "Decrement A",
         fn: () => {
-          this.decrementRegister8(this.registers.a as CPURegister8);
+          this.decrementRegister(this.registers.a);
           return 1;
         },
       },
@@ -708,7 +708,7 @@ export default class CPU {
         mnemonic: "LD B, B",
         description: "Loads the contents of register B into register B.",
         fn: () => {
-          this.load8BitTo8Bit(this.registers.b, this.registers.b);
+          this.loadRegisterToRegister(this.registers.b, this.registers.b);
           return 1;
         },
       },
@@ -716,7 +716,7 @@ export default class CPU {
         mnemonic: "LD B, C",
         description: "Loads the contents of register C into register B.",
         fn: () => {
-          this.load8BitTo8Bit(this.registers.c, this.registers.b);
+          this.loadRegisterToRegister(this.registers.c, this.registers.b);
           return 1;
         },
       },
@@ -724,7 +724,7 @@ export default class CPU {
         mnemonic: "LD B, D",
         description: "Loads the contents of register D into register B.",
         fn: () => {
-          this.load8BitTo8Bit(this.registers.d, this.registers.b);
+          this.loadRegisterToRegister(this.registers.d, this.registers.b);
           return 1;
         },
       },
@@ -732,7 +732,7 @@ export default class CPU {
         mnemonic: "LD B, E",
         description: "Loads the contents of register E into register B.",
         fn: () => {
-          this.load8BitTo8Bit(this.registers.e, this.registers.b);
+          this.loadRegisterToRegister(this.registers.e, this.registers.b);
           return 1;
         },
       },
@@ -740,7 +740,7 @@ export default class CPU {
         mnemonic: "LD B, H",
         description: "Loads the contents of register H into register B.",
         fn: () => {
-          this.load8BitTo8Bit(this.registers.h, this.registers.b);
+          this.loadRegisterToRegister(this.registers.h, this.registers.b);
           return 1;
         },
       },
@@ -748,7 +748,7 @@ export default class CPU {
         mnemonic: "LD B, L",
         description: "Loads the contents of register L into register B.",
         fn: () => {
-          this.load8BitTo8Bit(this.registers.l, this.registers.b);
+          this.loadRegisterToRegister(this.registers.l, this.registers.b);
           return 1;
         },
       },
@@ -765,7 +765,7 @@ export default class CPU {
         mnemonic: "LD B, A",
         description: "Loads the contents of register A into register B.",
         fn: () => {
-          this.load8BitTo8Bit(this.registers.a, this.registers.b);
+          this.loadRegisterToRegister(this.registers.a, this.registers.b);
           return 1;
         },
       },
@@ -773,7 +773,7 @@ export default class CPU {
         mnemonic: "LD C, B",
         description: "Loads the contents of register B into register C.",
         fn: () => {
-          this.load8BitTo8Bit(this.registers.b, this.registers.c);
+          this.loadRegisterToRegister(this.registers.b, this.registers.c);
           return 1;
         },
       },
@@ -781,7 +781,7 @@ export default class CPU {
         mnemonic: "LD C, C",
         description: "Loads the contents of register C into register C.",
         fn: () => {
-          this.load8BitTo8Bit(this.registers.c, this.registers.c);
+          this.loadRegisterToRegister(this.registers.c, this.registers.c);
           return 1;
         },
       },
@@ -789,7 +789,7 @@ export default class CPU {
         mnemonic: "LD C, D",
         description: "Loads the contents of register D into register C.",
         fn: () => {
-          this.load8BitTo8Bit(this.registers.d, this.registers.c);
+          this.loadRegisterToRegister(this.registers.d, this.registers.c);
           return 1;
         },
       },
@@ -797,7 +797,7 @@ export default class CPU {
         mnemonic: "LD C, E",
         description: "Loads the contents of register E into register C.",
         fn: () => {
-          this.load8BitTo8Bit(this.registers.e, this.registers.c);
+          this.loadRegisterToRegister(this.registers.e, this.registers.c);
           return 1;
         },
       },
@@ -805,7 +805,7 @@ export default class CPU {
         mnemonic: "LD C, H",
         description: "Loads the contents of register H into register C.",
         fn: () => {
-          this.load8BitTo8Bit(this.registers.h, this.registers.c);
+          this.loadRegisterToRegister(this.registers.h, this.registers.c);
           return 1;
         },
       },
@@ -813,7 +813,7 @@ export default class CPU {
         mnemonic: "LD C, L",
         description: "Loads the contents of register L into register C.",
         fn: () => {
-          this.load8BitTo8Bit(this.registers.l, this.registers.c);
+          this.loadRegisterToRegister(this.registers.l, this.registers.c);
           return 1;
         },
       },
@@ -830,7 +830,7 @@ export default class CPU {
         mnemonic: "LD C, A",
         description: "Loads the contents of register A into register C.",
         fn: () => {
-          this.load8BitTo8Bit(this.registers.a, this.registers.c);
+          this.loadRegisterToRegister(this.registers.a, this.registers.c);
           return 1;
         },
       },
@@ -838,7 +838,7 @@ export default class CPU {
         mnemonic: "LD D, B",
         description: "Loads the contents of register B into register D.",
         fn: () => {
-          this.load8BitTo8Bit(this.registers.b, this.registers.d);
+          this.loadRegisterToRegister(this.registers.b, this.registers.d);
           return 1;
         },
       },
@@ -846,7 +846,7 @@ export default class CPU {
         mnemonic: "LD D, C",
         description: "Loads the contents of register C into register D.",
         fn: () => {
-          this.load8BitTo8Bit(this.registers.c, this.registers.d);
+          this.loadRegisterToRegister(this.registers.c, this.registers.d);
           return 1;
         },
       },
@@ -854,7 +854,7 @@ export default class CPU {
         mnemonic: "LD D, D",
         description: "Loads the contents of register D into register D.",
         fn: () => {
-          this.load8BitTo8Bit(this.registers.d, this.registers.d);
+          this.loadRegisterToRegister(this.registers.d, this.registers.d);
           return 1;
         },
       },
@@ -862,7 +862,7 @@ export default class CPU {
         mnemonic: "LD D, E",
         description: "Loads the contents of register E into register D.",
         fn: () => {
-          this.load8BitTo8Bit(this.registers.e, this.registers.d);
+          this.loadRegisterToRegister(this.registers.e, this.registers.d);
           return 1;
         },
       },
@@ -870,7 +870,7 @@ export default class CPU {
         mnemonic: "LD D, H",
         description: "Loads the contents of register H into register D.",
         fn: () => {
-          this.load8BitTo8Bit(this.registers.h, this.registers.d);
+          this.loadRegisterToRegister(this.registers.h, this.registers.d);
           return 1;
         },
       },
@@ -878,7 +878,7 @@ export default class CPU {
         mnemonic: "LD D, L",
         description: "Loads the contents of register L into register D.",
         fn: () => {
-          this.load8BitTo8Bit(this.registers.l, this.registers.d);
+          this.loadRegisterToRegister(this.registers.l, this.registers.d);
           return 1;
         },
       },
@@ -895,7 +895,7 @@ export default class CPU {
         mnemonic: "LD D, A",
         description: "Loads the contents of register A into register D.",
         fn: () => {
-          this.load8BitTo8Bit(this.registers.a, this.registers.d);
+          this.loadRegisterToRegister(this.registers.a, this.registers.d);
           return 1;
         },
       },
@@ -903,7 +903,7 @@ export default class CPU {
         mnemonic: "LD E, B",
         description: "Loads the contents of register B into register E.",
         fn: () => {
-          this.load8BitTo8Bit(this.registers.b, this.registers.e);
+          this.loadRegisterToRegister(this.registers.b, this.registers.e);
           return 1;
         },
       },
@@ -911,7 +911,7 @@ export default class CPU {
         mnemonic: "LD E, C",
         description: "Loads the contents of register C into register E.",
         fn: () => {
-          this.load8BitTo8Bit(this.registers.c, this.registers.e);
+          this.loadRegisterToRegister(this.registers.c, this.registers.e);
           return 1;
         },
       },
@@ -919,7 +919,7 @@ export default class CPU {
         mnemonic: "LD E, D",
         description: "Loads the contents of register D into register E.",
         fn: () => {
-          this.load8BitTo8Bit(this.registers.d, this.registers.e);
+          this.loadRegisterToRegister(this.registers.d, this.registers.e);
           return 1;
         },
       },
@@ -927,7 +927,7 @@ export default class CPU {
         mnemonic: "LD E, E",
         description: "Loads the contents of register E into register E.",
         fn: () => {
-          this.load8BitTo8Bit(this.registers.e, this.registers.e);
+          this.loadRegisterToRegister(this.registers.e, this.registers.e);
           return 1;
         },
       },
@@ -935,7 +935,7 @@ export default class CPU {
         mnemonic: "LD E, H",
         description: "Loads the contents of register H into register E.",
         fn: () => {
-          this.load8BitTo8Bit(this.registers.h, this.registers.e);
+          this.loadRegisterToRegister(this.registers.h, this.registers.e);
           return 1;
         },
       },
@@ -943,7 +943,7 @@ export default class CPU {
         mnemonic: "LD E, L",
         description: "Loads the contents of register L into register E.",
         fn: () => {
-          this.load8BitTo8Bit(this.registers.l, this.registers.e);
+          this.loadRegisterToRegister(this.registers.l, this.registers.e);
           return 1;
         },
       },
@@ -960,7 +960,7 @@ export default class CPU {
         mnemonic: "LD E, A",
         description: "Loads the contents of register A into register E.",
         fn: () => {
-          this.load8BitTo8Bit(this.registers.a, this.registers.e);
+          this.loadRegisterToRegister(this.registers.a, this.registers.e);
           return 1;
         },
       },
@@ -968,7 +968,7 @@ export default class CPU {
         mnemonic: "LD H, B",
         description: "Loads the contents of register B into register H.",
         fn: () => {
-          this.load8BitTo8Bit(this.registers.b, this.registers.h);
+          this.loadRegisterToRegister(this.registers.b, this.registers.h);
           return 1;
         },
       },
@@ -976,7 +976,7 @@ export default class CPU {
         mnemonic: "LD H, C",
         description: "Loads the contents of register C into register H.",
         fn: () => {
-          this.load8BitTo8Bit(this.registers.c, this.registers.h);
+          this.loadRegisterToRegister(this.registers.c, this.registers.h);
           return 1;
         },
       },
@@ -984,7 +984,7 @@ export default class CPU {
         mnemonic: "LD H, D",
         description: "Loads the contents of register D into register H.",
         fn: () => {
-          this.load8BitTo8Bit(this.registers.d, this.registers.h);
+          this.loadRegisterToRegister(this.registers.d, this.registers.h);
           return 1;
         },
       },
@@ -992,7 +992,7 @@ export default class CPU {
         mnemonic: "LD H, E",
         description: "Loads the contents of register E into register H.",
         fn: () => {
-          this.load8BitTo8Bit(this.registers.e, this.registers.h);
+          this.loadRegisterToRegister(this.registers.e, this.registers.h);
           return 1;
         },
       },
@@ -1000,7 +1000,7 @@ export default class CPU {
         mnemonic: "LD H, H",
         description: "Loads the contents of register H into register H.",
         fn: () => {
-          this.load8BitTo8Bit(this.registers.h, this.registers.h);
+          this.loadRegisterToRegister(this.registers.h, this.registers.h);
           return 1;
         },
       },
@@ -1008,7 +1008,7 @@ export default class CPU {
         mnemonic: "LD H, L",
         description: "Loads the contents of register L into register H.",
         fn: () => {
-          this.load8BitTo8Bit(this.registers.l, this.registers.h);
+          this.loadRegisterToRegister(this.registers.l, this.registers.h);
           return 1;
         },
       },
@@ -1025,7 +1025,7 @@ export default class CPU {
         mnemonic: "LD H, A",
         description: "Loads the contents of register A into register H.",
         fn: () => {
-          this.load8BitTo8Bit(this.registers.a, this.registers.h);
+          this.loadRegisterToRegister(this.registers.a, this.registers.h);
           return 1;
         },
       },
@@ -1033,7 +1033,7 @@ export default class CPU {
         mnemonic: "LD L, B",
         description: "Loads the contents of register B into register L.",
         fn: () => {
-          this.load8BitTo8Bit(this.registers.b, this.registers.l);
+          this.loadRegisterToRegister(this.registers.b, this.registers.l);
           return 1;
         },
       },
@@ -1041,7 +1041,7 @@ export default class CPU {
         mnemonic: "LD L, C",
         description: "Loads the contents of register C into register L.",
         fn: () => {
-          this.load8BitTo8Bit(this.registers.c, this.registers.l);
+          this.loadRegisterToRegister(this.registers.c, this.registers.l);
           return 1;
         },
       },
@@ -1049,7 +1049,7 @@ export default class CPU {
         mnemonic: "LD L, D",
         description: "Loads the contents of register D into register L.",
         fn: () => {
-          this.load8BitTo8Bit(this.registers.d, this.registers.l);
+          this.loadRegisterToRegister(this.registers.d, this.registers.l);
           return 1;
         },
       },
@@ -1057,7 +1057,7 @@ export default class CPU {
         mnemonic: "LD L, E",
         description: "Loads the contents of register E into register L.",
         fn: () => {
-          this.load8BitTo8Bit(this.registers.e, this.registers.l);
+          this.loadRegisterToRegister(this.registers.e, this.registers.l);
           return 1;
         },
       },
@@ -1065,7 +1065,7 @@ export default class CPU {
         mnemonic: "LD L, H",
         description: "Loads the contents of register H into register L.",
         fn: () => {
-          this.load8BitTo8Bit(this.registers.h, this.registers.l);
+          this.loadRegisterToRegister(this.registers.h, this.registers.l);
           return 1;
         },
       },
@@ -1073,7 +1073,7 @@ export default class CPU {
         mnemonic: "LD L, L",
         description: "Loads the contents of register L into register L.",
         fn: () => {
-          this.load8BitTo8Bit(this.registers.l, this.registers.l);
+          this.loadRegisterToRegister(this.registers.l, this.registers.l);
           return 1;
         },
       },
@@ -1090,7 +1090,7 @@ export default class CPU {
         mnemonic: "LD L, A",
         description: "Loads the contents of register A into register L.",
         fn: () => {
-          this.load8BitTo8Bit(this.registers.a, this.registers.l);
+          this.loadRegisterToRegister(this.registers.a, this.registers.l);
           return 1;
         },
       },
@@ -1169,7 +1169,7 @@ export default class CPU {
         mnemonic: "LD A, B",
         description: "Loads the contents of register B into register A.",
         fn: () => {
-          this.load8BitTo8Bit(this.registers.b, this.registers.a);
+          this.loadRegisterToRegister(this.registers.b, this.registers.a);
           return 1;
         },
       },
@@ -1177,7 +1177,7 @@ export default class CPU {
         mnemonic: "LD A, C",
         description: "Loads the contents of register C into register A.",
         fn: () => {
-          this.load8BitTo8Bit(this.registers.c, this.registers.a);
+          this.loadRegisterToRegister(this.registers.c, this.registers.a);
           return 1;
         },
       },
@@ -1185,7 +1185,7 @@ export default class CPU {
         mnemonic: "LD A, D",
         description: "Loads the contents of register D into register A.",
         fn: () => {
-          this.load8BitTo8Bit(this.registers.d, this.registers.a);
+          this.loadRegisterToRegister(this.registers.d, this.registers.a);
           return 1;
         },
       },
@@ -1193,7 +1193,7 @@ export default class CPU {
         mnemonic: "LD A, E",
         description: "Loads the contents of register E into register A.",
         fn: () => {
-          this.load8BitTo8Bit(this.registers.e, this.registers.a);
+          this.loadRegisterToRegister(this.registers.e, this.registers.a);
           return 1;
         },
       },
@@ -1201,7 +1201,7 @@ export default class CPU {
         mnemonic: "LD A, H",
         description: "Loads the contents of register H into register A.",
         fn: () => {
-          this.load8BitTo8Bit(this.registers.h, this.registers.a);
+          this.loadRegisterToRegister(this.registers.h, this.registers.a);
           return 1;
         },
       },
@@ -1209,7 +1209,7 @@ export default class CPU {
         mnemonic: "LD A, L",
         description: "Loads the contents of register L into register A.",
         fn: () => {
-          this.load8BitTo8Bit(this.registers.l, this.registers.a);
+          this.loadRegisterToRegister(this.registers.l, this.registers.a);
           return 1;
         },
       },
@@ -1226,7 +1226,7 @@ export default class CPU {
         mnemonic: "LD A, A",
         description: "Loads the contents of register A into register A.",
         fn: () => {
-          this.load8BitTo8Bit(this.registers.a, this.registers.a);
+          this.loadRegisterToRegister(this.registers.a, this.registers.a);
           return 1;
         },
       },
@@ -1234,7 +1234,7 @@ export default class CPU {
         mnemonic: "ADD A, B",
         description: "Adds the contents of register B to those of register A.",
         fn: () => {
-          this.add8BitIntoA(this.registers.b.Value);
+          this.addByteToA(this.registers.b.Value);
           return 1;
         },
       },
@@ -1242,7 +1242,7 @@ export default class CPU {
         mnemonic: "ADD A, C",
         description: "Adds the contents of register C to those of register A.",
         fn: () => {
-          this.add8BitIntoA(this.registers.c.Value);
+          this.addByteToA(this.registers.c.Value);
           return 1;
         },
       },
@@ -1250,7 +1250,7 @@ export default class CPU {
         mnemonic: "ADD A, D",
         description: "Adds the contents of register D to those of register A.",
         fn: () => {
-          this.add8BitIntoA(this.registers.d.Value);
+          this.addByteToA(this.registers.d.Value);
           return 1;
         },
       },
@@ -1258,7 +1258,7 @@ export default class CPU {
         mnemonic: "ADD A, E",
         description: "Adds the contents of register E to those of register A.",
         fn: () => {
-          this.add8BitIntoA(this.registers.e.Value);
+          this.addByteToA(this.registers.e.Value);
           return 1;
         },
       },
@@ -1266,7 +1266,7 @@ export default class CPU {
         mnemonic: "ADD A, H",
         description: "Adds the contents of register H to those of register A.",
         fn: () => {
-          this.add8BitIntoA(this.registers.h.Value);
+          this.addByteToA(this.registers.h.Value);
           return 1;
         },
       },
@@ -1274,7 +1274,7 @@ export default class CPU {
         mnemonic: "ADD A, L",
         description: "Adds the contents of register L to those of register A.",
         fn: () => {
-          this.add8BitIntoA(this.registers.l.Value);
+          this.addByteToA(this.registers.l.Value);
           return 1;
         },
       },
@@ -1283,7 +1283,7 @@ export default class CPU {
         description:
           "Adds the contents of memory specified by the contents of register pair HL to the contents of register A.",
         fn: () => {
-          this.add8BitIntoA(this.mmu.readByte(this.registers.hl.Value));
+          this.addByteToA(this.mmu.readByte(this.registers.hl.Value));
           return 2;
         },
       },
@@ -1291,7 +1291,7 @@ export default class CPU {
         mnemonic: "ADD A, A",
         description: "Adds the contents of register A to those of register A.",
         fn: () => {
-          this.add8BitIntoA(this.registers.a.Value);
+          this.addByteToA(this.registers.a.Value);
           return 1;
         },
       },
@@ -1300,7 +1300,7 @@ export default class CPU {
         description:
           "Adds the contents of register B and Carry Flag to the contents of register A.",
         fn: () => {
-          this.add8BitAndCarryIntoA(this.registers.b.Value);
+          this.addByteAndCarryIntoA(this.registers.b.Value);
           return 1;
         },
       },
@@ -1309,7 +1309,7 @@ export default class CPU {
         description:
           "Adds the contents of register C and Carry Flag to the contents of register A.",
         fn: () => {
-          this.add8BitAndCarryIntoA(this.registers.c.Value);
+          this.addByteAndCarryIntoA(this.registers.c.Value);
           return 1;
         },
       },
@@ -1318,7 +1318,7 @@ export default class CPU {
         description:
           "Adds the contents of register D and Carry Flag to the contents of register A.",
         fn: () => {
-          this.add8BitAndCarryIntoA(this.registers.d.Value);
+          this.addByteAndCarryIntoA(this.registers.d.Value);
           return 1;
         },
       },
@@ -1327,7 +1327,7 @@ export default class CPU {
         description:
           "Adds the contents of register E and Carry Flag to the contents of register A.",
         fn: () => {
-          this.add8BitAndCarryIntoA(this.registers.e.Value);
+          this.addByteAndCarryIntoA(this.registers.e.Value);
           return 1;
         },
       },
@@ -1336,7 +1336,7 @@ export default class CPU {
         description:
           "Adds the contents of register H and Carry Flag to the contents of register A.",
         fn: () => {
-          this.add8BitAndCarryIntoA(this.registers.h.Value);
+          this.addByteAndCarryIntoA(this.registers.h.Value);
           return 1;
         },
       },
@@ -1345,7 +1345,7 @@ export default class CPU {
         description:
           "Adds the contents of register L and Carry Flag to the contents of register A.",
         fn: () => {
-          this.add8BitAndCarryIntoA(this.registers.l.Value);
+          this.addByteAndCarryIntoA(this.registers.l.Value);
           return 1;
         },
       },
@@ -1354,7 +1354,7 @@ export default class CPU {
         description:
           "Adds the contents of memory specified by the contents of register pair HL and Carry Flag to register A and stores the results in register A.",
         fn: () => {
-          this.add8BitAndCarryIntoA(this.mmu.readByte(this.registers.hl.Value));
+          this.addByteAndCarryIntoA(this.mmu.readByte(this.registers.hl.Value));
           return 2;
         },
       },
@@ -1363,7 +1363,7 @@ export default class CPU {
         description:
           "Adds the contents of register A and Carry Flag to the contents of register A.",
         fn: () => {
-          this.add8BitAndCarryIntoA(this.registers.a.Value);
+          this.addByteAndCarryIntoA(this.registers.a.Value);
           return 1;
         },
       },
@@ -1372,7 +1372,7 @@ export default class CPU {
         description:
           "Subtracts the contents of register B from those of register A and stores the results in register A.",
         fn: () => {
-          this.subtract8BitFromA(this.registers.b.Value);
+          this.subtractByteFromA(this.registers.b.Value);
           return 1;
         },
       },
@@ -1381,7 +1381,7 @@ export default class CPU {
         description:
           "Subtracts the contents of register C from those of register A and stores the results in register A.",
         fn: () => {
-          this.subtract8BitFromA(this.registers.c.Value);
+          this.subtractByteFromA(this.registers.c.Value);
           return 1;
         },
       },
@@ -1390,7 +1390,7 @@ export default class CPU {
         description:
           "Subtracts the contents of register D from those of register A and stores the results in register A.",
         fn: () => {
-          this.subtract8BitFromA(this.registers.d.Value);
+          this.subtractByteFromA(this.registers.d.Value);
           return 1;
         },
       },
@@ -1399,7 +1399,7 @@ export default class CPU {
         description:
           "Subtracts the contents of register E from those of register A and stores the results in register A.",
         fn: () => {
-          this.subtract8BitFromA(this.registers.e.Value);
+          this.subtractByteFromA(this.registers.e.Value);
           return 1;
         },
       },
@@ -1408,7 +1408,7 @@ export default class CPU {
         description:
           "Subtracts the contents of register H from those of register A and stores the results in register A.",
         fn: () => {
-          this.subtract8BitFromA(this.registers.h.Value);
+          this.subtractByteFromA(this.registers.h.Value);
           return 1;
         },
       },
@@ -1417,7 +1417,7 @@ export default class CPU {
         description:
           "Subtracts the contents of register L from those of register A and stores the results in register A.",
         fn: () => {
-          this.subtract8BitFromA(this.registers.l.Value);
+          this.subtractByteFromA(this.registers.l.Value);
           return 1;
         },
       },
@@ -1426,7 +1426,7 @@ export default class CPU {
         description:
           "Subtracts the contents of memory specified by the contents of register pair HL from the contents of Register A and stores the results in register A.",
         fn: () => {
-          this.subtract8BitFromA(this.mmu.readByte(this.registers.hl.Value));
+          this.subtractByteFromA(this.mmu.readByte(this.registers.hl.Value));
           return 2;
         },
       },
@@ -1435,7 +1435,7 @@ export default class CPU {
         description:
           "Subtracts the contents of register A from those of register A and stores the results in register A.",
         fn: () => {
-          this.subtract8BitFromA(this.registers.a.Value);
+          this.subtractByteFromA(this.registers.a.Value);
           return 1;
         },
       },
@@ -1444,7 +1444,7 @@ export default class CPU {
         description:
           "Subtracts the contents of B and CarryFlag from the contents of register A and stores the results in A.",
         fn: () => {
-          this.subtract8BitAndCarryFromA(this.registers.b.Value);
+          this.subtractByteAndCarryFromA(this.registers.b.Value);
           return 1;
         },
       },
@@ -1453,7 +1453,7 @@ export default class CPU {
         description:
           "Subtracts the contents of C and CarryFlag from the contents of register A and stores the results in A.",
         fn: () => {
-          this.subtract8BitAndCarryFromA(this.registers.c.Value);
+          this.subtractByteAndCarryFromA(this.registers.c.Value);
           return 1;
         },
       },
@@ -1462,7 +1462,7 @@ export default class CPU {
         description:
           "Subtracts the contents of D and CarryFlag from the contents of register A and stores the results in A.",
         fn: () => {
-          this.subtract8BitAndCarryFromA(this.registers.d.Value);
+          this.subtractByteAndCarryFromA(this.registers.d.Value);
           return 1;
         },
       },
@@ -1471,7 +1471,7 @@ export default class CPU {
         description:
           "Subtracts the contents of E and CarryFlag from the contents of register A and stores the results in A.",
         fn: () => {
-          this.subtract8BitAndCarryFromA(this.registers.e.Value);
+          this.subtractByteAndCarryFromA(this.registers.e.Value);
           return 1;
         },
       },
@@ -1480,7 +1480,7 @@ export default class CPU {
         description:
           "Subtracts the contents of H and CarryFlag from the contents of register A and stores the results in A.",
         fn: () => {
-          this.subtract8BitAndCarryFromA(this.registers.h.Value);
+          this.subtractByteAndCarryFromA(this.registers.h.Value);
           return 1;
         },
       },
@@ -1489,7 +1489,7 @@ export default class CPU {
         description:
           "Subtracts the contents of L and CarryFlag from the contents of register A and stores the results in A.",
         fn: () => {
-          this.subtract8BitAndCarryFromA(this.registers.l.Value);
+          this.subtractByteAndCarryFromA(this.registers.l.Value);
           return 1;
         },
       },
@@ -1498,7 +1498,7 @@ export default class CPU {
         description:
           "Subtracts the contents of memory specified by HL and CarryFlag from the contents of register A and stores the results in A.",
         fn: () => {
-          this.subtract8BitAndCarryFromA(
+          this.subtractByteAndCarryFromA(
             this.mmu.readByte(this.registers.hl.Value)
           );
           return 2;
@@ -1509,7 +1509,7 @@ export default class CPU {
         description:
           "Subtracts the contents of A and CarryFlag from the contents of register A and stores the results in A.",
         fn: () => {
-          this.subtract8BitAndCarryFromA(this.registers.a.Value);
+          this.subtractByteAndCarryFromA(this.registers.a.Value);
           return 1;
         },
       },
@@ -1518,7 +1518,7 @@ export default class CPU {
         description:
           "Takes the logical-AND for each bit of the contents of B and A, and stores the results in A.",
         fn: () => {
-          this.logicalAnd8BitWithA(this.registers.b.Value);
+          this.logicalAndByteWithA(this.registers.b.Value);
           return 1;
         },
       },
@@ -1527,7 +1527,7 @@ export default class CPU {
         description:
           "Takes the logical-AND for each bit of the contents of C and A, and stores the results in A.",
         fn: () => {
-          this.logicalAnd8BitWithA(this.registers.c.Value);
+          this.logicalAndByteWithA(this.registers.c.Value);
           return 1;
         },
       },
@@ -1536,7 +1536,7 @@ export default class CPU {
         description:
           "Takes the logical-AND for each bit of the contents of D and A, and stores the results in A.",
         fn: () => {
-          this.logicalAnd8BitWithA(this.registers.d.Value);
+          this.logicalAndByteWithA(this.registers.d.Value);
           return 1;
         },
       },
@@ -1545,7 +1545,7 @@ export default class CPU {
         description:
           "Takes the logical-AND for each bit of the contents of E and A, and stores the results in A.",
         fn: () => {
-          this.logicalAnd8BitWithA(this.registers.e.Value);
+          this.logicalAndByteWithA(this.registers.e.Value);
           return 1;
         },
       },
@@ -1554,7 +1554,7 @@ export default class CPU {
         description:
           "Takes the logical-AND for each bit of the contents of H and A, and stores the results in A.",
         fn: () => {
-          this.logicalAnd8BitWithA(this.registers.h.Value);
+          this.logicalAndByteWithA(this.registers.h.Value);
           return 1;
         },
       },
@@ -1563,7 +1563,7 @@ export default class CPU {
         description:
           "Takes the logical-AND for each bit of the contents of L and A, and stores the results in A.",
         fn: () => {
-          this.logicalAnd8BitWithA(this.registers.l.Value);
+          this.logicalAndByteWithA(this.registers.l.Value);
           return 1;
         },
       },
@@ -1572,7 +1572,7 @@ export default class CPU {
         description:
           "Takes the logical-AND for each bit of the contents of memory specified by the contents of HL and A, and stores the results in A.",
         fn: () => {
-          this.logicalAnd8BitWithA(this.mmu.readByte(this.registers.hl.Value));
+          this.logicalAndByteWithA(this.mmu.readByte(this.registers.hl.Value));
           return 2;
         },
       },
@@ -1581,7 +1581,7 @@ export default class CPU {
         description:
           "Takes the logical-AND for each bit of the contents of A and A, and stores the results in A.",
         fn: () => {
-          this.logicalAnd8BitWithA(this.registers.a.Value);
+          this.logicalAndByteWithA(this.registers.a.Value);
           return 1;
         },
       },
@@ -1590,7 +1590,7 @@ export default class CPU {
         description:
           "Takes the logical exclusive-OR for each bit of the contents of B and A, and stores the results in A.",
         fn: () => {
-          this.logicalXor8BitWithA(this.registers.b.Value);
+          this.logicalXorByteWithA(this.registers.b.Value);
           return 1;
         },
       },
@@ -1599,7 +1599,7 @@ export default class CPU {
         description:
           "Takes the logical exclusive-OR for each bit of the contents of C and A, and stores the results in A.",
         fn: () => {
-          this.logicalXor8BitWithA(this.registers.c.Value);
+          this.logicalXorByteWithA(this.registers.c.Value);
           return 1;
         },
       },
@@ -1608,7 +1608,7 @@ export default class CPU {
         description:
           "Takes the logical exclusive-OR for each bit of the contents of D and A, and stores the results in A.",
         fn: () => {
-          this.logicalXor8BitWithA(this.registers.d.Value);
+          this.logicalXorByteWithA(this.registers.d.Value);
           return 1;
         },
       },
@@ -1617,7 +1617,7 @@ export default class CPU {
         description:
           "Takes the logical exclusive-OR for each bit of the contents of E and A, and stores the results in A.",
         fn: () => {
-          this.logicalXor8BitWithA(this.registers.e.Value);
+          this.logicalXorByteWithA(this.registers.e.Value);
           return 1;
         },
       },
@@ -1626,7 +1626,7 @@ export default class CPU {
         description:
           "Takes the logical exclusive-OR for each bit of the contents of H and A, and stores the results in A.",
         fn: () => {
-          this.logicalXor8BitWithA(this.registers.h.Value);
+          this.logicalXorByteWithA(this.registers.h.Value);
           return 1;
         },
       },
@@ -1635,7 +1635,7 @@ export default class CPU {
         description:
           "Takes the logical exclusive-OR for each bit of the contents of L and A, and stores the results in A.",
         fn: () => {
-          this.logicalXor8BitWithA(this.registers.l.Value);
+          this.logicalXorByteWithA(this.registers.l.Value);
           return 1;
         },
       },
@@ -1644,7 +1644,7 @@ export default class CPU {
         description:
           "Takes the logical exclusive-OR for each bit of the contents of memory specified by HL and A, and stores the results in A.",
         fn: () => {
-          this.logicalXor8BitWithA(this.mmu.readByte(this.registers.hl.Value));
+          this.logicalXorByteWithA(this.mmu.readByte(this.registers.hl.Value));
           return 2;
         },
       },
@@ -1653,7 +1653,7 @@ export default class CPU {
         description:
           "Takes the logical exclusive-OR for each bit of the contents of A and A, and stores the results in A.",
         fn: () => {
-          this.logicalXor8BitWithA(this.registers.a.Value);
+          this.logicalXorByteWithA(this.registers.a.Value);
           return 1;
         },
       },
@@ -1662,7 +1662,7 @@ export default class CPU {
         description:
           "Takes the logical-OR for each bit of the contents of B and A, and stores the results in A.",
         fn: () => {
-          this.logicalOr8BitWithA(this.registers.b.Value);
+          this.logicalOrByteWithA(this.registers.b.Value);
           return 1;
         },
       },
@@ -1671,7 +1671,7 @@ export default class CPU {
         description:
           "Takes the logical-OR for each bit of the contents of C and A, and stores the results in A.",
         fn: () => {
-          this.logicalOr8BitWithA(this.registers.c.Value);
+          this.logicalOrByteWithA(this.registers.c.Value);
           return 1;
         },
       },
@@ -1680,7 +1680,7 @@ export default class CPU {
         description:
           "Takes the logical-OR for each bit of the contents of D and A, and stores the results in A.",
         fn: () => {
-          this.logicalOr8BitWithA(this.registers.d.Value);
+          this.logicalOrByteWithA(this.registers.d.Value);
           return 1;
         },
       },
@@ -1689,7 +1689,7 @@ export default class CPU {
         description:
           "Takes the logical-OR for each bit of the contents of E and A, and stores the results in A.",
         fn: () => {
-          this.logicalOr8BitWithA(this.registers.e.Value);
+          this.logicalOrByteWithA(this.registers.e.Value);
           return 1;
         },
       },
@@ -1698,7 +1698,7 @@ export default class CPU {
         description:
           "Takes the logical-OR for each bit of the contents of H and A, and stores the results in A.",
         fn: () => {
-          this.logicalOr8BitWithA(this.registers.h.Value);
+          this.logicalOrByteWithA(this.registers.h.Value);
           return 1;
         },
       },
@@ -1707,7 +1707,7 @@ export default class CPU {
         description:
           "Takes the logical-OR for each bit of the contents of L and A, and stores the results in A.",
         fn: () => {
-          this.logicalOr8BitWithA(this.registers.l.Value);
+          this.logicalOrByteWithA(this.registers.l.Value);
           return 1;
         },
       },
@@ -1716,7 +1716,7 @@ export default class CPU {
         description:
           "Takes the logical-OR for each bit of the contents of memory specified by HL and A, and stores the results in A.",
         fn: () => {
-          this.logicalOr8BitWithA(this.registers.hl.Value);
+          this.logicalOrByteWithA(this.registers.hl.Value);
           return 1;
         },
       },
@@ -1725,7 +1725,7 @@ export default class CPU {
         description:
           "Takes the logical-OR for each bit of the contents of A and A, and stores the results in A.",
         fn: () => {
-          this.logicalOr8BitWithA(this.registers.a.Value);
+          this.logicalOrByteWithA(this.registers.a.Value);
           return 1;
         },
       },
@@ -1734,7 +1734,7 @@ export default class CPU {
         description:
           "Subtracts the contents of B from those of A and does not store the results",
         fn: () => {
-          this.compare8BitWithA(this.registers.b.Value);
+          this.compareByteWithA(this.registers.b.Value);
           return 1;
         },
       },
@@ -1743,7 +1743,7 @@ export default class CPU {
         description:
           "Subtracts the contents of C from those of A and does not store the results",
         fn: () => {
-          this.compare8BitWithA(this.registers.c.Value);
+          this.compareByteWithA(this.registers.c.Value);
           return 1;
         },
       },
@@ -1752,7 +1752,7 @@ export default class CPU {
         description:
           "Subtracts the contents of D from those of A and does not store the results",
         fn: () => {
-          this.compare8BitWithA(this.registers.d.Value);
+          this.compareByteWithA(this.registers.d.Value);
           return 1;
         },
       },
@@ -1761,7 +1761,7 @@ export default class CPU {
         description:
           "Subtracts the contents of E from those of A and does not store the results",
         fn: () => {
-          this.compare8BitWithA(this.registers.e.Value);
+          this.compareByteWithA(this.registers.e.Value);
           return 1;
         },
       },
@@ -1770,7 +1770,7 @@ export default class CPU {
         description:
           "Subtracts the contents of H from those of A and does not store the results",
         fn: () => {
-          this.compare8BitWithA(this.registers.h.Value);
+          this.compareByteWithA(this.registers.h.Value);
           return 1;
         },
       },
@@ -1779,7 +1779,7 @@ export default class CPU {
         description:
           "Subtracts the contents of L from those of A and does not store the results",
         fn: () => {
-          this.compare8BitWithA(this.registers.l.Value);
+          this.compareByteWithA(this.registers.l.Value);
           return 1;
         },
       },
@@ -1788,7 +1788,7 @@ export default class CPU {
         description:
           "Subtracts the contents of memory specified by HL from those of A and does not store the results",
         fn: () => {
-          this.compare8BitWithA(this.mmu.readByte(this.registers.hl.Value));
+          this.compareByteWithA(this.mmu.readByte(this.registers.hl.Value));
           return 2;
         },
       },
@@ -1797,7 +1797,7 @@ export default class CPU {
         description:
           "Subtracts the contents of A from those of A and does not store the results",
         fn: () => {
-          this.compare8BitWithA(this.registers.a.Value);
+          this.compareByteWithA(this.registers.a.Value);
           return 1;
         },
       },
@@ -1807,7 +1807,7 @@ export default class CPU {
           "If the Zero Flag is not set, control is returned to the source program by popping from memory the PC value pushed to the stack when the subroutine was called.",
         fn: () => {
           if (!this.ZeroFlag) {
-            this.popFromStackIntoRegister16(this.registers.pc);
+            this.popFromStackIntoRegister(this.registers.pc);
             return 5;
           }
           return 2;
@@ -1817,7 +1817,7 @@ export default class CPU {
         mnemonic: "POP BC",
         description: "Pops contents from the memory stack and into BC.",
         fn: () => {
-          this.popFromStackIntoRegister16(this.registers.bc);
+          this.popFromStackIntoRegister(this.registers.bc);
           return 3;
         },
       },
@@ -1885,7 +1885,7 @@ export default class CPU {
           "If the Zero Flag is set, control is returned to the source program by popping from memory the PC value pushed to the stack when the subroutine was called.",
         fn: () => {
           if (this.ZeroFlag) {
-            this.popFromStackIntoRegister16(this.registers.pc);
+            this.popFromStackIntoRegister(this.registers.pc);
             return 5;
           }
           return 2;
@@ -1896,7 +1896,7 @@ export default class CPU {
         description:
           "Pops from the memory stack the PC value pushed when the subroutine was called, returning control to the source program.",
         fn: () => {
-          this.popFromStackIntoRegister16(this.registers.pc);
+          this.popFromStackIntoRegister(this.registers.pc);
           return 4;
         },
       },
@@ -1964,7 +1964,7 @@ export default class CPU {
           "If the Carry Flag is not set, control is returned to the source program by popping from memory the PC value pushed to the stack when the subroutine was called.",
         fn: () => {
           if (!this.CarryFlag) {
-            this.popFromStackIntoRegister16(this.registers.pc);
+            this.popFromStackIntoRegister(this.registers.pc);
             return 5;
           }
           return 2;
@@ -1974,7 +1974,7 @@ export default class CPU {
         mnemonic: "POP DE",
         description: "Pops contents from the memory stack and into DE.",
         fn: () => {
-          this.popFromStackIntoRegister16(this.registers.de);
+          this.popFromStackIntoRegister(this.registers.de);
           return 3;
         },
       },
@@ -2040,7 +2040,7 @@ export default class CPU {
           "If the Carry Flag is set, control is returned to the source program by popping from memory the PC value pushed to the stack when the subroutine was called.",
         fn: () => {
           if (this.CarryFlag) {
-            this.popFromStackIntoRegister16(this.registers.pc);
+            this.popFromStackIntoRegister(this.registers.pc);
             return 5;
           }
           return 2;
@@ -2120,7 +2120,7 @@ export default class CPU {
         mnemonic: "POP HL",
         description: "Pops contents from the memory stack and into HL.",
         fn: () => {
-          this.popFromStackIntoRegister16(this.registers.hl);
+          this.popFromStackIntoRegister(this.registers.hl);
           return 3;
         },
       },
@@ -2233,7 +2233,7 @@ export default class CPU {
         mnemonic: "POP AF",
         description: "Pops contents from the memory stack and into AF.",
         fn: () => {
-          this.popFromStackIntoRegister16(this.registers.af);
+          this.popFromStackIntoRegister(this.registers.af);
           return 3;
         },
       },
@@ -2435,7 +2435,10 @@ export default class CPU {
    *   0x60 - 0x65, 0x67 - 0x6D, 0x6F
    *                0x78 - 0x7D, 0x7F
    */
-  protected load8BitTo8Bit(source: CPURegister8, destination: CPURegister8) {
+  protected loadRegisterToRegister(
+    source: CPURegister8,
+    destination: CPURegister8
+  ) {
     destination.Value = source.Value;
   }
 
@@ -2445,7 +2448,7 @@ export default class CPU {
    *
    * Opcodes: 0x01, 0x11, 0x21, 0x31
    */
-  protected loadImmediateWordTo16Bit(register: CPURegister16) {
+  protected loadImmediateWordToRegister(register: CPURegister16) {
     register.Value = this.mmu.readWord(this.registers.pc.Value);
     this.registers.pc.Value += 2;
   }
@@ -2456,7 +2459,7 @@ export default class CPU {
    *
    * Opcodes: 0x04, 0x14, 0x24, 0x0C, 0x1C, 0x2C, 0x3C
    */
-  protected incrementRegister8(register: CPURegister8) {
+  protected incrementRegister(register: CPURegister8) {
     // When calculating the HalfCarryFlag, check to see if
     // bit at index 3 carries to bit 4 (the least significant bit being index 0).
     // Example: 0b00001111 + 0b00000001 = 0b00010000
@@ -2471,7 +2474,7 @@ export default class CPU {
    *
    * Opcodes: 0x05, 0x15, 0x25, 0x0D, 0x1D, 0x2D, 0x3D
    */
-  protected decrementRegister8(register: CPURegister8) {
+  protected decrementRegister(register: CPURegister8) {
     // Similar to INC, except flip the logic to work for subtraction.
     // This way, we know if bit at index 3 borrowed from bit at index 4.
     this.HalfCarryFlag = (register.Value-- & 0xf) - 1 < 0;
@@ -2486,7 +2489,7 @@ export default class CPU {
    *
    * Opcodes: 0x09, 0x19, 0x29, 0x39
    */
-  protected add16BitIntoHL(value: number) {
+  protected addWordToHL(value: number) {
     const hl = this.registers.hl.Value;
     value &= 0xffff;
 
@@ -2512,7 +2515,7 @@ export default class CPU {
    *
    * Opcodes: 0x86
    */
-  protected add8BitIntoA(value: number) {
+  protected addByteToA(value: number) {
     const a = this.registers.a.Value;
     value &= 0xff;
 
@@ -2537,7 +2540,7 @@ export default class CPU {
    *
    * Opcodes: 0x8E
    */
-  protected add8BitAndCarryIntoA(value: number) {
+  protected addByteAndCarryIntoA(value: number) {
     const a = this.registers.a.Value;
     const cf = this.CarryFlag ? 1 : 0;
     value &= 0xff;
@@ -2563,7 +2566,7 @@ export default class CPU {
    *
    * Opcodes: 0x96
    */
-  protected subtract8BitFromA(value: number) {
+  protected subtractByteFromA(value: number) {
     const a = this.registers.a.Value;
     value &= 0xff;
 
@@ -2588,7 +2591,7 @@ export default class CPU {
    *
    * Opcodes: 0x8E
    */
-  protected compare8BitWithA(value: number) {
+  protected compareByteWithA(value: number) {
     const a = this.registers.a.Value;
     value &= 0xff;
 
@@ -2612,7 +2615,7 @@ export default class CPU {
    *
    * Opcodes: 0x9E
    */
-  protected subtract8BitAndCarryFromA(value: number) {
+  protected subtractByteAndCarryFromA(value: number) {
     const a = this.registers.a.Value;
     const cf = this.CarryFlag ? 1 : 0;
     value &= 0xff;
@@ -2639,7 +2642,7 @@ export default class CPU {
    *
    * Opcodes: 0xA6
    */
-  protected logicalAnd8BitWithA(value: number) {
+  protected logicalAndByteWithA(value: number) {
     this.registers.a.Value &= value;
     this.CarryFlag = false;
     this.HalfCarryFlag = true;
@@ -2661,7 +2664,7 @@ export default class CPU {
    *
    * Opcodes: 0xAE
    */
-  protected logicalXor8BitWithA(value: number) {
+  protected logicalXorByteWithA(value: number) {
     this.registers.a.Value ^= value;
     this.CarryFlag = false;
     this.HalfCarryFlag = false;
@@ -2683,7 +2686,7 @@ export default class CPU {
    *
    * Opcodes: 0xB6
    */
-  protected logicalOr8BitWithA(value: number) {
+  protected logicalOrByteWithA(value: number) {
     this.registers.a.Value |= value;
     this.CarryFlag = false;
     this.HalfCarryFlag = false;
@@ -2706,9 +2709,20 @@ export default class CPU {
    *
    * Opcodes: 0xC9
    */
-  protected popFromStackIntoRegister16(register: CPURegister16) {
+  protected popFromStackIntoRegister(register: CPURegister16) {
     register.Value = this.mmu.readWord(this.registers.sp.Value);
     this.registers.sp.Value += 2;
+  }
+
+  /**
+   * PUSH qq
+   * Pushes the contents of register pair qq onto the memory stack.
+   *
+   * Opcodes: 0xC5, 0xD5, 0xE5, 0xF5
+   */
+  protected pushWordToStack(value: number) {
+    this.mmu.writeWord(this.registers.sp.Value, value);
+    this.registers.sp.Value -= 2;
   }
 
   /**
