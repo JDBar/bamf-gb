@@ -1876,10 +1876,11 @@ export default class CPU {
         },
       },
       0xc7: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "RST 00H",
+        description: "Performs a CALL to 0x00.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.callSubroutine(0);
+          return 4;
         },
       },
       0xc8: {
@@ -1955,10 +1956,11 @@ export default class CPU {
         },
       },
       0xcf: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "RST 08H",
+        description: "Performs a CALL to 0x08.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.callSubroutine(1);
+          return 4;
         },
       },
       0xd0: {
@@ -2034,10 +2036,11 @@ export default class CPU {
         },
       },
       0xd7: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "RST 10H",
+        description: "Performs a CALL to 0x10.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.callSubroutine(2);
+          return 4;
         },
       },
       0xd8: {
@@ -2109,10 +2112,11 @@ export default class CPU {
         },
       },
       0xdf: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "RST 18H",
+        description: "Performs a CALL to 0x18.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.callSubroutine(3);
+          return 4;
         },
       },
       0xe0: {
@@ -2171,10 +2175,11 @@ export default class CPU {
         },
       },
       0xe7: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "RST 20H",
+        description: "Performs a CALL to 0x20.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.callSubroutine(4);
+          return 4;
         },
       },
       0xe8: {
@@ -2227,10 +2232,11 @@ export default class CPU {
         },
       },
       0xef: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "RST 28H",
+        description: "Performs a CALL to 0x28.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.callSubroutine(5);
+          return 4;
         },
       },
       0xf0: {
@@ -2287,10 +2293,11 @@ export default class CPU {
         },
       },
       0xf7: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "RST 30H",
+        description: "Performs a CALL to 0x30.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.callSubroutine(6);
+          return 4;
         },
       },
       0xf8: {
@@ -2343,10 +2350,11 @@ export default class CPU {
         },
       },
       0xff: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "RST 38H",
+        description: "Performs a CALL to 0x38.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.callSubroutine(7);
+          return 4;
         },
       },
     };
@@ -2775,16 +2783,26 @@ export default class CPU {
    * If condition cc is true, then performs CALL nn.
    *
    * Opcodes: 0xC4, 0xCC, 0xD4, 0xDC
+   *
+   * RST t
+   * Similar to a CALL instruction, except instead of providing the address
+   * to a subroutine, the address is calculated from operand t.
+   *
+   * Opcodes: 0xC7, 0xCF, 0xD7, 0xDF, 0xE7, 0xEF, 0xF7, 0xFF
    */
-  protected callSubroutine() {
-    // Read the immediate data following the CALL instruction.
-    const subroutineAddress = this.mmu.readWord(this.registers.pc.Value);
-    this.registers.pc.Value += 2;
+  protected callSubroutine(resetByteOffset?: number) {
+    let subroutineAddress;
+    if (resetByteOffset === undefined) {
+      // If this is a CALL instruction, read the immediate data.
+      subroutineAddress = this.mmu.readWord(this.registers.pc.Value);
+      this.registers.pc.Value += 2;
+    } else {
+      // If this is a RST instruction, calculate the address to use.
+      subroutineAddress = resetByteOffset * 0x08;
+    }
 
-    // Decrement the stack pointer for the 2 bytes we will write to the stack.
+    // Decrement the stack pointer so we can write PC to the stack.
     this.registers.sp.Value -= 2;
-
-    // Push the current program counter onto the stack.
     this.mmu.writeWord(this.registers.sp.Value, this.registers.pc.Value);
 
     // Update the program counter to the address of the subroutine..
