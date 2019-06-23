@@ -2165,10 +2165,23 @@ export default class CPU {
         },
       },
       0xe8: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "ADD SP, n",
+        description:
+          "Adds the contents of 8-bit immediate n and SP and stores the results in SP.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          const sp = this.registers.sp.Value;
+          const n = this.mmu.readByte(this.registers.pc.Value++);
+
+          // Set if there is a carry from bit 11; otherwise reset.
+          this.HalfCarryFlag = (sp & 0xfff) + (n & 0xfff) > 0xfff;
+          // Set if there is a carry from bit 15; otherwise reset.
+          this.CarryFlag = sp + n > 0xffff;
+          this.SubtractFlag = false;
+          this.ZeroFlag = false;
+
+          this.registers.sp.Value += n;
+
+          return 4;
         },
       },
       0xe9: {
