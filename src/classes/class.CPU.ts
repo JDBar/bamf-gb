@@ -2053,10 +2053,13 @@ export default class CPU {
         },
       },
       0xd9: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "RETI",
+        description:
+          "Used when interrupt-service routine finishes. The address for return from interrupt is loaded into PC. Master interrupt enable flag is returned to pre-interrupt status.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.popFromStackIntoRegister(this.registers.pc);
+          // TODO: Return master interrupt enable flag to pre-interrupt status.
+          return 4;
         },
       },
       0xda: {
@@ -2714,6 +2717,13 @@ export default class CPU {
    * the PC, and the contents of SP are incremented by 2.
    *
    * Opcodes: 0xC9
+   *
+   * RETI
+   * Used when an interrupt-service routine finishes.
+   * The address for the return from the interrupt is loaded into the PC,
+   * and the master interrupt enable flag is returned to its pre-interrupt status.
+   *
+   * Opcodes: 0xD9
    */
   protected popFromStackIntoRegister(register: CPURegister16) {
     register.Value = this.mmu.readWord(this.registers.sp.Value);
