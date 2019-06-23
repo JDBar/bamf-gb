@@ -1731,7 +1731,7 @@ export default class CPU {
       0xb8: {
         mnemonic: "CP B",
         description:
-          "Subtracts the contents of B from those of A and does not store the results",
+          "Subtracts the contents of B from those of A and does not store the results.",
         fn: () => {
           this.compareByteWithA(this.registers.b.Value);
           return 1;
@@ -1740,7 +1740,7 @@ export default class CPU {
       0xb9: {
         mnemonic: "CP C",
         description:
-          "Subtracts the contents of C from those of A and does not store the results",
+          "Subtracts the contents of C from those of A and does not store the results.",
         fn: () => {
           this.compareByteWithA(this.registers.c.Value);
           return 1;
@@ -1749,7 +1749,7 @@ export default class CPU {
       0xba: {
         mnemonic: "CP D",
         description:
-          "Subtracts the contents of D from those of A and does not store the results",
+          "Subtracts the contents of D from those of A and does not store the results.",
         fn: () => {
           this.compareByteWithA(this.registers.d.Value);
           return 1;
@@ -1758,7 +1758,7 @@ export default class CPU {
       0xbb: {
         mnemonic: "CP E",
         description:
-          "Subtracts the contents of E from those of A and does not store the results",
+          "Subtracts the contents of E from those of A and does not store the results.",
         fn: () => {
           this.compareByteWithA(this.registers.e.Value);
           return 1;
@@ -1767,7 +1767,7 @@ export default class CPU {
       0xbc: {
         mnemonic: "CP H",
         description:
-          "Subtracts the contents of H from those of A and does not store the results",
+          "Subtracts the contents of H from those of A and does not store the results.",
         fn: () => {
           this.compareByteWithA(this.registers.h.Value);
           return 1;
@@ -1776,7 +1776,7 @@ export default class CPU {
       0xbd: {
         mnemonic: "CP L",
         description:
-          "Subtracts the contents of L from those of A and does not store the results",
+          "Subtracts the contents of L from those of A and does not store the results.",
         fn: () => {
           this.compareByteWithA(this.registers.l.Value);
           return 1;
@@ -1785,7 +1785,7 @@ export default class CPU {
       0xbe: {
         mnemonic: "CP (HL)",
         description:
-          "Subtracts the contents of memory specified by HL from those of A and does not store the results",
+          "Subtracts the contents of memory specified by HL from those of A and does not store the results.",
         fn: () => {
           this.compareByteWithA(this.mmu.readByte(this.registers.hl.Value));
           return 2;
@@ -1794,7 +1794,7 @@ export default class CPU {
       0xbf: {
         mnemonic: "CP A",
         description:
-          "Subtracts the contents of A from those of A and does not store the results",
+          "Subtracts the contents of A from those of A and does not store the results.",
         fn: () => {
           this.compareByteWithA(this.registers.a.Value);
           return 1;
@@ -1949,10 +1949,14 @@ export default class CPU {
         },
       },
       0xce: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "ADC A, n",
+        description:
+          "Adds the contents of 8-bit immediate n and Carry Flag to A and stores the results in A.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.addByteAndCarryIntoA(
+            this.mmu.readByte(this.registers.pc.Value++)
+          );
+          return 2;
         },
       },
       0xcf: {
@@ -2105,10 +2109,13 @@ export default class CPU {
         },
       },
       0xde: {
-        mnemonic: "",
+        mnemonic: "SBC A, n",
         description: "",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.subtractByteAndCarryFromA(
+            this.mmu.readByte(this.registers.pc.Value++)
+          );
+          return 2;
         },
       },
       0xdf: {
@@ -2225,10 +2232,14 @@ export default class CPU {
         },
       },
       0xee: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "XOR n",
+        description:
+          "Takes the logical exclusive-OR for each bit of the contents of 8-bit immediate n and A, and stores the results in A.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.logicalXorByteWithA(
+            this.mmu.readByte(this.registers.pc.Value++)
+          );
+          return 2;
         },
       },
       0xef: {
@@ -2343,10 +2354,12 @@ export default class CPU {
         },
       },
       0xfe: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "CP n",
+        description:
+          "Subtracts the contents of 8-bit immediate from those of A and does not store the results.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.compareByteWithA(this.mmu.readByte(this.registers.pc.Value++));
+          return 2;
         },
       },
       0xff: {
@@ -2567,6 +2580,12 @@ export default class CPU {
    * and Carry Flag to register A and stores the results in register A.
    *
    * Opcodes: 0x8E
+   *
+   * ADC A, n
+   * Adds the contents of 8-bit immediate n and Carry Flag to register A and
+   * stores the results in register A.
+   *
+   * Opcodes: 0xCE
    */
   protected addByteAndCarryIntoA(value: number) {
     const a = this.registers.a.Value;
@@ -2624,6 +2643,12 @@ export default class CPU {
    * those of register A and does not store the results.
    *
    * Opcodes: 0x8E
+   *
+   * CP n
+   * Subtracts the contents of 8-bit immediate n from those of register A
+   * and does not store the results.
+   *
+   * Opcodes: 0xFE
    */
   protected compareByteWithA(value: number) {
     const a = this.registers.a.Value;
@@ -2648,6 +2673,12 @@ export default class CPU {
    * register A.
    *
    * Opcodes: 0x9E
+   *
+   * SBC A, n
+   * Subtracts the contents of 8-bit immediate n and Carry Flag from register
+   * A and stores the results in register A.
+   *
+   * Opcodes: 0xDE
    */
   protected subtractByteAndCarryFromA(value: number) {
     const a = this.registers.a.Value;
@@ -2703,6 +2734,12 @@ export default class CPU {
    * and stores the results in register A.
    *
    * Opcodes: 0xAE
+   *
+   * XOR n
+   * Takes the logical exclusive-OR for each bit of the contents of
+   * 8-bit immediate n and register A, and stores the results in register A.
+   *
+   * Opcodes: 0xEE
    */
   protected logicalXorByteWithA(value: number) {
     this.registers.a.Value ^= value;
