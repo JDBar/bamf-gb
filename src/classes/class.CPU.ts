@@ -2002,13 +2002,6 @@ export default class CPU {
           return 3;
         },
       },
-      0xd3: {
-        mnemonic: "",
-        description: "",
-        fn: () => {
-          throw new Error("Instruction not implemented.");
-        },
-      },
       0xd4: {
         mnemonic: "CALL NC, nn",
         description:
@@ -2081,13 +2074,6 @@ export default class CPU {
           return 3;
         },
       },
-      0xdb: {
-        mnemonic: "",
-        description: "",
-        fn: () => {
-          throw new Error("Instruction not implemented.");
-        },
-      },
       0xdc: {
         mnemonic: "CALL C, nn",
         description:
@@ -2099,13 +2085,6 @@ export default class CPU {
           } else {
             return 3;
           }
-        },
-      },
-      0xdd: {
-        mnemonic: "",
-        description: "",
-        fn: () => {
-          throw new Error("Instruction not implemented.");
         },
       },
       0xde: {
@@ -2142,20 +2121,6 @@ export default class CPU {
         },
       },
       0xe2: {
-        mnemonic: "",
-        description: "",
-        fn: () => {
-          throw new Error("Instruction not implemented.");
-        },
-      },
-      0xe3: {
-        mnemonic: "",
-        description: "",
-        fn: () => {
-          throw new Error("Instruction not implemented.");
-        },
-      },
-      0xe4: {
         mnemonic: "",
         description: "",
         fn: () => {
@@ -2210,27 +2175,6 @@ export default class CPU {
           throw new Error("Instruction not implemented.");
         },
       },
-      0xeb: {
-        mnemonic: "",
-        description: "",
-        fn: () => {
-          throw new Error("Instruction not implemented.");
-        },
-      },
-      0xec: {
-        mnemonic: "",
-        description: "",
-        fn: () => {
-          throw new Error("Instruction not implemented.");
-        },
-      },
-      0xed: {
-        mnemonic: "",
-        description: "",
-        fn: () => {
-          throw new Error("Instruction not implemented.");
-        },
-      },
       0xee: {
         mnemonic: "XOR n",
         description:
@@ -2273,13 +2217,6 @@ export default class CPU {
         },
       },
       0xf3: {
-        mnemonic: "",
-        description: "",
-        fn: () => {
-          throw new Error("Instruction not implemented.");
-        },
-      },
-      0xf4: {
         mnemonic: "",
         description: "",
         fn: () => {
@@ -2339,20 +2276,6 @@ export default class CPU {
           throw new Error("Instruction not implemented.");
         },
       },
-      0xfc: {
-        mnemonic: "",
-        description: "",
-        fn: () => {
-          throw new Error("Instruction not implemented.");
-        },
-      },
-      0xfd: {
-        mnemonic: "",
-        description: "",
-        fn: () => {
-          throw new Error("Instruction not implemented.");
-        },
-      },
       0xfe: {
         mnemonic: "CP n",
         description:
@@ -2395,7 +2318,7 @@ export default class CPU {
   /**
    * Decodes an opcode and returns an operation.
    */
-  protected decode(byte: number): IOperation {
+  protected decode(byte: number): IOperation | undefined {
     if (byte !== 0xcb) {
       return this.operations[byte];
     } else {
@@ -2403,7 +2326,7 @@ export default class CPU {
     }
   }
 
-  protected execute() {
+  protected execute(operation: IOperation) {
     throw new Error("execute() is not implemented.");
   }
 
@@ -2866,7 +2789,7 @@ export default class CPU {
  */
 
 export interface IOperationMap {
-  [index: number]: IOperation;
+  [index: number]: IOperation | undefined;
 }
 
 export interface IOperation {
