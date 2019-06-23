@@ -1846,10 +1846,16 @@ export default class CPU {
         },
       },
       0xc4: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "CALL NZ, nn",
+        description:
+          "If the Zero Flag is not set, pushes the PC value (after reading nn) to the memory specified by the current Stack Pointer. Then, nn is loaded into the PC, and SP is decremented by 2.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          if (!this.ZeroFlag) {
+            this.callSubroutine();
+            return 6;
+          } else {
+            return 3;
+          }
         },
       },
       0xc5: {
@@ -1917,17 +1923,25 @@ export default class CPU {
         },
       },
       0xcc: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "CALL Z, nn",
+        description:
+          "If the Zero Flag is set, pushes the PC value (after reading nn) to the memory specified by the current Stack Pointer. Then, nn is loaded into the PC, and SP is decremented by 2.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          if (this.ZeroFlag) {
+            this.callSubroutine();
+            return 6;
+          } else {
+            return 3;
+          }
         },
       },
       0xcd: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "CALL nn",
+        description:
+          "Pushes the PC value (after reading nn) to the memory specified by the current Stack Pointer. Then, nn is loaded into the PC, and SP is decremented by 2.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.callSubroutine();
+          return 6;
         },
       },
       0xce: {
@@ -1987,10 +2001,16 @@ export default class CPU {
         },
       },
       0xd4: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "CALL NC, nn",
+        description:
+          "If the Carry Flag is not set, pushes the PC value (after reading nn) to the memory specified by the current Stack Pointer. Then, nn is loaded into the PC, and SP is decremented by 2.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          if (!this.CarryFlag) {
+            this.callSubroutine();
+            return 6;
+          } else {
+            return 3;
+          }
         },
       },
       0xd5: {
@@ -2056,10 +2076,16 @@ export default class CPU {
         },
       },
       0xdc: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "CALL C, nn",
+        description:
+          "If the Carry Flag is set, pushes the PC value (after reading nn) to the memory specified by the current Stack Pointer. Then, nn is loaded into the PC, and SP is decremented by 2.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          if (this.CarryFlag) {
+            this.callSubroutine();
+            return 6;
+          } else {
+            return 3;
+          }
         },
       },
       0xdd: {
@@ -2683,6 +2709,34 @@ export default class CPU {
   protected popFromStackIntoRegister16(register: CPURegister16) {
     register.Value = this.mmu.readWord(this.registers.sp.Value);
     this.registers.sp.Value += 2;
+  }
+
+  /**
+   * CALL nn
+   * Pushes the PC value (after reading nn) to the memory specified by the
+   * current Stack Pointer. Then, nn is loaded into the PC, and SP is
+   * decremented by 2.
+   *
+   * Opcodes: 0xCD
+   *
+   * CALL cc, nn
+   * If condition cc is true, then performs CALL nn.
+   *
+   * Opcodes: 0xC4, 0xCC, 0xD4, 0xDC
+   */
+  protected callSubroutine() {
+    // Read the immediate data following the CALL instruction.
+    const subroutineAddress = this.mmu.readWord(this.registers.pc.Value);
+    this.registers.pc.Value += 2;
+
+    // Push the current program counter onto the stack.
+    this.mmu.writeWord(this.registers.sp.Value, this.registers.pc.Value);
+
+    // Update the program counter to the address of the subroutine..
+    this.registers.pc.Value = subroutineAddress;
+
+    // Decrement the stack pointer for the 2 bytes we wrote to the stack.
+    this.registers.sp.Value -= 2;
   }
 
   /**
