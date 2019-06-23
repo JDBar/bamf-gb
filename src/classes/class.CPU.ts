@@ -1829,17 +1829,27 @@ export default class CPU {
         },
       },
       0xc3: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "JP NZ, nn",
+        description:
+          "If the Zero Flag is not set, loads the operand nn to the program counter PC, where nn specifies the address of the subsequently executed instruction.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          if (!this.ZeroFlag) {
+            this.registers.pc.Value = this.mmu.readWord(
+              this.registers.pc.Value
+            );
+            return 4;
+          }
+          this.registers.pc.Value += 2;
+          return 3;
         },
       },
       0xc4: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "JP nn",
+        description:
+          "Loads the operand nn to the program counter PC, where nn specifies the address of the subsequently executed instruction.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.registers.pc.Value = this.mmu.readWord(this.registers.pc.Value);
+          return 4;
         },
       },
       0xc5: {
@@ -1885,10 +1895,18 @@ export default class CPU {
         },
       },
       0xca: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "JP Z, nn",
+        description:
+          "If the Zero Flag is set, loads the operand nn to the program counter PC, where nn specifies the address of the subsequently executed instruction.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          if (this.ZeroFlag) {
+            this.registers.pc.Value = this.mmu.readWord(
+              this.registers.pc.Value
+            );
+            return 4;
+          }
+          this.registers.pc.Value += 2;
+          return 3;
         },
       },
       0xcb: {
@@ -1954,10 +1972,18 @@ export default class CPU {
         },
       },
       0xd3: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "JP NC, nn",
+        description:
+          "If the Carry Flag is not set, loads the operand nn to the program counter PC, where nn specifies the address of the subsequently executed instruction.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          if (!this.CarryFlag) {
+            this.registers.pc.Value = this.mmu.readWord(
+              this.registers.pc.Value
+            );
+            return 4;
+          }
+          this.registers.pc.Value += 2;
+          return 3;
         },
       },
       0xd4: {
@@ -2008,10 +2034,18 @@ export default class CPU {
         },
       },
       0xda: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "JP C, nn",
+        description:
+          "If the Carry Flag is set, loads the operand nn to the program counter PC, where nn specifies the address of the subsequently executed instruction.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          if (this.CarryFlag) {
+            this.registers.pc.Value = this.mmu.readWord(
+              this.registers.pc.Value
+            );
+            return 4;
+          }
+          this.registers.pc.Value += 2;
+          return 3;
         },
       },
       0xdb: {
