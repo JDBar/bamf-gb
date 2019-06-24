@@ -2165,21 +2165,25 @@ export default class CPU {
         },
       },
       0xe8: {
-        mnemonic: "ADD SP, n",
+        mnemonic: "ADD SP, e",
         description:
-          "Adds the contents of 8-bit immediate n and SP and stores the results in SP.",
+          "Adds the contents of signed 8-bit immediate e and SP and stores the results in SP.",
         fn: () => {
           const sp = this.registers.sp.Value;
-          const n = this.mmu.readByte(this.registers.pc.Value++);
+          const e = this.byteToSigned(
+            this.mmu.readByte(this.registers.pc.Value++)
+          );
 
-          // Set if there is a carry from bit 11; otherwise reset.
-          this.HalfCarryFlag = (sp & 0xfff) + (n & 0xfff) > 0xfff;
-          // Set if there is a carry from bit 15; otherwise reset.
-          this.CarryFlag = sp + n > 0xffff;
+          /**
+           * The values of the carry and the half carry are computed on the
+           * low 8 bits for this instruction. Weird!
+           */
+          this.CarryFlag = (sp & 0xff) + (e & 0xff) > 0xff;
+          this.HalfCarryFlag = (sp & 0xf) + (e & 0xf) > 0xf;
           this.SubtractFlag = false;
           this.ZeroFlag = false;
 
-          this.registers.sp.Value += n;
+          this.registers.sp.Value += e;
 
           return 4;
         },
