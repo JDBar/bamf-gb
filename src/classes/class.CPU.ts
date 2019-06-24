@@ -2185,10 +2185,26 @@ export default class CPU {
         },
       },
       0xe9: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "JP (HL)",
+        description: "Loads the contents of HL into PC.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          /**
+           * Interestingly, this operation seems like it should've been named
+           * "JP HL", since expressions in parentheses typically indicates
+           * "memory contents at [constant address or variable pointer dereferencing]".
+           *
+           * "JP" instructions, which load the program counter with a new instruction
+           * address, do not themselves access memory. Absolute and relative forms
+           * of the jump reflect this by omitting the round brackets from their
+           * operands (e.g., "JP nn").
+           *
+           * Register-based jump instructions such as "JP (HL)" include parentheses
+           * in an apparent deviation from this convention.
+           *
+           * Source: https://en.wikipedia.org/wiki/Zilog_Z80#cite_note-37
+           */
+          this.registers.pc.Value = this.registers.hl.Value;
+          return 1;
         },
       },
       0xea: {
