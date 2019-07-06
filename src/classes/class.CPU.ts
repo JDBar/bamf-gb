@@ -2212,10 +2212,16 @@ export default class CPU {
         },
       },
       0xea: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LD (nn), A",
+        description:
+          "Loads the contents of A to the memory specified by 16-bit immediate nn.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          this.mmu.writeWord(
+            this.mmu.readWord(this.registers.pc.Value),
+            this.registers.a.Value
+          );
+          this.registers.pc.Value += 2;
+          return 4;
         },
       },
       0xee: {
