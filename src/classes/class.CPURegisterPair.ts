@@ -7,33 +7,33 @@ import CPURegister8 from "./class.CPURegister8";
  * low register acts as the 8 low bits.
  */
 export default class CPURegisterPair extends CPURegister16 {
-  protected value: number;
+	protected value: number;
 
-  /**
-   * The register to store the 8 high bits.
-   */
-  private high: CPURegister8;
+	/**
+	 * The register to store the 8 high bits.
+	 */
+	private high: CPURegister8;
 
-  /**
-   * The register to store the 8 low bits.
-   */
-  private low: CPURegister8;
+	/**
+	 * The register to store the 8 low bits.
+	 */
+	private low: CPURegister8;
 
-  constructor(high: CPURegister8, low: CPURegister8) {
-    super();
-    this.value = 0;
-    this.high = high;
-    this.low = low;
-  }
+	constructor(high: CPURegister8, low: CPURegister8) {
+		super();
+		this.value = 0;
+		this.high = high;
+		this.low = low;
+	}
 
-  get Value(): number {
-    this.value = ((this.high.Value << 8) | this.low.Value) & 0xffff;
-    return this.value;
-  }
+	get Value(): number {
+		this.value = ((this.high.Value << 8) | this.low.Value) & 0xffff;
+		return this.value;
+	}
 
-  set Value(n: number) {
-    this.value = n & 0xffff;
-    this.high.Value = (n & 0xff00) >> 8;
-    this.low.Value = n & 0xff;
-  }
+	set Value(n: number) {
+		this.value = n & 0xffff;
+		this.high.Value = (n & 0xff00) >> 8;
+		this.low.Value = n & 0xff;
+	}
 }
