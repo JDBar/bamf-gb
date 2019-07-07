@@ -2305,10 +2305,28 @@ export default class CPU {
         },
       },
       0xf8: {
-        mnemonic: "",
-        description: "",
+        mnemonic: "LDHL SP, e",
+        description:
+          "The signed 8-bit operand e is added to SP and then stored in HL.",
         fn: () => {
-          throw new Error("Instruction not implemented.");
+          const sp = this.registers.sp.Value;
+          const e = this.byteToSigned(
+            this.mmu.readByte(this.registers.pc.Value++)
+          );
+
+          /**
+           * The values of the carry and the half carry are computed on the
+           * low 8 bits for this instruction, like ADD SP, e. Weird!
+           * Source: https://stackoverflow.com/a/7261149
+           */
+          this.CarryFlag = (sp & 0xff) + (e & 0xff) > 0xff;
+          this.HalfCarryFlag = (sp & 0xf) + (e & 0xf) > 0xf;
+          this.SubtractFlag = false;
+          this.ZeroFlag = false;
+
+          this.registers.hl.Value = sp + e;
+
+          return 3;
         },
       },
       0xf9: {
