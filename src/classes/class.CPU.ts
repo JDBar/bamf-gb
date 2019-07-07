@@ -2331,16 +2331,21 @@ export default class CPU {
 			},
 			0xf9: {
 				mnemonic: "LD SP, HL",
-				description: "",
+				description: "Load the contents of HL into SP.",
 				fn: () => {
+					this.registers.sp.Value = this.registers.hl.Value;
 					return 2;
 				},
 			},
 			0xfa: {
-				mnemonic: "",
-				description: "",
+				mnemonic: "LD A, (nn)",
+				description:
+					"Loads into A the contents of memory specified by 16-bit immediate nn.",
 				fn: () => {
-					throw new Error("Instruction not implemented.");
+					const address = this.mmu.readWord(this.registers.pc.Value);
+					this.registers.pc.Value += 2;
+					this.registers.a.Value = this.mmu.readByte(address);
+					return 4;
 				},
 			},
 			0xfb: {
